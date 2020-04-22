@@ -1,7 +1,6 @@
 # Shopping Lists And Recipes
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
-Learinig project fo course Angular - The Complete Guide
 
 ## Development server
 
