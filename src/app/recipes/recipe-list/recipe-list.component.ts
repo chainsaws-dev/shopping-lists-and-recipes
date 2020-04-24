@@ -7,7 +7,7 @@ import { Recipe } from '../recipe-model';
   styleUrls: ['./recipe-list.component.css']
 })
 export class RecipeListComponent implements OnInit {
-  recipes: Recipe[] = [new Recipe('Test recipe', 'This is for test', 'https://www.inspiredtaste.net/wp-content/uploads/2018/12/Sauteed-Zucchini-Recipe-1-1200.jpg')];
+  recipes: Recipe[] = [new Recipe('Test recipe', 'This is for test', 'https://www.inspiredtaste.net/wp-content/uploads/2018/12/Sauteed-Zucchini-Recipe-1-1200.jpg'), new Recipe('Test recipe', 'This is for test', 'https://www.inspiredtaste.net/wp-content/uploads/2018/12/Sauteed-Zucchini-Recipe-1-1200.jpg')];
 
   constructor() { }
 
