@@ -1,12 +1,27 @@
 <div class="row">
-    <div class="col">
-        <form>
-            <div class="row">
-                <div class="col form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" class="form-control">
-                </div>
+  <div class="col">
+    <form>
+      <div class="row">
+        <div class="input-group mt-3">
+          <div class="col-sm-9 form-group">
+            <input type="text" id="name" placeholder="Name" class="form-control">
+          </div>
+          <div class="col form-group">
+            <input type="number" id="amount" placeholder="Amount" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-primary" type="submit">Add</button>
+              <button class="btn btn-outline-danger" type="button">Delete</button>
+              <button class="btn btn-outline-secondary" type="button">Clear</button>
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
