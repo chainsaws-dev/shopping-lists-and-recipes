@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  classforcontainer = 'container';
 
+  onClickToggleDisplay() {
+    if (this.classforcontainer === 'container'){
+      this.classforcontainer = 'container-fluid';
+    } else {
+      this.classforcontainer = 'container';
+    }
+  }
 }
