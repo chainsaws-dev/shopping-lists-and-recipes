@@ -4,10 +4,10 @@
       <div class="row">
         <div class="input-group mt-3">
           <div class="col-sm-9 form-group">
-            <input type="text" id="name" placeholder="Name" class="form-control">
+            <input type="text" id="name" placeholder="Name" class="form-control" #NameInput>
           </div>
           <div class="col form-group">
-            <input type="number" id="amount" placeholder="Amount" class="form-control">
+            <input type="number" id="amount" placeholder="Amount" class="form-control" #AmountInput>
           </div>
         </div>
       </div>
@@ -15,9 +15,9 @@
         <div class="col">
           <div class="input-group">
             <div class="input-group-prepend">
-              <button class="btn btn-outline-primary" type="submit">Add</button>
-              <button class="btn btn-outline-danger" type="button">Delete</button>
-              <button class="btn btn-outline-secondary" type="button">Clear</button>
+              <button class="btn btn-outline-primary" type="submit" (click)="AddNewItem(NameInput, AmountInput)">Add</button>
+              <button class="btn btn-outline-danger" type="button" (click)="DeleteSelectedItem()" *ngIf="SelectedItem">Delete</button>
+              <button class="btn btn-outline-secondary" type="button" (click)="ClearAllItems()" *ngIf="ItemsCount!==0">Clear</button>
             </div>
           </div>
         </div>
