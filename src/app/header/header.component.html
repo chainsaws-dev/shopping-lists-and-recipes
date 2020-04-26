@@ -4,14 +4,14 @@
       <a href="#" class="navbar-brand">Recipe book</a>
     </div>
     <div class="navbar-expand">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a href="#" class="nav-link" (click)="onSelect('recipe')">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a href="#" [class]="RecipesClass" (click)="onSelect('recipe')">
             Recipes
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link" (click)="onSelect('shopping-list')">
+          <a href="#" [class]="ShoppingClass" (click)="onSelect('shopping-list')">
             Shopping list
           </a>
         </li>
