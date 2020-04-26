@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   classforcontainer = 'container';
+  LoadedFeature = 'recipe';
 
   onClickToggleDisplay() {
     if (this.classforcontainer === 'container'){
@@ -14,5 +15,9 @@ export class AppComponent {
     } else {
       this.classforcontainer = 'container';
     }
+  }
+
+  onNavigate(feature: string) {
+    this.LoadedFeature = feature;
   }
 }
