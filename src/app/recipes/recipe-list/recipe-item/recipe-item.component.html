@@ -1,1 +1,9 @@
-<p>recipe-item works!</p>
+<div class="list-group-item clearfix">
+  <a href="#">
+    <h4 class="list-group-item-heading">
+      {{recipe.name}}
+    </h4>
+  </a>
+  <p class="list-group-item-text">{{recipe.description}}</p>
+  <img [src]="recipe.imagePath" [alt]="recipe.name" class="rounded mx-auto d-block" style="max-height: 130px">
+</div>
