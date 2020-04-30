@@ -8,12 +8,13 @@
         <h1>
             {{CurrentRecipe.name}}
         </h1>
-    </div>   
+    </div>
 </div>
 <div class="row">
     <div class="col">
-        <div class="btn-group">
-            <button class="btn btn-outline-primary dropdown-toggle">Manage recipe</button>
+        <div class="btn-group"
+        appDropdown>
+            <button class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">Manage recipe</button>
             <ul class="dropdown-menu">
                 <li><a href="#">To shopping list</a></li>
                 <li><a href="#">Edit recipe</a></li>
@@ -21,14 +22,14 @@
             </ul>
         </div>
     </div>
-</div> 
+</div>
 <div class="row">
     <div class="col-12">
         {{CurrentRecipe.description}}
-    </div>   
+    </div>
 </div>
 <div class="row">
     <div class="col-12">
         Ingridients
-    </div>   
+    </div>
 </div>
