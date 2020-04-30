@@ -15,13 +15,13 @@
             Shopping list
           </a>
         </li>
-        <li class="nav-item dropdown" appDropdown>
-          <a class="nav-link dropdown-toggle" href="#">
+        <li ngbDropdown class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="ManagementMenu" href="#" ngbDropdownToggle>
             Management
           </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Save</a>
-            <a class="dropdown-item" href="#">Fetch</a>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="ManagementMenu">
+            <a ngbDropdownItem class="dropdown-item" href="#">Save</a>
+            <a ngbDropdownItem class="dropdown-item" href="#">Fetch</a>
           </div>
         </li>
       </ul>

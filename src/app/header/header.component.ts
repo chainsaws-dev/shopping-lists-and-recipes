@@ -1,9 +1,11 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+
 export class HeaderComponent implements OnInit {
   collapsed = true;
   @Output() FeatureSelected = new EventEmitter<string>();
@@ -14,7 +16,10 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  /**
+   * Переключает между двумя окнами приложения
+   * @param feature название окна приложения
+   */
   onSelect(feature: string) {
     this.FeatureSelected.emit(feature);
     if (feature === 'recipe') {

@@ -12,13 +12,12 @@
 </div>
 <div class="row">
     <div class="col">
-        <div class="btn-group"
-        appDropdown>
-            <button class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">Manage recipe</button>
-            <ul class="dropdown-menu">
-                <li><a href="#">To shopping list</a></li>
-                <li><a href="#">Edit recipe</a></li>
-                <li><a href="#">Delete recipe</a></li>
+        <div ngbDropdown class="btn-group">
+            <button class="btn btn-outline-primary dropdown-toggle" ngbDropdownToggle>Manage recipe</button>
+            <ul ngbDropdownMenu class="dropdown-menu">
+                <li ngbDropdownItem class="dropdown-item"><a href="#">To shopping list</a></li>
+                <li ngbDropdownItem class="dropdown-item"><a href="#">Edit recipe</a></li>
+                <li ngbDropdownItem class="dropdown-item"><a href="#">Delete recipe</a></li>
             </ul>
         </div>
     </div>
