@@ -6,8 +6,10 @@ import { Ingredient } from '../shared/ingredients.model';
 })
 export class ShoppingListService {
   IngredientSelected = new EventEmitter<Ingredient>();
+  IngredientChanged = new EventEmitter<Ingredient[]>();
+
   CurrentSelectedItem: Ingredient;
-  ingredients: Ingredient[] = [
+  private ingredients: Ingredient[] = [
     new Ingredient('Apples', 5),
     new Ingredient('Tomatoes', 10)
   ];
@@ -18,8 +20,13 @@ export class ShoppingListService {
     return this.ingredients.slice();
   }
 
+  GetIngredientsLength() {
+    return this.ingredients.length;
+  }
+
   AddNewItem(NewIngredient: Ingredient) {
     this.ingredients.push(NewIngredient);
+    this.IngredientChanged.emit(this.ingredients.slice());
   }
 
   DeleteSelectedItem() {
@@ -30,11 +37,13 @@ export class ShoppingListService {
     }
 
     this.CurrentSelectedItem = null;
+    this.IngredientChanged.emit(this.ingredients.slice());
   }
 
   ClearAll() {
     this.ingredients = [];
     this.CurrentSelectedItem = null;
+    this.IngredientChanged.emit(this.ingredients.slice());
   }
 
   SelectItemShopList(ingredient: Ingredient) {

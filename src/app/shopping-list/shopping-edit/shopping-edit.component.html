@@ -17,7 +17,7 @@
             <div class="input-group-prepend">
               <button class="btn btn-outline-primary" type="submit" (click)="AddNewItem(NameInput, AmountInput)">Add</button>
               <button class="btn btn-outline-danger" type="button" (click)="DeleteSelectedItem()" *ngIf="ShopListServ.CurrentSelectedItem">Delete</button>
-              <button class="btn btn-outline-secondary" type="button" (click)="ClearAllItems()" *ngIf="ShopListServ.ingredients.length!==0">Clear</button>
+              <button class="btn btn-outline-secondary" type="button" (click)="ClearAllItems()" *ngIf="ShopListServ.GetIngredientsLength()!==0">Clear</button>
             </div>
           </div>
         </div>
