@@ -9,11 +9,8 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class ShoppingListComponent implements OnInit {
 
-  ingredients: Ingredient[];
-
-  constructor(private ShopListServ: ShoppingListService) { }
+  constructor(public ShopListServ: ShoppingListService) { }
 
   ngOnInit(): void {
-    this.ingredients = this.ShopListServ.GetIngredients();
   }
 }

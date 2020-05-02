@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Ingredient } from '../shared/ingredients.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingListService {
-  ItemsCount: number;
+  IngredientSelected = new EventEmitter<Ingredient>();
   CurrentSelectedItem: Ingredient;
   ingredients: Ingredient[] = [
     new Ingredient('Apples', 5),
@@ -34,10 +34,12 @@ export class ShoppingListService {
 
   ClearAll() {
     this.ingredients = [];
+    this.CurrentSelectedItem = null;
   }
 
   SelectItemShopList(ingredient: Ingredient) {
     this.CurrentSelectedItem = ingredient;
+    this.IngredientSelected.emit(ingredient);
   }
 
 }
