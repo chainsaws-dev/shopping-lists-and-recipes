@@ -28,9 +28,9 @@ export class ShoppingListService {
     const FoundIngredient = this.ingredients.find((x) => x.name === NewIngredient.name);
 
     if (FoundIngredient) {
-      FoundIngredient.amount += NewIngredient.amount;
+      FoundIngredient.amount = FoundIngredient.amount + NewIngredient.amount;
     } else {
-      this.ingredients.push(NewIngredient);
+      this.ingredients.push(new Ingredient(NewIngredient.name, NewIngredient.amount));
     }
 
     this.IngredientChanged.emit(this.ingredients.slice());
