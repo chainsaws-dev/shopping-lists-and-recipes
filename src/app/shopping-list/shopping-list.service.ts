@@ -10,8 +10,8 @@ export class ShoppingListService {
 
   CurrentSelectedItem: Ingredient;
   private ingredients: Ingredient[] = [
-    new Ingredient('Apples', 5),
-    new Ingredient('Tomatoes', 10)
+    new Ingredient('Apple', 5),
+    new Ingredient('Tomatoe', 10)
   ];
 
   constructor() { }
@@ -25,7 +25,14 @@ export class ShoppingListService {
   }
 
   AddNewItem(NewIngredient: Ingredient) {
-    this.ingredients.push(NewIngredient);
+    const FoundIngredient = this.ingredients.find((x) => x.name === NewIngredient.name);
+
+    if (FoundIngredient) {
+      FoundIngredient.amount += NewIngredient.amount;
+    } else {
+      this.ingredients.push(NewIngredient);
+    }
+
     this.IngredientChanged.emit(this.ingredients.slice());
   }
 
