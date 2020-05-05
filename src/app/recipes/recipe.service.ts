@@ -7,7 +7,6 @@ import { ShoppingListService } from '../shopping-list/shopping-list.service';
   providedIn: 'root'
 })
 export class RecipeService {
-
   private recipes: Recipe[] = [
     new Recipe('Test recipe #1',
       'This is for test #1',
@@ -38,7 +37,6 @@ export class RecipeService {
     } else {
       return this.recipes[0];
     }
-
   }
 
   GetRecipeId(recipe: Recipe): number {
@@ -49,6 +47,6 @@ export class RecipeService {
     RecipeIngredients.forEach(element => {
       this.ShopList.AddNewItem(element);
     });
-
   }
+
 }
