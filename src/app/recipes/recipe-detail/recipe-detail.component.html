@@ -16,7 +16,7 @@
       <button class="btn btn-outline-primary dropdown-toggle" ngbDropdownToggle>Manage recipe</button>
       <ul ngbDropdownMenu class="dropdown-menu">
         <li ngbDropdownItem class="dropdown-item" (click)="OnSendToShoppingList()"><a style="cursor: pointer;">To shopping list</a></li>
-        <li ngbDropdownItem class="dropdown-item"><a style="cursor: pointer;">Edit recipe</a></li>
+        <li ngbDropdownItem class="dropdown-item" routerLink="edit"><a style="cursor: pointer;">Edit recipe</a></li>
         <li ngbDropdownItem class="dropdown-item"><a style="cursor: pointer;">Delete recipe</a></li>
       </ul>
     </div>
