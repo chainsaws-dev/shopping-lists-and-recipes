@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Recipe } from '../../recipe-model';
 import { RecipeService } from '../../recipe.service';
+import { Routes } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-item',
@@ -8,7 +9,7 @@ import { RecipeService } from '../../recipe.service';
   styleUrls: ['./recipe-item.component.css']
 })
 export class RecipeItemComponent implements OnInit {
-@Input() recipe: Recipe;
+  @Input() recipe: Recipe;
 
   constructor(private RecServ: RecipeService) { }
 
