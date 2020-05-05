@@ -1,5 +1,6 @@
 <form style="margin-top: 40px;">
   <div class="form-group">
+    <button class="btn btn-outline-primary" (click)="OnSaveClick(RecipeName.value, RecipeDescription.value)">Save</button>
     <h1 *ngIf="editmode">Edit</h1>
     <h1 *ngIf="!editmode">Create</h1>
     <input type="text" id="name" placeholder="Name" class="form-control" style="margin: 3px;" [(value)]="RecipeToEdit.name" #RecipeName>
@@ -14,7 +15,7 @@
       <div class="col">
         <form>
           <div class="row">
-            <div class="input-group mt-3">
+            <div class="input-group mt-1">
               <div class="col-sm-9 form-group">
                 <input type="text" id="name" placeholder="Name" class="form-control" style="margin-left: 3px;" #NameInput>
               </div>
@@ -25,13 +26,13 @@
           </div>
           <div class="row">
             <div class="col">
-              <div class="input-group">
+              <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <button class="btn btn-outline-primary" style="margin-left: 3px;" type="submit"
-                    (click)="AddNewItem(NameInput, AmountInput)">Add</button>
-                  <button class="btn btn-outline-danger" type="button" (click)="DeleteSelectedItem()"
+                    (click)="onAddNewIngredient(NameInput, AmountInput)">Add</button>
+                  <button class="btn btn-outline-danger" type="button" (click)="onDeleteSelectedIngredient()"
                     *ngIf="CurrentSelectedItem">Delete</button>
-                  <button class="btn btn-outline-secondary" type="button" (click)="ClearAllItems()"
+                  <button class="btn btn-outline-secondary" type="button" (click)="onClearAllIngredients()"
                     *ngIf="GetIngredientsLength()!==0">Clear</button>
                 </div>
               </div>
@@ -49,3 +50,4 @@
     </ul>
   </div>
 </form>
+

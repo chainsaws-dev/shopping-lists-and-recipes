@@ -25,48 +25,52 @@ export class RecipeEditComponent implements OnInit {
         if (this.editmode) {
           this.index = +params.id;
           this.RecipeToEdit = this.recipeservice.GetRecipeById(this.index);
+        } else {
+          const NewIngList: Ingredient[] = [];
+          this.RecipeToEdit = new Recipe('', '', '', NewIngList);
         }
+        this.recipeservice.RecipeToEdit = this.RecipeToEdit;
       }
     );
   }
 
-  onFileInput($event) {
-    // Реализовать загрузку файла на сервер http запросом
-  }
-
-  AddNewItem(NameInput: HTMLInputElement, AmountInput: HTMLInputElement): void {
-
+  onAddNewIngredient(NameInput: HTMLInputElement, AmountInput: HTMLInputElement) {
     const NewIngredient = new Ingredient(NameInput.value, parseInt(AmountInput.value, 10));
 
-    const FoundIngredient = this.RecipeToEdit.ingredients.find((x) => x.name === NewIngredient.name);
+    this.recipeservice.AddNewIngredient(NewIngredient);
+  }
 
-    if (FoundIngredient) {
-      FoundIngredient.amount = FoundIngredient.amount + NewIngredient.amount;
+  onDeleteSelectedIngredient() {
+    this.recipeservice.DeleteSelectedIngredient();
+  }
+
+  GetIngredientsLength() {
+    return this.recipeservice.GetIngredientsLength();
+  }
+
+  OnIngredientSelect(ingredient: Ingredient) {
+    this.recipeservice.IngredientSelect(ingredient);
+    this.CurrentSelectedItem = ingredient;
+  }
+
+  onClearAllIngredients() {
+    this.recipeservice.ClearAllIngredients();
+  }
+
+  onFileInput(Event) {
+    this.recipeservice.FileInput(Event);
+  }
+
+  OnSaveClick(RecipeName: string, RecipeDescription: string) {
+
+    this.RecipeToEdit.name = RecipeName;
+    this.RecipeToEdit.description = RecipeDescription;
+
+    if (this.editmode) {
+      this.recipeservice.UpdateExistingRecipe(this.RecipeToEdit, this.index);
     } else {
-      this.RecipeToEdit.ingredients.push(new Ingredient(NewIngredient.name, NewIngredient.amount));
+      this.recipeservice.AddNewRecipe(this.RecipeToEdit);
     }
-  }
-
-  DeleteSelectedItem() {
-    const index: number = this.RecipeToEdit.ingredients.indexOf(this.CurrentSelectedItem);
-    if (index !== -1) {
-      this.RecipeToEdit.ingredients.splice(index, 1);
-    }
-
-    this.CurrentSelectedItem = null;
-  }
-
-  ClearAllItems() {
-    this.RecipeToEdit.ingredients = [];
-    this.CurrentSelectedItem = null;
-  }
-
-  GetIngredientsLength(): number {
-    return this.RecipeToEdit.ingredients.length;
-  }
-
-  OnIngredientSelect(SelectedIngredient: Ingredient) {
-    this.CurrentSelectedItem = SelectedIngredient;
   }
 
 }

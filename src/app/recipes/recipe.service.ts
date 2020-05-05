@@ -2,11 +2,17 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Recipe } from './recipe-model';
 import { Ingredient } from '../shared/ingredients.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
+import { RecipesComponent } from './recipes.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
+  RecipeToEdit: Recipe;
+  CurrentSelectedItem: Ingredient;
+
+  OnRecipeChanged: EventEmitter<Recipe>;
+
   private recipes: Recipe[] = [
     new Recipe('Test recipe #1',
       'This is for test #1',
@@ -23,7 +29,7 @@ export class RecipeService {
     new Recipe('Test recipe #4',
       'This is for test #4',
       'https://www.inspiredtaste.net/wp-content/uploads/2018/12/Sauteed-Zucchini-Recipe-1-1200.jpg',
-      [new Ingredient('Apple', 12), new Ingredient('Orange', 32), new Ingredient('Pineapple', 2)]),];
+      [new Ingredient('Apple', 12), new Ingredient('Orange', 32), new Ingredient('Pineapple', 2)])];
 
   constructor(private ShopList: ShoppingListService) { }
 
@@ -49,4 +55,48 @@ export class RecipeService {
     });
   }
 
+  AddNewRecipe(NewRecipe: Recipe) {
+    this.recipes.push(new Recipe(NewRecipe.name, NewRecipe.description, NewRecipe.imagePath, NewRecipe.ingredients));
+    console.log(NewRecipe);
+  }
+
+  UpdateExistingRecipe(RecipeToUpdate: Recipe, Index: number) {
+    this.recipes[Index] = RecipeToUpdate;
+  }
+
+  AddNewIngredient(NewIngredient: Ingredient) {
+    const FoundIngredient = this.RecipeToEdit.ingredients.find((x) => x.name === NewIngredient.name);
+
+    if (FoundIngredient) {
+      FoundIngredient.amount = FoundIngredient.amount + NewIngredient.amount;
+    } else {
+      this.RecipeToEdit.ingredients.push(new Ingredient(NewIngredient.name, NewIngredient.amount));
+    }
+  }
+
+  DeleteSelectedIngredient() {
+    const index: number = this.RecipeToEdit.ingredients.indexOf(this.CurrentSelectedItem);
+    if (index !== -1) {
+      this.RecipeToEdit.ingredients.splice(index, 1);
+    }
+
+    this.CurrentSelectedItem = null;
+  }
+
+  ClearAllIngredients() {
+    this.RecipeToEdit.ingredients = [];
+    this.CurrentSelectedItem = null;
+  }
+
+  GetIngredientsLength(): number {
+    return this.RecipeToEdit.ingredients.length;
+  }
+
+  IngredientSelect(SelectedIngredient: Ingredient) {
+    this.CurrentSelectedItem = SelectedIngredient;
+  }
+
+  FileInput($event) {
+    // Реализовать загрузку файла на сервер http запросом
+  }
 }
