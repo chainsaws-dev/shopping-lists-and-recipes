@@ -10,14 +10,11 @@ import { Router } from '@angular/router';
 })
 export class RecipeItemComponent implements OnInit {
   @Input() recipe: Recipe;
+  @Input() index: number;
 
   constructor(private RecServ: RecipeService, private router: Router) { }
 
   ngOnInit(): void {
-  }
-
-  OnSelectedItem() {
-    this.router.navigate(['recipes', this.RecServ.GetRecipeId(this.recipe)]);
   }
 
 }

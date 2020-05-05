@@ -1,6 +1,7 @@
-<div class="list-group-item list-group-item-action">
-  <a style="cursor: pointer"
-    (click)="OnSelectedItem()">
+<div class="list-group-item list-group-item-action"
+[routerLink] = "[index]"
+  routerLinkActive = "active">
+  <a style="cursor: pointer">
     <h4 class="list-group-item-heading">
       {{recipe.name}}
     </h4>
