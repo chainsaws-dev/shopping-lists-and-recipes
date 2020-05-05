@@ -14,6 +14,7 @@ import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-ed
 const routes: Routes = [
   { path: 'recipes', component: RecipesComponent },
   { path: 'shopping-list', component: ShoppingListComponent },
+  { path: '', redirectTo: '/recipes', pathMatch: 'full' }
 ];
 
 @NgModule({

@@ -2,7 +2,7 @@
     <div class="col-ml-3">
         <app-recipe-list></app-recipe-list>
     </div>
-    <div class="col-ml-1">
+    <div class="col-ml-3" style="padding: 3px;">
         <app-recipe-detail *ngIf="SelectedRecipe;else InfoText" [CurrentRecipe]="SelectedRecipe"></app-recipe-detail>
         <ng-template #InfoText>
             <p style="margin-top: 40px; margin-left: 4px;">Please select recipe!</p>
