@@ -7,7 +7,6 @@ import { ShoppingListService } from '../shopping-list/shopping-list.service';
   providedIn: 'root'
 })
 export class RecipeService {
-  RecipeSelected = new EventEmitter<Recipe>();
 
   private recipes: Recipe[] = [
     new Recipe('Test recipe #1',
@@ -31,6 +30,19 @@ export class RecipeService {
 
   GetRecipes() {
     return this.recipes.slice();
+  }
+
+  GetRecipeById(id: number) {
+    if (id < this.recipes.length && id > 0) {
+      return this.recipes[id];
+    } else {
+      return this.recipes[0];
+    }
+
+  }
+
+  GetRecipeId(recipe: Recipe): number {
+    return this.recipes.indexOf(recipe);
   }
 
   SendToShoppingList(RecipeIngredients: Ingredient[]) {
