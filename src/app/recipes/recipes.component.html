@@ -2,10 +2,10 @@
     <div class="col-ml-3">
         <app-recipe-list></app-recipe-list>
     </div>
-    <div class="col">
+    <div class="col-ml-1">
         <app-recipe-detail *ngIf="SelectedRecipe;else InfoText" [CurrentRecipe]="SelectedRecipe"></app-recipe-detail>
         <ng-template #InfoText>
-            <p style="margin-top: 40px;">Please select recipe!</p>
+            <p style="margin-top: 40px; margin-left: 4px;">Please select recipe!</p>
         </ng-template>
     </div>
 </div>

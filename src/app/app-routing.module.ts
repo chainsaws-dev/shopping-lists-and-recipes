@@ -1,6 +1,6 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -10,27 +10,14 @@ import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.com
 import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import { AppRoutingModule } from './app-routing.module';
+
+const routes: Routes = [
+  { path: 'recipes', component: RecipesComponent },
+  { path: 'shopping-list', component: ShoppingListComponent },
+];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    RecipesComponent,
-    RecipeListComponent,
-    RecipeDetailComponent,
-    RecipeItemComponent,
-    ShoppingListComponent,
-    ShoppingEditComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    NgbDropdownModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppModule { }
+export class AppRoutingModule { }

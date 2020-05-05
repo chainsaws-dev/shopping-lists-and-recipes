@@ -1,9 +1,8 @@
-<app-header (FeatureSelected)="onNavigate($event)"></app-header>
+<app-header></app-header>
 <div [class]="classforcontainer">
     <div class="row">
         <div class="col">
-            <app-recipes *ngIf="LoadedFeature === 'recipe'"></app-recipes>
-            <app-shopping-list *ngIf="LoadedFeature !== 'recipe'"></app-shopping-list>
+          <router-outlet></router-outlet>
         </div>
     </div>
 </div>

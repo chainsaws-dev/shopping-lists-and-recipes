@@ -1,32 +1,30 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a href="#" class="navbar-brand">Recipe book</a>
+      <a routerLink="/recipes" class="navbar-brand">Recipe book</a>
     </div>
     <div class="navbar-expand">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a href="#" [class]="RecipesClass" (click)="onSelect('recipe')">
+          <a routerLink="/recipes" routerLinkActive="active" class="nav-link">
             Recipes
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" [class]="ShoppingClass" (click)="onSelect('shopping-list')">
+          <a routerLink="/shopping-list" routerLinkActive="active" class="nav-link">
             Shopping list
           </a>
         </li>
         <li ngbDropdown class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="ManagementMenu" href="#" ngbDropdownToggle>
+          <a class="nav-link dropdown-toggle" id="ManagementMenu" ngbDropdownToggle>
             Management
           </a>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="ManagementMenu">
-            <a ngbDropdownItem class="dropdown-item" href="#">Save</a>
-            <a ngbDropdownItem class="dropdown-item" href="#">Fetch</a>
+            <a ngbDropdownItem class="dropdown-item">Save</a>
+            <a ngbDropdownItem class="dropdown-item">Fetch</a>
           </div>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-
-
