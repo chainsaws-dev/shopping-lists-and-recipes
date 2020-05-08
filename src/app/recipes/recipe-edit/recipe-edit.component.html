@@ -1,6 +1,5 @@
 <form style="margin-top: 40px;">
   <div class="form-group">
-    <button class="btn btn-outline-primary" (click)="OnSaveClick(RecipeName.value, RecipeDescription.value)">Save</button>
     <h1 *ngIf="editmode">Edit</h1>
     <h1 *ngIf="!editmode">Create</h1>
     <input type="text" id="name" placeholder="Name" class="form-control" style="margin: 3px;" [(value)]="RecipeToEdit.name" #RecipeName>
@@ -10,6 +9,7 @@
       <span>Upload image</span>
       <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;" />
     </button>
+    <button class="btn btn-outline-primary" style="margin: 3px;" (click)="OnSaveClick(RecipeName.value, RecipeDescription.value)">Save</button>
     <h4 style="margin: 3px;">List of ingredients</h4>
     <div class="row">
       <div class="col">
