@@ -118,7 +118,6 @@ export class RecipeEditComponent implements OnInit {
       if (curevent.type === HttpEventType.UploadProgress) {
         this.CurPercentStyle = 'width: ' + String(curevent.loaded / curevent.total * 100) + '%';
       } else if (curevent.type === HttpEventType.Response) {
-        console.log('Recieved response!');
         if (curevent.ok) {
 
           /* this.RecipeToEdit.imagePath = '/uploads/' + ; */
