@@ -45,10 +45,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       const fvalue = form.value;
       this.ShopListServ.UpdateSelectedItem(new Ingredient(fvalue.name, parseInt(fvalue.amount, 10)));
       this.editmode = false;
-      this.slEditForm.setValue({
-        name: '',
-        amount: null
-      });
+      this.slEditForm.reset();
     }
   }
 
