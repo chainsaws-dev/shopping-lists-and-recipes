@@ -20,7 +20,7 @@ export class RecipeEditComponent implements OnInit {
   editmode = false;
   CurrentSelectedItem: Ingredient;
   ingredientedit = false;
-  CurPercentStyle = 'width: 10%';
+  CurPercentStyle = 'width: 0%';
 
 
   constructor(private activatedroute: ActivatedRoute,
@@ -119,9 +119,7 @@ export class RecipeEditComponent implements OnInit {
         this.CurPercentStyle = 'width: ' + String(curevent.loaded / curevent.total * 100) + '%';
       } else if (curevent.type === HttpEventType.Response) {
         if (curevent.ok) {
-
           /* this.RecipeToEdit.imagePath = '/uploads/' + ; */
-
           console.log(curevent);
           /* Add commit to database */
         }
