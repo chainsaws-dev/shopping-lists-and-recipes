@@ -11,6 +11,7 @@ export class RecipeService {
   RecipeToEdit: Recipe;
   CurrentSelectedItem: Ingredient;
   IngredientSelected = new Subject<Ingredient>();
+  RecipeChanged = new Subject<Recipe>();
 
   private recipes: Recipe[] = [
     new Recipe('Test recipe #1',
@@ -55,12 +56,14 @@ export class RecipeService {
   }
 
   AddNewRecipe(NewRecipe: Recipe) {
-    this.recipes.push(new Recipe(NewRecipe.name, NewRecipe.description, NewRecipe.imagePath, NewRecipe.ingredients));
-    console.log(NewRecipe);
+    const NewRecipeToAdd = new Recipe(NewRecipe.name, NewRecipe.description, NewRecipe.imagePath, NewRecipe.ingredients)
+    this.recipes.push(NewRecipeToAdd);
+    this.RecipeChanged.next(NewRecipeToAdd);
   }
 
   UpdateExistingRecipe(RecipeToUpdate: Recipe, Index: number) {
     this.recipes[Index] = RecipeToUpdate;
+    this.RecipeChanged.next(RecipeToUpdate);
   }
 
   AddNewIngredient(NewIngredient: Ingredient) {
@@ -107,7 +110,4 @@ export class RecipeService {
     this.IngredientSelected.next(SelectedIngredient);
   }
 
-  FileInput($event) {
-    // Реализовать загрузку файла на сервер http запросом
-  }
 }

@@ -4,6 +4,7 @@ import { Recipe } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
 import { Ingredient } from 'src/app/shared/ingredients.model';
 import { NgForm } from '@angular/forms';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -12,6 +13,8 @@ import { NgForm } from '@angular/forms';
 })
 export class RecipeEditComponent implements OnInit {
   @ViewChild('ingrform', { static: false }) IngredientsForm: NgForm;
+  @ViewChild('RecipeForm', { static: false }) RecipeForm: NgForm;
+
   RecipeToEdit: Recipe;
   index: number;
   editmode = false;
@@ -19,7 +22,9 @@ export class RecipeEditComponent implements OnInit {
   ingredientedit = false;
 
 
-  constructor(private activatedroute: ActivatedRoute, private recipeservice: RecipeService) { }
+  constructor(private activatedroute: ActivatedRoute,
+    private recipeservice: RecipeService,
+    private httpClient: HttpClient) { }
 
   ngOnInit(): void {
     this.activatedroute.params.subscribe(
@@ -35,6 +40,13 @@ export class RecipeEditComponent implements OnInit {
         this.recipeservice.RecipeToEdit = this.RecipeToEdit;
       }
     );
+
+    this.recipeservice.RecipeChanged.subscribe((SelRecipe: Recipe) => {
+      this.RecipeForm.setValue({
+        recipename: SelRecipe.name,
+        recipedescription: SelRecipe.description
+      });
+    });
 
     this.recipeservice.IngredientSelected.subscribe((SelIng: Ingredient) => {
       this.CurrentSelectedItem = SelIng;
@@ -94,19 +106,36 @@ export class RecipeEditComponent implements OnInit {
     this.recipeservice.ClearAllIngredients();
   }
 
-  onFileInput(Event) {
-    this.recipeservice.FileInput(Event);
+  onFileInput(event) {
+    const FileToUpload = event.target.files[0] as File;
+    const formdatafile = new FormData();
+    formdatafile.append('image', FileToUpload, FileToUpload.name);
+    this.httpClient.post('/api/SaveRecipePhoto', formdatafile, {
+      reportProgress: true,
+      observe: 'events'
+    }).subscribe(curevent => {
+      if (curevent.type === HttpEventType.UploadProgress) {
+        console.log('Loaded: ' + String(curevent.loaded / curevent.total * 100) + '%');
+      } else if (curevent.type === HttpEventType.Sent) {
+        console.log('File sent!');
+      } else if (curevent.type === HttpEventType.ResponseHeader) {
+        console.log('Recieved response!');
+        console.log(curevent);
+      }
+    }
+    );
   }
 
-  OnSaveClick(RecipeName: string, RecipeDescription: string) {
+  OnSaveClick(SubmittedForm: NgForm) {
+    if (SubmittedForm.valid) {
+      this.RecipeToEdit.name = SubmittedForm.value.recipename;
+      this.RecipeToEdit.description = SubmittedForm.value.recipedescription;
 
-    this.RecipeToEdit.name = RecipeName;
-    this.RecipeToEdit.description = RecipeDescription;
-
-    if (this.editmode) {
-      this.recipeservice.UpdateExistingRecipe(this.RecipeToEdit, this.index);
-    } else {
-      this.recipeservice.AddNewRecipe(this.RecipeToEdit);
+      if (this.editmode) {
+        this.recipeservice.UpdateExistingRecipe(this.RecipeToEdit, this.index);
+      } else {
+        this.recipeservice.AddNewRecipe(this.RecipeToEdit);
+      }
     }
   }
 

@@ -1,15 +1,16 @@
-<form style="margin-top: 40px;">
+<form style="margin-top: 40px;" #RecipeForm="ngForm" (ngSubmit)="OnSaveClick(RecipeForm)">
   <div class="form-group">
     <h1 *ngIf="editmode">Edit</h1>
     <h1 *ngIf="!editmode">Create</h1>
-    <input type="text" id="name" placeholder="Name" class="form-control" style="margin: 3px;" [(value)]="RecipeToEdit.name" #RecipeName>
+    <input type="text" id="name" placeholder="Name" class="form-control" style="margin: 3px;" name="recipename" [ngModel]="RecipeToEdit.name" required>
     <textarea class="form-control" placeholder="Description" style="margin: 3px;" rows="5"
-    [(value)]="RecipeToEdit.description" #RecipeDescription></textarea>
+    name="recipedescription" [ngModel]="RecipeToEdit.description"></textarea>
     <button type="button" class="btn btn-outline-primary" style="margin: 3px;" (click)="fileInput.click()">
       <span>Upload image</span>
-      <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;" />
+      <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;" ngModel name="recipeimage" />
     </button>
-    <button class="btn btn-outline-primary" style="margin: 3px;" (click)="OnSaveClick(RecipeName.value, RecipeDescription.value)">Save</button>
+    <button class="btn btn-outline-primary" style="margin: 3px;" type="submit">Save</button>
+    <button class="btn btn-outline-danger" style="margin: 3px;" type="button" routerLink="..">Cancel</button>
     <h4 style="margin: 3px;">List of ingredients</h4>
     <div class="row">
       <div class="col">
