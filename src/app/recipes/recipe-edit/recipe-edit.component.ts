@@ -14,6 +14,7 @@ export class RecipeEditComponent implements OnInit {
   index: number;
   editmode = false;
   CurrentSelectedItem: Ingredient;
+  ingredientedit = false;
 
 
   constructor(private activatedroute: ActivatedRoute, private recipeservice: RecipeService) { }
@@ -40,6 +41,12 @@ export class RecipeEditComponent implements OnInit {
     this.recipeservice.AddNewIngredient(NewIngredient);
   }
 
+  onEditIngredient(NameInput: HTMLInputElement, AmountInput: HTMLInputElement) {
+    const NewIngredient = new Ingredient(NameInput.value, parseInt(AmountInput.value, 10));
+
+    this.recipeservice.UpdateSelectedIngredient(NewIngredient);
+  }
+
   onDeleteSelectedIngredient() {
     this.recipeservice.DeleteSelectedIngredient();
   }
@@ -51,6 +58,7 @@ export class RecipeEditComponent implements OnInit {
   OnIngredientSelect(ingredient: Ingredient) {
     this.recipeservice.IngredientSelect(ingredient);
     this.CurrentSelectedItem = ingredient;
+    this.ingredientedit = true;
   }
 
   onClearAllIngredients() {
