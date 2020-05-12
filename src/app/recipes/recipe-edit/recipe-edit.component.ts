@@ -122,7 +122,7 @@ export class RecipeEditComponent implements OnInit {
 
           /* this.RecipeToEdit.imagePath = '/uploads/' + ; */
 
-          console.log(curevent.body);
+          console.log(curevent);
           /* Add commit to database */
         }
       }
