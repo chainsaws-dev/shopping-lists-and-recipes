@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Ingredient } from '../../shared/ingredients.model';
 import { ShoppingListService } from '../shopping-list.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -14,8 +15,11 @@ export class ShoppingEditComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  AddNewItem(NameInput: HTMLInputElement, AmountInput: HTMLInputElement): void {
-    this.ShopListServ.AddNewItem(new Ingredient(NameInput.value, parseInt(AmountInput.value, 10)));
+  AddNewItem(form: NgForm): void {
+    if (form.valid) {
+      const fvalue = form.value;
+      this.ShopListServ.AddNewItem(new Ingredient(fvalue.name, parseInt(fvalue.amount, 10)));
+    }
   }
 
   DeleteSelectedItem() {
