@@ -40,6 +40,13 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  UpdateItem(form: NgForm): void {
+    if (form.valid) {
+      const fvalue = form.value;
+      this.ShopListServ.UpdateSelectedItem(new Ingredient(fvalue.name, parseInt(fvalue.amount, 10)));
+    }
+  }
+
   DeleteSelectedItem() {
     this.ShopListServ.DeleteSelectedItem();
   }

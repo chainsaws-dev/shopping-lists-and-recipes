@@ -37,6 +37,14 @@ export class ShoppingListService {
     this.IngredientChanged.next(this.ingredients.slice());
   }
 
+  UpdateSelectedItem(UpdatedIngredient: Ingredient) {
+    const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
+    if (index !== -1) {
+      this.ingredients[index] = UpdatedIngredient;
+      this.IngredientChanged.next(this.ingredients.slice());
+    }
+  }
+
   DeleteSelectedItem() {
 
     const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
