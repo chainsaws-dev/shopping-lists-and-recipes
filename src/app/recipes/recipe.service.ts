@@ -2,6 +2,7 @@ import { Injectable, } from '@angular/core';
 import { Recipe } from './recipe-model';
 import { Ingredient } from '../shared/ingredients.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import { ShoppingListService } from '../shopping-list/shopping-list.service';
 export class RecipeService {
   RecipeToEdit: Recipe;
   CurrentSelectedItem: Ingredient;
+  IngredientSelected = new Subject<Ingredient>();
 
   private recipes: Recipe[] = [
     new Recipe('Test recipe #1',
@@ -77,6 +79,9 @@ export class RecipeService {
       FoundIngredient.name = UpdatedIngredient.name;
       FoundIngredient.amount = UpdatedIngredient.amount;
     }
+
+    this.CurrentSelectedItem = null;
+    this.IngredientSelected.next(this.CurrentSelectedItem);
   }
 
   DeleteSelectedIngredient() {
@@ -99,6 +104,7 @@ export class RecipeService {
 
   IngredientSelect(SelectedIngredient: Ingredient) {
     this.CurrentSelectedItem = SelectedIngredient;
+    this.IngredientSelected.next(SelectedIngredient);
   }
 
   FileInput($event) {

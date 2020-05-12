@@ -13,14 +13,16 @@
     <h4 style="margin: 3px;">List of ingredients</h4>
     <div class="row">
       <div class="col">
-        <form>
+        <form (ngSubmit)="ingredientedit ? onEditIngredient(ingrform) : onAddNewIngredient(ingrform)" #ingrform="ngForm">
           <div class="row">
             <div class="input-group mt-1">
               <div class="col-sm-9 form-group">
-                <input type="text" id="name" placeholder="Name" class="form-control" style="margin-left: 3px;" #NameInput>
+                <input type="text" id="name" placeholder="Name" class="form-control" style="margin-left: 3px;"
+                ngModel name="ingredientname" required>
               </div>
               <div class="col form-group">
-                <input type="number" id="amount" placeholder="Amount" class="form-control" #AmountInput>
+                <input type="number" id="amount" placeholder="Amount" class="form-control"
+                ngModel name="ingredientamount" required pattern="^[1-9]+[0-9]*$">
               </div>
             </div>
           </div>
@@ -28,8 +30,7 @@
             <div class="col">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <button class="btn btn-outline-primary" style="margin-left: 3px;" type="submit"
-                    (click)="ingredientedit ? onEditIngredient(NameInput, AmountInput) : onAddNewIngredient(NameInput, AmountInput)"> {{ ingredientedit ? 'Update' : 'Add' }}</button>
+                  <button class="btn btn-outline-primary" style="margin-left: 3px;" type="submit" [disabled]="ingrform.invalid"> {{ ingredientedit ? 'Update' : 'Add' }}</button>
                   <button class="btn btn-outline-danger" type="button" (click)="onDeleteSelectedIngredient()"
                     *ngIf="CurrentSelectedItem">Delete</button>
                   <button class="btn btn-outline-secondary" type="button" (click)="onClearAllIngredients()"
