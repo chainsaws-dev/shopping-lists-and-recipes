@@ -43,6 +43,7 @@ export class ShoppingListService {
       this.ingredients[index] = UpdatedIngredient;
       this.IngredientChanged.next(this.ingredients.slice());
     }
+    this.CurrentSelectedItem = null;
   }
 
   DeleteSelectedItem() {
