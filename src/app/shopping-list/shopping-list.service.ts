@@ -67,4 +67,8 @@ export class ShoppingListService {
     this.IngredientSelected.next(ingredient);
   }
 
+  IsCurrentSelected(ingredient: Ingredient) {
+    return this.CurrentSelectedItem === ingredient;
+  }
+
 }
