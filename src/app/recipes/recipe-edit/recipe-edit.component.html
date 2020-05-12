@@ -9,8 +9,9 @@
       <span>Upload image</span>
       <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;" ngModel name="recipeimage" />
     </button>
-    <button class="btn btn-outline-primary" style="margin: 3px;" type="submit">Save</button>
-    <button class="btn btn-outline-danger" style="margin: 3px;" type="button" routerLink="..">Cancel</button>
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [ngStyle]="CurPercentStyle"></div>
+    </div>
     <h4 style="margin: 3px;">List of ingredients</h4>
     <div class="row">
       <div class="col">
@@ -52,5 +53,7 @@
       </a>
     </ul>
   </div>
+  <button class="btn btn-outline-primary" style="margin: 3px;" type="submit">Save</button>
+  <button class="btn btn-outline-danger" style="margin: 3px;" type="button" routerLink="..">Cancel</button>
 </form>
 

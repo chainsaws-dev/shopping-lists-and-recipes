@@ -20,6 +20,7 @@ export class RecipeEditComponent implements OnInit {
   editmode = false;
   CurrentSelectedItem: Ingredient;
   ingredientedit = false;
+  CurPercentStyle = 'width: 10%';
 
 
   constructor(private activatedroute: ActivatedRoute,
@@ -115,12 +116,16 @@ export class RecipeEditComponent implements OnInit {
       observe: 'events'
     }).subscribe(curevent => {
       if (curevent.type === HttpEventType.UploadProgress) {
-        console.log('Loaded: ' + String(curevent.loaded / curevent.total * 100) + '%');
-      } else if (curevent.type === HttpEventType.Sent) {
-        console.log('File sent!');
-      } else if (curevent.type === HttpEventType.ResponseHeader) {
+        this.CurPercentStyle = 'width: ' + String(curevent.loaded / curevent.total * 100) + '%';
+      } else if (curevent.type === HttpEventType.Response) {
         console.log('Recieved response!');
-        console.log(curevent);
+        if (curevent.ok) {
+
+          /* this.RecipeToEdit.imagePath = '/uploads/' + ; */
+
+          console.log(curevent.body);
+          /* Add commit to database */
+        }
       }
     }
     );
