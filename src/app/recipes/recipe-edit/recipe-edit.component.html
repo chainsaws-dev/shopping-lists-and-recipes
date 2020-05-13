@@ -2,6 +2,8 @@
   <div class="form-group">
     <h1 *ngIf="editmode">Edit</h1>
     <h1 *ngIf="!editmode">Create</h1>
+    <img [src]="RecipeToEdit.imagePath" [alt]="RecipeToEdit.name" class="rounded d-block mx-auto"
+      style="margin: 3px; max-width: 500px">
     <button type="button" class="btn btn-outline-primary" style="margin: 3px;" (click)="fileInput.click()">
       <span>Upload image</span>
       <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;" />
@@ -10,8 +12,6 @@
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [style]="CurPercentStyle">
       </div>
     </div>
-    <img [src]="RecipeToEdit.imagePath" [alt]="RecipeToEdit.name" class="rounded d-block"
-      style="margin: 3px; max-width: 820.13px">
     <input type="text" id="name" placeholder="Name" class="form-control" style="margin: 3px;" name="recipename"
       [ngModel]="RecipeToEdit.name" required>
     <textarea class="form-control" placeholder="Description" style="margin: 3px;" rows="5" name="recipedescription"
