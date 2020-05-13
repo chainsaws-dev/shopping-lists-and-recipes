@@ -59,6 +59,6 @@
       </a>
     </ul>
   </div>
-  <button class="btn btn-outline-primary" style="margin: 3px;" type="submit">Save</button>
+  <button class="btn btn-outline-primary" style="margin: 3px;" type="submit" [disabled]="RecipeForm.invalid">Save</button>
   <button class="btn btn-outline-danger" style="margin: 3px;" type="button" routerLink="..">Cancel</button>
 </form>

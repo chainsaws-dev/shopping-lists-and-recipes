@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Recipe } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
 import { Ingredient } from 'src/app/shared/ingredients.model';
@@ -28,7 +28,8 @@ export class RecipeEditComponent implements OnInit {
 
   constructor(private activatedroute: ActivatedRoute,
               private recipeservice: RecipeService,
-              private httpClient: HttpClient) { }
+              private httpClient: HttpClient,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.activatedroute.params.subscribe(
@@ -145,6 +146,8 @@ export class RecipeEditComponent implements OnInit {
       } else {
         this.recipeservice.AddNewRecipe(this.RecipeToEdit);
       }
+
+      this.router.navigate(['../'], {relativeTo: this.activatedroute});
     }
   }
 

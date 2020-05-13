@@ -66,6 +66,11 @@ export class RecipeService {
     this.RecipeChanged.next(RecipeToUpdate);
   }
 
+  DeleteRecipe(RecipeToDelete: Recipe, Index: number) {
+    this.recipes.splice(Index, 1);
+    this.RecipeChanged.next(RecipeToDelete);
+  }
+
   AddNewIngredient(NewIngredient: Ingredient) {
     const FoundIngredient = this.RecipeToEdit.ingredients.find((x) => x.name === NewIngredient.name);
 
