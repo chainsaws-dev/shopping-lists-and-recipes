@@ -22,6 +22,8 @@ export class RecipeEditComponent implements OnInit {
   CurrentSelectedItem: Ingredient;
   ingredientedit = false;
   CurPercentStyle = 'width: 0%';
+  dbid: number;
+  UploadError = '';
 
 
   constructor(private activatedroute: ActivatedRoute,
@@ -123,8 +125,12 @@ export class RecipeEditComponent implements OnInit {
         if (curevent.ok) {
           curevent.body.forEach(element => {
             this.RecipeToEdit.imagePath = '/uploads/' + element.id;
-            /*console.log(element.db_id);*/
-            /*console.log(element.error);*/
+            this.dbid = element.db_id;
+            this.UploadError = element.error;
+
+            console.log(element);
+            console.log(element.db_id);
+            console.log(element.error);
           });
 
         }

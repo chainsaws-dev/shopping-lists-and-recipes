@@ -7,7 +7,7 @@
     name="recipedescription" [ngModel]="RecipeToEdit.description"></textarea>
     <button type="button" class="btn btn-outline-primary" style="margin: 3px;" (click)="fileInput.click()">
       <span>Upload image</span>
-      <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;" ngModel name="recipeimage" />
+      <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;"/>
     </button>
     <div class="progress" style="margin-left: 3px;">
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [style]="CurPercentStyle"></div>
