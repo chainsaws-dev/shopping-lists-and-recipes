@@ -121,6 +121,11 @@ export class RecipeEditComponent implements OnInit {
         if (curevent.ok) {
           /* this.RecipeToEdit.imagePath = '/uploads/' + ; */
           console.log(curevent);
+
+          const RespBody = JSON.parse(curevent.body.toString());
+          RespBody.forEach(element => {
+            console.log(element.id);
+          });
           /* Add commit to database */
         }
       }
