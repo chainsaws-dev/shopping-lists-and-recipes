@@ -121,13 +121,12 @@ export class RecipeEditComponent implements OnInit {
         this.CurPercentStyle = 'width: ' + String(curevent.loaded / curevent.total * 100) + '%';
       } else if (curevent.type === HttpEventType.Response) {
         if (curevent.ok) {
-          /* this.RecipeToEdit.imagePath = '/uploads/' + ; */
           curevent.body.forEach(element => {
-            console.log(element.id);
-            console.log(element.error);
-            console.log(element.file_item);
+            this.RecipeToEdit.imagePath = '/uploads/' + element.id;
+            /*console.log(element.db_id);*/
+            /*console.log(element.error);*/
           });
-          /* Add commit to database */
+
         }
       }
     }
