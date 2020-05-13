@@ -3,7 +3,7 @@
     <h1 *ngIf="editmode">Edit</h1>
     <h1 *ngIf="!editmode">Create</h1>
     <img [src]="RecipeToEdit.imagePath" [alt]="RecipeToEdit.name" class="rounded d-block mx-auto"
-      style="margin: 3px; max-width: 500px">
+      style="margin: 3px; max-width: 500px; max-height: 333px;">
     <button type="button" class="btn btn-outline-primary" style="margin: 3px;" (click)="fileInput.click()">
       <span>Upload image</span>
       <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;" />
