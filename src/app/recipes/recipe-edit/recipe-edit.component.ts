@@ -109,6 +109,7 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onFileInput(event) {
+    this.CurPercentStyle = 'width: 0%';
     const FileToUpload = event.target.files[0] as File;
     const formdatafile = new FormData();
     formdatafile.append('image', FileToUpload, FileToUpload.name);
@@ -127,10 +128,6 @@ export class RecipeEditComponent implements OnInit {
             console.log(element.file_item);
           });
           /* Add commit to database */
-
-          setInterval(() => {
-            this.CurPercentStyle = 'width: 0%';
-          }, 1000);
         }
       }
     }
