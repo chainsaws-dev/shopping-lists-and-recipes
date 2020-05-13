@@ -2,30 +2,34 @@
   <div class="form-group">
     <h1 *ngIf="editmode">Edit</h1>
     <h1 *ngIf="!editmode">Create</h1>
-    <input type="text" id="name" placeholder="Name" class="form-control" style="margin: 3px;" name="recipename" [ngModel]="RecipeToEdit.name" required>
-    <textarea class="form-control" placeholder="Description" style="margin: 3px;" rows="5"
-    name="recipedescription" [ngModel]="RecipeToEdit.description"></textarea>
     <button type="button" class="btn btn-outline-primary" style="margin: 3px;" (click)="fileInput.click()">
       <span>Upload image</span>
-      <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;"/>
+      <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;" />
     </button>
     <div class="progress" style="margin-left: 3px;">
-      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [style]="CurPercentStyle"></div>
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [style]="CurPercentStyle">
+      </div>
     </div>
-    <img [src]="RecipeToEdit.imagePath" [alt]="RecipeToEdit.name" class="rounded d-block" style="margin: 3px; max-width: 500px">
+    <img [src]="RecipeToEdit.imagePath" [alt]="RecipeToEdit.name" class="rounded d-block"
+      style="margin: 3px; max-width: 820.13px">
+    <input type="text" id="name" placeholder="Name" class="form-control" style="margin: 3px;" name="recipename"
+      [ngModel]="RecipeToEdit.name" required>
+    <textarea class="form-control" placeholder="Description" style="margin: 3px;" rows="5" name="recipedescription"
+      [ngModel]="RecipeToEdit.description"></textarea>
     <h4 style="margin: 3px;">List of ingredients</h4>
     <div class="row">
       <div class="col">
-        <form (ngSubmit)="ingredientedit ? onEditIngredient(ingrform) : onAddNewIngredient(ingrform)" #ingrform="ngForm">
+        <form (ngSubmit)="ingredientedit ? onEditIngredient(ingrform) : onAddNewIngredient(ingrform)"
+          #ingrform="ngForm">
           <div class="row">
             <div class="input-group mt-1">
               <div class="col-sm-9 form-group">
-                <input type="text" id="name" placeholder="Name" class="form-control" style="margin-left: 3px;"
-                ngModel name="ingredientname" required>
+                <input type="text" id="name" placeholder="Name" class="form-control" style="margin-left: 3px;" ngModel
+                  name="ingredientname" required>
               </div>
               <div class="col form-group">
-                <input type="number" id="amount" placeholder="Amount" class="form-control"
-                ngModel name="ingredientamount" required pattern="^[1-9]+[0-9]*$">
+                <input type="number" id="amount" placeholder="Amount" class="form-control" ngModel
+                  name="ingredientamount" required pattern="^[1-9]+[0-9]*$">
               </div>
             </div>
           </div>
@@ -33,7 +37,8 @@
             <div class="col">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <button class="btn btn-outline-primary" style="margin-left: 3px;" type="submit" [disabled]="ingrform.invalid"> {{ ingredientedit ? 'Update' : 'Add' }}</button>
+                  <button class="btn btn-outline-primary" style="margin-left: 3px;" type="submit"
+                    [disabled]="ingrform.invalid"> {{ ingredientedit ? 'Update' : 'Add' }}</button>
                   <button class="btn btn-outline-danger" type="button" (click)="onDeleteSelectedIngredient()"
                     *ngIf="CurrentSelectedItem">Delete</button>
                   <button class="btn btn-outline-secondary" type="button" (click)="onClearAllIngredients()"
@@ -47,8 +52,8 @@
     </div>
     <ul class="list-group" style="margin: 3px;">
       <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-      [ngClass]="this.CurrentSelectedItem === ingredient ? 'active' : ''"
-        style="cursor: pointer;" *ngFor="let ingredient of RecipeToEdit.ingredients" (click)="OnIngredientSelect(ingredient)">
+        [ngClass]="this.CurrentSelectedItem === ingredient ? 'active' : ''" style="cursor: pointer;"
+        *ngFor="let ingredient of RecipeToEdit.ingredients" (click)="OnIngredientSelect(ingredient)">
         {{ingredient.name}}
         <span class="badge badge-success badge-pill">{{ingredient.amount}}</span>
       </a>
@@ -57,4 +62,3 @@
   <button class="btn btn-outline-primary" style="margin: 3px;" type="submit">Save</button>
   <button class="btn btn-outline-danger" style="margin: 3px;" type="button" routerLink="..">Cancel</button>
 </form>
-
