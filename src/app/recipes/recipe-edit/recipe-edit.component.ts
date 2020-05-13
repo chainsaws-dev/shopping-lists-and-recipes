@@ -4,7 +4,8 @@ import { Recipe } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
 import { Ingredient } from 'src/app/shared/ingredients.model';
 import { NgForm } from '@angular/forms';
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpResponse, HttpEvent } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-recipe-edit',
@@ -114,19 +115,22 @@ export class RecipeEditComponent implements OnInit {
     this.httpClient.post('/api/SaveRecipePhoto', formdatafile, {
       reportProgress: true,
       observe: 'events'
-    }).subscribe(curevent => {
+    }).subscribe((curevent: any) => {
       if (curevent.type === HttpEventType.UploadProgress) {
         this.CurPercentStyle = 'width: ' + String(curevent.loaded / curevent.total * 100) + '%';
       } else if (curevent.type === HttpEventType.Response) {
         if (curevent.ok) {
           /* this.RecipeToEdit.imagePath = '/uploads/' + ; */
-          console.log(curevent);
-
-          const RespBody = JSON.parse(curevent.body.toString());
-          RespBody.forEach(element => {
+          curevent.body.forEach(element => {
             console.log(element.id);
+            console.log(element.error);
+            console.log(element.file_item);
           });
           /* Add commit to database */
+
+          setInterval(() => {
+            this.CurPercentStyle = 'width: 0%';
+          }, 1000);
         }
       }
     }
