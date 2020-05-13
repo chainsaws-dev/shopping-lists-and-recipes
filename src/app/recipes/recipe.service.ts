@@ -12,6 +12,7 @@ export class RecipeService {
   CurrentSelectedItem: Ingredient;
   IngredientSelected = new Subject<Ingredient>();
   RecipeChanged = new Subject<Recipe>();
+  RecipeDeleted = new Subject<void>();
 
   private recipes: Recipe[] = [
     new Recipe('Test recipe #1',
@@ -56,7 +57,7 @@ export class RecipeService {
   }
 
   AddNewRecipe(NewRecipe: Recipe) {
-    const NewRecipeToAdd = new Recipe(NewRecipe.name, NewRecipe.description, NewRecipe.imagePath, NewRecipe.ingredients)
+    const NewRecipeToAdd = new Recipe(NewRecipe.name, NewRecipe.description, NewRecipe.imagePath, NewRecipe.ingredients);
     this.recipes.push(NewRecipeToAdd);
     this.RecipeChanged.next(NewRecipeToAdd);
   }
@@ -66,9 +67,9 @@ export class RecipeService {
     this.RecipeChanged.next(RecipeToUpdate);
   }
 
-  DeleteRecipe(RecipeToDelete: Recipe, Index: number) {
+  DeleteRecipe(Index: number) {
     this.recipes.splice(Index, 1);
-    this.RecipeChanged.next(RecipeToDelete);
+    this.RecipeDeleted.next();
   }
 
   AddNewIngredient(NewIngredient: Ingredient) {
@@ -82,7 +83,7 @@ export class RecipeService {
   }
 
   UpdateSelectedIngredient(UpdatedIngredient: Ingredient) {
-    const FoundIngredient = this.RecipeToEdit.ingredients.find((x) => x.name === UpdatedIngredient.name);
+    const FoundIngredient = this.RecipeToEdit.ingredients.find((x) => x === this.CurrentSelectedItem);
     if (FoundIngredient) {
       FoundIngredient.name = UpdatedIngredient.name;
       FoundIngredient.amount = UpdatedIngredient.amount;

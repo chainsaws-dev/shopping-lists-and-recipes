@@ -12,7 +12,7 @@ import { HttpClient, HttpEventType, HttpResponse, HttpEvent } from '@angular/com
   templateUrl: './recipe-edit.component.html',
   styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeEditComponent implements OnInit, OnDestroy {
+export class RecipeEditComponent implements OnInit {
   @ViewChild('ingrform', { static: false }) IngredientsForm: NgForm;
   @ViewChild('RecipeForm', { static: false }) RecipeForm: NgForm;
 
@@ -30,10 +30,6 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
               private recipeservice: RecipeService,
               private httpClient: HttpClient,
               private router: Router) { }
-
-  ngOnDestroy(): void {
-    this.recipeservice.IngredientSelected.unsubscribe();
-  }
 
   ngOnInit(): void {
     this.activatedroute.params.subscribe(
@@ -60,10 +56,14 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     this.recipeservice.IngredientSelected.subscribe((SelIng: Ingredient) => {
       this.CurrentSelectedItem = SelIng;
       this.ingredientedit = true;
-      this.IngredientsForm.setValue({
-        ingredientname: SelIng.name,
-        ingredientamount: SelIng.amount
-      });
+      if (SelIng) {
+        this.IngredientsForm.setValue({
+          ingredientname: SelIng.name,
+          ingredientamount: SelIng.amount
+        });
+      } else {
+        this.IngredientsForm.reset();
+      }
     });
   }
 
