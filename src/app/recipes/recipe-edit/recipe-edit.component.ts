@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Recipe } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
@@ -12,7 +12,7 @@ import { HttpClient, HttpEventType, HttpResponse, HttpEvent } from '@angular/com
   templateUrl: './recipe-edit.component.html',
   styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeEditComponent implements OnInit {
+export class RecipeEditComponent implements OnInit, OnDestroy {
   @ViewChild('ingrform', { static: false }) IngredientsForm: NgForm;
   @ViewChild('RecipeForm', { static: false }) RecipeForm: NgForm;
 
@@ -30,6 +30,10 @@ export class RecipeEditComponent implements OnInit {
               private recipeservice: RecipeService,
               private httpClient: HttpClient,
               private router: Router) { }
+
+  ngOnDestroy(): void {
+    this.recipeservice.IngredientSelected.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.activatedroute.params.subscribe(
@@ -147,7 +151,7 @@ export class RecipeEditComponent implements OnInit {
         this.recipeservice.AddNewRecipe(this.RecipeToEdit);
       }
 
-      this.router.navigate(['../'], {relativeTo: this.activatedroute});
+      this.router.navigate(['../'], { relativeTo: this.activatedroute });
     }
   }
 
