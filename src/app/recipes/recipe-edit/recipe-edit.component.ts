@@ -5,6 +5,7 @@ import { RecipeService } from '../recipe.service';
 import { Ingredient } from 'src/app/shared/ingredients.model';
 import { NgForm } from '@angular/forms';
 import { HttpClient, HttpEventType, HttpResponse, HttpEvent } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { HttpClient, HttpEventType, HttpResponse, HttpEvent } from '@angular/com
   templateUrl: './recipe-edit.component.html',
   styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeEditComponent implements OnInit {
+export class RecipeEditComponent implements OnInit, OnDestroy {
   @ViewChild('ingrform', { static: false }) IngredientsForm: NgForm;
   @ViewChild('RecipeForm', { static: false }) RecipeForm: NgForm;
 
@@ -25,11 +26,19 @@ export class RecipeEditComponent implements OnInit {
   dbid: number;
   UploadError = '';
 
+  RecipeChangedSub: Subscription;
+  IngredientSelectedSub: Subscription;
+
 
   constructor(private activatedroute: ActivatedRoute,
               private recipeservice: RecipeService,
               private httpClient: HttpClient,
               private router: Router) { }
+
+  ngOnDestroy(): void {
+    this.RecipeChangedSub.unsubscribe();
+    this.IngredientSelectedSub.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.activatedroute.params.subscribe(
@@ -46,14 +55,14 @@ export class RecipeEditComponent implements OnInit {
       }
     );
 
-    this.recipeservice.RecipeChanged.subscribe((SelRecipe: Recipe) => {
+    this.RecipeChangedSub = this.recipeservice.RecipeChanged.subscribe((SelRecipe: Recipe) => {
       this.RecipeForm.setValue({
         recipename: SelRecipe.name,
         recipedescription: SelRecipe.description
       });
     });
 
-    this.recipeservice.IngredientSelected.subscribe((SelIng: Ingredient) => {
+    this.IngredientSelectedSub = this.recipeservice.IngredientSelected.subscribe((SelIng: Ingredient) => {
       this.CurrentSelectedItem = SelIng;
       this.ingredientedit = true;
       if (SelIng) {
