@@ -127,10 +127,6 @@ export class RecipeEditComponent implements OnInit {
             this.RecipeToEdit.imagePath = '/uploads/' + element.id;
             this.dbid = element.db_id;
             this.UploadError = element.error;
-
-            console.log(element);
-            console.log(element.db_id);
-            console.log(element.error);
           });
 
         }
