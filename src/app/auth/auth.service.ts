@@ -27,6 +27,7 @@ export class AuthService {
         response => {
           this.authData = response;
           this.AuthResultSub.next(response.registered);
+          this.AutoRefreshToken(+this.authData.expiresIn * 1000);
         }, error => {
           console.log(error);
           this.AuthErrorSub.next(error.error.error.message);
@@ -45,18 +46,39 @@ export class AuthService {
         response => {
           this.authData = { ...response, registered: true };
           this.AuthResultSub.next(true);
+          this.AutoRefreshToken(+this.authData.expiresIn * 1000);
         }, error => {
           this.AuthErrorSub.next(error.error.error.message);
         }
       );
   }
 
-  RefreshToken() {
+  private AutoRefreshToken(timeout: number) {
+    setTimeout(() => {
+      this.RefreshToken();
+    }, timeout);
+  }
+
+  private RefreshToken() {
     return this.http.post<RefreshTokenResponseData>('https://securetoken.googleapis.com/v1/token?key=' + this.apikey,
       {
         grant_type: 'refresh_token',
         refresh_token: this.authData.refreshToken
-      });
+      }).subscribe(
+        response => {
+          this.authData = {
+            ...response, registered: true, idToken: response.id_token,
+            email: this.authData.email,
+            expiresIn: response.expires_in,
+            refreshToken: response.refresh_token,
+            localId: this.authData.localId
+          };
+          this.AuthResultSub.next(true);
+          this.AutoRefreshToken(+this.authData.expiresIn * 1000);
+        }, error => {
+          this.AuthErrorSub.next(error.error.error.message);
+        }
+      );
   }
 
   CheckRegistered() {
@@ -65,6 +87,14 @@ export class AuthService {
     } else {
       return false;
     }
+  }
+
+  GetUserToken() {
+    return this.authData.idToken;
+  }
+
+  GetUserEmail() {
+    return this.authData.email;
   }
 }
 
