@@ -9,7 +9,7 @@ import { map, tap } from 'rxjs/operators';
 })
 export class DataStorageService {
   /* Replace with API URL */
-  private MainURL = 'https://http-demo-ebec6.firebaseio.com/';
+  private MainURL = '';
   constructor(private http: HttpClient, private recipes: RecipeService) { }
 
   SaveRecipes() {
