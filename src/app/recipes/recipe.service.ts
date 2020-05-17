@@ -12,25 +12,9 @@ export class RecipeService {
   CurrentSelectedItem: Ingredient;
   IngredientSelected = new Subject<Ingredient>();
   RecipeChanged = new Subject<Recipe>();
-  RecipeDeleted = new Subject<void>();
+  RecipesUpdated = new Subject<void>();
 
-  private recipes: Recipe[] = [
-    new Recipe('Test recipe #1',
-      'This is for test #1',
-      'https://www.inspiredtaste.net/wp-content/uploads/2018/12/Sauteed-Zucchini-Recipe-1-1200.jpg',
-      [new Ingredient('Apple', 12), new Ingredient('Orange', 32), new Ingredient('Pineapple', 2)]),
-    new Recipe('Test recipe #2',
-      'This is for test #2',
-      'https://www.inspiredtaste.net/wp-content/uploads/2018/12/Sauteed-Zucchini-Recipe-1-1200.jpg',
-      [new Ingredient('Apple', 12), new Ingredient('Orange', 32), new Ingredient('Pineapple', 2)]),
-    new Recipe('Test recipe #3',
-      'This is for test #3',
-      'https://www.inspiredtaste.net/wp-content/uploads/2018/12/Sauteed-Zucchini-Recipe-1-1200.jpg',
-      [new Ingredient('Apple', 12), new Ingredient('Orange', 32), new Ingredient('Pineapple', 2)]),
-    new Recipe('Test recipe #4',
-      'This is for test #4',
-      'https://www.inspiredtaste.net/wp-content/uploads/2018/12/Sauteed-Zucchini-Recipe-1-1200.jpg',
-      [new Ingredient('Apple', 12), new Ingredient('Orange', 32), new Ingredient('Pineapple', 2)])];
+  private recipes: Recipe[] = [];
 
   constructor(private ShopList: ShoppingListService) { }
 
@@ -60,6 +44,7 @@ export class RecipeService {
     const NewRecipeToAdd = new Recipe(NewRecipe.name, NewRecipe.description, NewRecipe.imagePath, NewRecipe.ingredients);
     this.recipes.push(NewRecipeToAdd);
     this.RecipeChanged.next(NewRecipeToAdd);
+    this.RecipesUpdated.next();
   }
 
   UpdateExistingRecipe(RecipeToUpdate: Recipe, Index: number) {
@@ -67,9 +52,14 @@ export class RecipeService {
     this.RecipeChanged.next(RecipeToUpdate);
   }
 
+  SetRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.RecipesUpdated.next();
+  }
+
   DeleteRecipe(Index: number) {
     this.recipes.splice(Index, 1);
-    this.RecipeDeleted.next();
+    this.RecipesUpdated.next();
   }
 
   AddNewIngredient(NewIngredient: Ingredient) {

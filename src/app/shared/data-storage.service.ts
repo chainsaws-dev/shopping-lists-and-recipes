@@ -1,9 +1,37 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { RecipeService } from '../recipes/recipe.service';
+import { Recipe } from '../recipes/recipe-model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataStorageService {
+  /* Replace with API URL */
+  private MainURL = 'https://http-demo-ebec6.firebaseio.com/';
+  constructor(private http: HttpClient, private recipes: RecipeService) { }
 
-  constructor() { }
+  SaveRecipes() {
+    const recipeslocal = this.recipes.GetRecipes();
+    this.http.put(this.MainURL + 'recipes.json', recipeslocal)
+      .subscribe(response => {
+        console.log(response);
+      });
+  }
+
+  FetchRecipes() {
+    this.http
+      .get<Recipe[]>(this.MainURL + 'recipes.json')
+      .pipe(map(recipes => {
+        return recipes.map(recipe => {
+          return { ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] };
+        });
+      }))
+      .subscribe(recipes => {
+        this.recipes.SetRecipes(recipes);
+      }
+
+      );
+  }
 }
