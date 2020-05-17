@@ -1,7 +1,7 @@
 .card {
-  height: 320px;
   width: 400px;
 }
+
 
 .remember input {
   width: 20px;
@@ -10,3 +10,20 @@
   margin-right: 5px;
 }
 
+input.ng-invalid.ng-touched {
+  border-color: rgba(255, 10, 29, 1) !important;
+  box-shadow: none !important;
+}
+
+input.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 10, 29, 0.25) !important;
+}
+
+input.ng-valid.ng-touched {
+  border-color: rgb(103, 192, 123) !important;
+  box-shadow: none !important;
+}
+
+input.ng-valid.ng-touched:focus {
+  box-shadow: 0 0 0 0.2rem rgba(52, 179, 13, 0.25) !important;
+}

@@ -9,7 +9,8 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent implements OnInit {
   constructor(private httpClient: HttpClient) { }
   ngOnInit(): void {
+    /*
     this.httpClient.get('/api/CreateTablesPostgre').subscribe((curevent: any) => {
-    });
+    }); */
   }
 }
