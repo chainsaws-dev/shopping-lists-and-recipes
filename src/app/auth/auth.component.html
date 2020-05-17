@@ -32,18 +32,16 @@
     </div>
   </div>
   <div style="padding: 3px;">
-  <div class="alert alert-danger" role="alert" *ngIf="authError">
-    {{ authError | titlecase }}
-  </div>
-  <div class="alert alert-success" role="alert" *ngIf="loggedIn">
-    Login success!
+    <div class="alert alert-danger" role="alert" *ngIf="authError">
+      {{ authError | titlecase }}
+    </div>
+    <div class="alert alert-success" role="alert" *ngIf="loggedIn">
+      Login success!
+    </div>
   </div>
 </div>
-</div>
-
 <div class="text-center">
   <div class="spinner-border" role="status" *ngIf="IsLoading">
     <span class="sr-only">Loading...</span>
   </div>
 </div>
-

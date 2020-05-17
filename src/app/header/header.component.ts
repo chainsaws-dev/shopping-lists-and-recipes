@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private auth: AuthService) { }
 
   ngOnInit(): void {
+    this.LoggedIn = this.auth.CheckRegistered();
     this.LoginSub = this.auth.AuthResultSub.subscribe((loggedin) => {
       this.LoggedIn = loggedin;
       this.UserEmail = this.auth.GetUserEmail();
@@ -34,5 +35,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   OnFetchData() {
     this.datastore.FetchRecipes().subscribe();
+  }
+
+  OnLogout() {
+
   }
 }

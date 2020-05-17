@@ -29,7 +29,6 @@ export class AuthService {
           this.AuthResultSub.next(response.registered);
           this.AutoRefreshToken(+this.authData.expiresIn * 1000);
         }, error => {
-          console.log(error);
           this.AuthErrorSub.next(error.error.error.message);
         }
       );
