@@ -7,8 +7,6 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  classforcontainer = 'container-xl';
-
   constructor(private httpClient: HttpClient) { }
   ngOnInit(): void {
     this.httpClient.get('/api/CreateTablesPostgre').subscribe((curevent: any) => {

@@ -1,0 +1,12 @@
+.card {
+  height: 320px;
+  width: 400px;
+}
+
+.remember input {
+  width: 20px;
+  height: 20px;
+  margin-left: 15px;
+  margin-right: 5px;
+}
+
