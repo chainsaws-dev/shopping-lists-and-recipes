@@ -1,11 +1,18 @@
-<div class="list-group-item list-group-item-action" style="min-width: 232px;"
-[routerLink] = "[index]"
-  routerLinkActive = "active">
+<div class="list-group-item list-group-item-action" style="min-width: 232px;" [routerLink]="[index]"
+  routerLinkActive="active">
   <a style="cursor: pointer">
-    <h4 class="list-group-item-heading">
-      {{recipe.name}}
-    </h4>
-    <p class="list-group-item-text">{{recipe.description}}</p>
-    <img [src]="recipe.imagePath" [alt]="recipe.name" class="rounded mx-auto d-block" style="max-height: 130px; max-width: 195px;">
+    <div class="row">
+      <div class="col">
+
+        <h4 class="list-group-item-heading">
+          {{recipe.name}}
+        </h4>
+        <p class="list-group-item-text">{{recipe.description}}</p>
+      </div>
+      <div class="col">
+        <img [src]="recipe.imagePath" [alt]="recipe.name" class="rounded d-block float-right"
+          style="max-height: 130px; max-width: 195px;">
+      </div>
+    </div>
   </a>
 </div>
