@@ -22,6 +22,7 @@
     "@angular/router": "~9.1.6",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "bootstrap": "^4.4.1",
+    "g": "^2.0.1",
     "npm": "^6.14.4",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
@@ -29,7 +30,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.5",
-    "@angular/cli": "~9.1.5",
+    "@angular/cli": "^9.1.6",
     "@angular/compiler-cli": "~9.1.6",
     "@angular/language-service": "~9.1.6",
     "@types/jasmine": "~3.5.0",
