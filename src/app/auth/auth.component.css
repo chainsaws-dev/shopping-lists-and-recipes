@@ -1,7 +1,13 @@
+.main-parent-login {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .card {
   width: 400px;
 }
-
 
 .remember input {
   width: 20px;

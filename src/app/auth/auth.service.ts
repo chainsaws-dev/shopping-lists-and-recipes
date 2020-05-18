@@ -10,12 +10,19 @@ import { Subject } from 'rxjs';
 export class AuthService {
   private apikey = 'AIzaSyB3Jr8tp5wotjeS-re9iBSgX2b1zbM0Fx4';
   private baseURL = 'https://identitytoolkit.googleapis.com/v1/accounts';
+  private refreshURL = 'https://securetoken.googleapis.com/v1/';
 
   private authData: SignInResponseData = null;
+  private autoRefreshToken: any;
   public AuthErrorSub = new Subject<string>();
   public AuthResultSub = new Subject<boolean>();
 
   constructor(private http: HttpClient) { }
+
+  SignOut() {
+    this.authData = null;
+    clearTimeout(this.autoRefreshToken);
+  }
 
   SignIn(email: string, password: string) {
     return this.http.post<SignInResponseData>(this.baseURL + ':signInWithPassword?key=' + this.apikey,
@@ -53,31 +60,33 @@ export class AuthService {
   }
 
   private AutoRefreshToken(timeout: number) {
-    setTimeout(() => {
+    this.autoRefreshToken = setTimeout(() => {
       this.RefreshToken();
     }, timeout);
   }
 
   private RefreshToken() {
-    return this.http.post<RefreshTokenResponseData>('https://securetoken.googleapis.com/v1/token?key=' + this.apikey,
-      {
-        grant_type: 'refresh_token',
-        refresh_token: this.authData.refreshToken
-      }).subscribe(
-        response => {
-          this.authData = {
-            ...response, registered: true, idToken: response.id_token,
-            email: this.authData.email,
-            expiresIn: response.expires_in,
-            refreshToken: response.refresh_token,
-            localId: this.authData.localId
-          };
-          this.AuthResultSub.next(true);
-          this.AutoRefreshToken(+this.authData.expiresIn * 1000);
-        }, error => {
-          this.AuthErrorSub.next(error.error.error.message);
-        }
-      );
+    if (this.authData) {
+      return this.http.post<RefreshTokenResponseData>(this.refreshURL + 'token?key=' + this.apikey,
+        {
+          grant_type: 'refresh_token',
+          refresh_token: this.authData.refreshToken
+        }).subscribe(
+          response => {
+            this.authData = {
+              ...response, registered: true, idToken: response.id_token,
+              email: this.authData.email,
+              expiresIn: response.expires_in,
+              refreshToken: response.refresh_token,
+              localId: this.authData.localId
+            };
+            this.AuthResultSub.next(true);
+            this.AutoRefreshToken(+this.authData.expiresIn * 1000);
+          }, error => {
+            this.AuthErrorSub.next(error.error.error.message);
+          }
+        );
+    }
   }
 
   CheckRegistered() {
