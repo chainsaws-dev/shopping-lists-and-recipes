@@ -22,6 +22,10 @@ export class AuthComponent implements OnInit, OnDestroy {
               private router: Router) { }
 
   ngOnInit(): void {
+    if (this.authservice.CheckRegistered()) {
+      this.Redirect();
+    }
+
     this.authErrSub = this.authservice.AuthErrorSub.subscribe((error: string) => {
       this.authError = error.replace('_', ' ');
       this.IsLoading = false;

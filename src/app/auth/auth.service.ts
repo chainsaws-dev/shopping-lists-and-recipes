@@ -47,22 +47,28 @@ export class AuthService {
     clearTimeout(this.autoRefreshToken);
   }
 
+  AutoSignIn() {
+    const userData = localStorage.getItem('userData');
+
+    if (!userData) {
+      return;
+    } else {
+      this.authData = JSON.parse(userData);
+      this.AuthResultSub.next(true);
+    }
+  }
+
   private RequestSub() {
     this.authObs.subscribe(
       response => {
         this.authData = response;
+        localStorage.setItem('userData', JSON.stringify(this.authData));
         this.AuthResultSub.next(response.registered);
-        this.AutoRefreshToken(+this.authData.expiresIn * 1000);
+        this.authData.expirationDate = new Date(new Date().getTime() + +this.authData.expiresIn * 1000);
       }, error => {
         this.AuthErrorSub.next(error.error.error.message);
       }
     );
-  }
-
-  private AutoRefreshToken(timeout: number) {
-    this.autoRefreshToken = setTimeout(() => {
-      this.RefreshToken();
-    }, timeout);
   }
 
   private RefreshToken() {
@@ -81,7 +87,7 @@ export class AuthService {
               localId: this.authData.localId
             };
             this.AuthResultSub.next(true);
-            this.AutoRefreshToken(+this.authData.expiresIn * 1000);
+            this.authData.expirationDate = new Date(new Date().getTime() + +this.authData.expiresIn * 1000);
           }, error => {
             this.AuthErrorSub.next(error.error.error.message);
           }
@@ -97,8 +103,16 @@ export class AuthService {
     }
   }
 
+  CheckTokenExpired() {
+    return (!this.authData.expirationDate || new Date() > this.authData.expirationDate);
+  }
+
   GetUserToken() {
-    return this.authData.idToken;
+    if (this.CheckTokenExpired()) {
+      return this.authData.idToken;
+    } else {
+      return null;
+    }
   }
 
   GetUserEmail() {
