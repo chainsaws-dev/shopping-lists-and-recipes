@@ -1,21 +1,12 @@
-import { NgModule } from '@angular/core';
-
-export interface SignInResponseData {
+export interface AuthResponseData {
   idToken: string;
   email: string;
   refreshToken: string;
   expiresIn: string;
   localId: string;
-  registered: boolean;
+  registered?: boolean;
 }
 
-export interface SignUpResponseData {
-  idToken: string;
-  email: string;
-  refreshToken: string;
-  expiresIn: string;
-  localId: string;
-}
 
 export interface RefreshTokenResponseData {
   expires_in: string;

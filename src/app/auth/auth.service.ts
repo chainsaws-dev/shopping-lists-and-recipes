@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { RefreshTokenResponseData, SignInResponseData, SignUpResponseData } from './auth.module';
-import { Subject } from 'rxjs';
+import { RefreshTokenResponseData, AuthResponseData } from './auth.module';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,51 +12,51 @@ export class AuthService {
   private baseURL = 'https://identitytoolkit.googleapis.com/v1/accounts';
   private refreshURL = 'https://securetoken.googleapis.com/v1/';
 
-  private authData: SignInResponseData = null;
+  private authData: AuthResponseData = null;
   private autoRefreshToken: any;
   public AuthErrorSub = new Subject<string>();
   public AuthResultSub = new Subject<boolean>();
+  private authObs: Observable<AuthResponseData>;
 
   constructor(private http: HttpClient) { }
+
+  SignUp(email: string, password: string) {
+    this.authObs = this.http.post<AuthResponseData>(this.baseURL + ':signUp?key=' + this.apikey,
+      {
+        email,
+        password,
+        returnSecureToken: true
+      });
+
+    this.RequestSub();
+  }
+
+  SignIn(email: string, password: string) {
+    this.authObs = this.http.post<AuthResponseData>(this.baseURL + ':signInWithPassword?key=' + this.apikey,
+      {
+        email,
+        password,
+        returnSecureToken: true
+      });
+
+    this.RequestSub();
+  }
 
   SignOut() {
     this.authData = null;
     clearTimeout(this.autoRefreshToken);
   }
 
-  SignIn(email: string, password: string) {
-    return this.http.post<SignInResponseData>(this.baseURL + ':signInWithPassword?key=' + this.apikey,
-      {
-        email,
-        password,
-        returnSecureToken: true
-      }).subscribe(
-        response => {
-          this.authData = response;
-          this.AuthResultSub.next(response.registered);
-          this.AutoRefreshToken(+this.authData.expiresIn * 1000);
-        }, error => {
-          this.AuthErrorSub.next(error.error.error.message);
-        }
-      );
-  }
-
-
-  SignUp(email: string, password: string) {
-    return this.http.post<SignUpResponseData>(this.baseURL + ':signUp?key=' + this.apikey,
-      {
-        email,
-        password,
-        returnSecureToken: true
-      }).subscribe(
-        response => {
-          this.authData = { ...response, registered: true };
-          this.AuthResultSub.next(true);
-          this.AutoRefreshToken(+this.authData.expiresIn * 1000);
-        }, error => {
-          this.AuthErrorSub.next(error.error.error.message);
-        }
-      );
+  private RequestSub() {
+    this.authObs.subscribe(
+      response => {
+        this.authData = response;
+        this.AuthResultSub.next(response.registered);
+        this.AutoRefreshToken(+this.authData.expiresIn * 1000);
+      }, error => {
+        this.AuthErrorSub.next(error.error.error.message);
+      }
+    );
   }
 
   private AutoRefreshToken(timeout: number) {
