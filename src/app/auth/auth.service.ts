@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { RefreshTokenResponseData, AuthResponseData } from './auth.module';
 import { Subject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class AuthService {
   public AuthResultSub = new Subject<boolean>();
   private authObs: Observable<AuthResponseData>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private router: Router) { }
 
   SignUp(email: string, password: string) {
     this.authObs = this.http.post<AuthResponseData>(this.baseURL + ':signUp?key=' + this.apikey,
@@ -44,7 +46,12 @@ export class AuthService {
 
   SignOut() {
     this.authData = null;
-    clearTimeout(this.autoRefreshToken);
+    if (this.autoRefreshToken) {
+      clearTimeout(this.autoRefreshToken);
+    }
+    localStorage.removeItem('userData');
+    this.AuthResultSub.next(false);
+    this.router.navigate(['/auth']);
   }
 
   AutoSignIn() {
@@ -54,24 +61,35 @@ export class AuthService {
       return;
     } else {
       this.authData = JSON.parse(userData);
+      const ExpDur = new Date(this.authData.expirationDate).getTime() -
+        new Date().getTime();
+
       this.AuthResultSub.next(true);
+      this.AutoSignOut(ExpDur);
     }
+  }
+
+  private AutoSignOut(ExpiresIn: number) {
+    this.autoRefreshToken = setTimeout(() => {
+      this.SignOut();
+    }, ExpiresIn);
   }
 
   private RequestSub() {
     this.authObs.subscribe(
       response => {
         this.authData = response;
+        this.authData.expirationDate = String(new Date(new Date().getTime() + +this.authData.expiresIn * 1000));
         localStorage.setItem('userData', JSON.stringify(this.authData));
         this.AuthResultSub.next(response.registered);
-        this.authData.expirationDate = new Date(new Date().getTime() + +this.authData.expiresIn * 1000);
+        this.AutoSignOut(+this.authData.expiresIn * 1000);
       }, error => {
         this.AuthErrorSub.next(error.error.error.message);
       }
     );
   }
 
-  private RefreshToken() {
+  RefreshToken() {
     if (this.authData) {
       return this.http.post<RefreshTokenResponseData>(this.refreshURL + 'token?key=' + this.apikey,
         {
@@ -87,7 +105,7 @@ export class AuthService {
               localId: this.authData.localId
             };
             this.AuthResultSub.next(true);
-            this.authData.expirationDate = new Date(new Date().getTime() + +this.authData.expiresIn * 1000);
+            this.authData.expirationDate = String(new Date(new Date().getTime() + +this.authData.expiresIn * 1000));
           }, error => {
             this.AuthErrorSub.next(error.error.error.message);
           }
@@ -104,7 +122,12 @@ export class AuthService {
   }
 
   CheckTokenExpired() {
-    return (!this.authData.expirationDate || new Date() > this.authData.expirationDate);
+    if (this.authData.expirationDate !== '' && this.authData.expirationDate !== null) {
+      return !(new Date() > new Date(this.authData.expirationDate));
+    }
+    else {
+      return false;
+    }
   }
 
   GetUserToken() {
@@ -116,7 +139,11 @@ export class AuthService {
   }
 
   GetUserEmail() {
-    return this.authData.email;
+    if (this.authData) {
+      return this.authData.email;
+    } else {
+      return null;
+    }
   }
 }
 

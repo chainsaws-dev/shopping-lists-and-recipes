@@ -5,7 +5,7 @@ export interface AuthResponseData {
   expiresIn: string;
   localId: string;
   registered?: boolean;
-  expirationDate?: Date;
+  expirationDate?: string;
 }
 
 

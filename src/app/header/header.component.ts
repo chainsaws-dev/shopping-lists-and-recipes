@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataStorageService } from '../shared/data-storage.service';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-header',
@@ -14,10 +14,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   LoggedIn = false;
   UserEmail: string;
   private LoginSub: Subscription;
+  private FetchRecipes: Subscription;
 
   constructor(private datastore: DataStorageService,
-              private auth: AuthService,
-              private router: Router) { }
+              private auth: AuthService) { }
 
   ngOnInit(): void {
     this.LoggedIn = this.auth.CheckRegistered();
@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.LoginSub.unsubscribe();
+    this.FetchRecipes.unsubscribe();
   }
 
   OnSaveData() {
@@ -38,13 +39,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   OnFetchData() {
-    this.datastore.FetchRecipes().subscribe();
+    this.FetchRecipes = this.datastore.FetchRecipes().subscribe();
   }
 
   OnLogout() {
     this.auth.SignOut();
     this.LoggedIn = false;
     this.UserEmail = '';
-    this.router.navigate(['/auth']);
   }
 }
