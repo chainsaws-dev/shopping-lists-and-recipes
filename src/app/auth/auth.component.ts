@@ -19,7 +19,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   private loginResultSub: Subscription;
 
   constructor(private authservice: AuthService,
-              private router: Router) { }
+    private router: Router) { }
 
   ngOnInit(): void {
     if (this.authservice.CheckRegistered()) {
@@ -64,5 +64,9 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   Redirect() {
     this.router.navigate(['/recipes']);
+  }
+
+  onHandleCloseError() {
+    this.authError = null;
   }
 }

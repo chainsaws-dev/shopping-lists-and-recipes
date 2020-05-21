@@ -11,12 +11,14 @@ import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.com
 import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'
 import { AppRoutingModule } from './app-routing.module';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { AuthComponent } from './auth/auth.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { AlertComponent } from './shared/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -30,12 +32,14 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     ShoppingEditComponent,
     RecipeStartComponent,
     RecipeEditComponent,
-    AuthComponent
+    AuthComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     NgbDropdownModule,
+    NgbTooltipModule,
     AppRoutingModule,
     HttpClientModule
   ],

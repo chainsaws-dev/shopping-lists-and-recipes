@@ -49,7 +49,9 @@ export class AuthService {
     if (this.autoRefreshToken) {
       clearTimeout(this.autoRefreshToken);
     }
+
     localStorage.removeItem('userData');
+  
     this.AuthResultSub.next(false);
     this.router.navigate(['/auth']);
   }
@@ -61,8 +63,9 @@ export class AuthService {
       return;
     } else {
       this.authData = JSON.parse(userData);
+      
       const ExpDur = new Date(this.authData.expirationDate).getTime() -
-        new Date().getTime();
+        new Date().getTime();        
 
       this.AuthResultSub.next(true);
       this.AutoSignOut(ExpDur);
@@ -79,8 +82,8 @@ export class AuthService {
     this.authObs.subscribe(
       response => {
         this.authData = response;
-        this.authData.expirationDate = String(new Date(new Date().getTime() + +this.authData.expiresIn * 1000));
-        localStorage.setItem('userData', JSON.stringify(this.authData));
+        this.authData.expirationDate = String(new Date(new Date().getTime() + +this.authData.expiresIn * 1000));       
+        localStorage.setItem('userData', JSON.stringify(this.authData));        
         this.AuthResultSub.next(response.registered);
         this.AutoSignOut(+this.authData.expiresIn * 1000);
       }, error => {
