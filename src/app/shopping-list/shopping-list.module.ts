@@ -4,6 +4,7 @@ import { ShoppingListComponent } from './shopping-list.component';
 import { ShoppingEditComponent } from './shopping-edit/shopping-edit.component';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: 'shopping-list', component: ShoppingListComponent, canActivate: [AuthGuard] }
@@ -16,6 +17,7 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,    
+    FormsModule,
     RouterModule.forChild(routes)
   ]
 })
