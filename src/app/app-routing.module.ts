@@ -5,8 +5,7 @@ import { AuthComponent } from './auth/auth.component';
 import { RecipesRoutingModule } from './recipes/recipes-routing.module';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/auth', pathMatch: 'full' },
-  { path: 'auth', component: AuthComponent }  
+  { path: '', redirectTo: '/auth', pathMatch: 'full' } 
 ];
 
 @NgModule({
