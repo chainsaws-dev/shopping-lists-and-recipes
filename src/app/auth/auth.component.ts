@@ -27,7 +27,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     }
 
     this.authErrSub = this.authservice.AuthErrorSub.subscribe((error: string) => {
-      this.authError = error.replace('_', ' ');
+      this.authError = error.replace(/_/g, ' ');
       this.IsLoading = false;
     });
 

@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+import { RecipesRoutingModule } from './recipes-routing.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     FormsModule,    
     RouterModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    RecipesRoutingModule
   ]
 })
 export class RecipesModule { }

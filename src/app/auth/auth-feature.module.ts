@@ -6,7 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  { path: 'auth', component: AuthComponent }  
+  { path: '', component: AuthComponent }  
 ];
 
 @NgModule({
