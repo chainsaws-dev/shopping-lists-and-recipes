@@ -9,6 +9,8 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AuthComponent } from './auth/auth.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
@@ -28,9 +30,10 @@ import { RecipesModule } from './recipes/recipes.module';
     BrowserModule,
     FormsModule,    
     NgbTooltipModule,
+    NgbDropdownModule,
     AppRoutingModule,
     HttpClientModule,
-    RecipesModule
+    RecipesModule    
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]
