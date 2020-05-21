@@ -23,13 +23,6 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,    
     RouterModule,
     NgbDropdownModule
-  ],
-  exports: [
-    RecipesComponent,
-    RecipeListComponent,
-    RecipeDetailComponent,
-    RecipeItemComponent,
-    RecipeStartComponent,
-    RecipeEditComponent]
+  ]
 })
 export class RecipesModule { }
