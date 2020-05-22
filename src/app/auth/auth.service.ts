@@ -4,15 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { RefreshTokenResponseData, AuthResponseData } from './auth.module';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apikey = 'AIzaSyB3Jr8tp5wotjeS-re9iBSgX2b1zbM0Fx4';
-  private baseURL = 'https://identitytoolkit.googleapis.com/v1/accounts';
-  private refreshURL = 'https://securetoken.googleapis.com/v1/';
-
   private authData: AuthResponseData = null;
   private autoRefreshToken: any;
   public AuthErrorSub = new Subject<string>();
@@ -23,7 +20,7 @@ export class AuthService {
     private router: Router) { }
 
   SignUp(email: string, password: string) {
-    this.authObs = this.http.post<AuthResponseData>(this.baseURL + ':signUp?key=' + this.apikey,
+    this.authObs = this.http.post<AuthResponseData>(environment.AuthUrl + ':signUp?key=' + environment.ApiKey,
       {
         email,
         password,
@@ -34,7 +31,7 @@ export class AuthService {
   }
 
   SignIn(email: string, password: string) {
-    this.authObs = this.http.post<AuthResponseData>(this.baseURL + ':signInWithPassword?key=' + this.apikey,
+    this.authObs = this.http.post<AuthResponseData>(environment.AuthUrl + ':signInWithPassword?key=' + environment.ApiKey,
       {
         email,
         password,
@@ -94,7 +91,7 @@ export class AuthService {
 
   RefreshToken() {
     if (this.authData) {
-      return this.http.post<RefreshTokenResponseData>(this.refreshURL + 'token?key=' + this.apikey,
+      return this.http.post<RefreshTokenResponseData>(environment.RefTokenUrl + 'token?key=' + environment.ApiKey,
         {
           grant_type: 'refresh_token',
           refresh_token: this.authData.refreshToken
