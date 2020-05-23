@@ -15,6 +15,10 @@ export class RecipeDetailComponent implements OnInit {
   id: number;
   constructor(private RecipeServ: RecipeService, private activeroute: ActivatedRoute, private router: Router) { }
 
+  public onReady(editor) {
+      editor.isReadOnly = true;
+  }
+
   ngOnInit(): void {
     this.activeroute.params.subscribe((params: Params) => {
       this.id = +params.id;
@@ -28,6 +32,6 @@ export class RecipeDetailComponent implements OnInit {
 
   OnDeleteRecipe(): void {
     this.RecipeServ.DeleteRecipe(this.id);
-    this.router.navigate(['../'], {relativeTo: this.activeroute} );
+    this.router.navigate(['../'], { relativeTo: this.activeroute });
   }
 }

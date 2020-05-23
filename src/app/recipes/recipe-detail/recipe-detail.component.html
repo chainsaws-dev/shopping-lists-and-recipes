@@ -24,7 +24,7 @@
 </div>
 <div class="row">
   <div class="col mb-3">
-    <ckeditor class="mb-1" name="recipedescription" [editor]="CurEditor" [ngModel]="CurrentRecipe.description"></ckeditor>
+    <ckeditor class="mb-1" name="recipedescription" [editor]="CurEditor" [ngModel]="CurrentRecipe.description" (ready)="onReady($event)"></ckeditor>
   </div>
 </div>
 <div class="row">
