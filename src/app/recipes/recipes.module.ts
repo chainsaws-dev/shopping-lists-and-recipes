@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { RecipesRoutingModule } from './recipes-routing.module';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { RecipesRoutingModule } from './recipes-routing.module';
     FormsModule,    
     RouterModule,
     NgbDropdownModule,
-    RecipesRoutingModule
+    RecipesRoutingModule,
+    CKEditorModule
   ]
 })
 export class RecipesModule { }

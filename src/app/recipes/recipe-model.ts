@@ -3,6 +3,9 @@ import { Ingredient } from '../shared/ingredients.model';
 export class Recipe {
   public name: string;
   public description: string;
+  public cookingTime?: number;
+  public cookInStove: boolean;
+  public StoveTempC: number; 
   public imagePath: string;
   public ingredients: Ingredient[];
 

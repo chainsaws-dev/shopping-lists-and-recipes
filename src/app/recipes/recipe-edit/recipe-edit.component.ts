@@ -6,7 +6,7 @@ import { Ingredient } from 'src/app/shared/ingredients.model';
 import { NgForm } from '@angular/forms';
 import { HttpClient, HttpEventType, HttpResponse, HttpEvent } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-
+import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -17,6 +17,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   @ViewChild('ingrform', { static: false }) IngredientsForm: NgForm;
   @ViewChild('RecipeForm', { static: false }) RecipeForm: NgForm;
 
+  HtmlEditor = DecoupledEditor;
   RecipeToEdit: Recipe;
   index: number;
   editmode = false;
@@ -34,6 +35,13 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
               private recipeservice: RecipeService,
               private httpClient: HttpClient,
               private router: Router) { }
+
+  public onReady(editor) {
+    editor.ui.getEditableElement().parentElement.insertBefore(
+      editor.ui.view.toolbar.element,
+      editor.ui.getEditableElement()
+    );
+  }
 
   ngOnDestroy(): void {
     this.RecipeChangedSub.unsubscribe();
