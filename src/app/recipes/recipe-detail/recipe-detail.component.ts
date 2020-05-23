@@ -10,7 +10,7 @@ import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
   styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent implements OnInit {
-  HTMLEditor = DecoupledEditor;
+  public CurEditor = DecoupledEditor;
   CurrentRecipe: Recipe;
   id: number;
   constructor(private RecipeServ: RecipeService, private activeroute: ActivatedRoute, private router: Router) { }
