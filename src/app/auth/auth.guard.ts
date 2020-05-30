@@ -8,17 +8,17 @@ import { AuthService } from './auth.service';
 })
 export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService,
-              private router: Router) {}
+              private router: Router) { }
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const IsAuth = this.auth.CheckRegistered();
 
-    if(IsAuth) {
+    if (IsAuth) {
       return true;
     } else {
       return this.router.createUrlTree(['/auth']);
     }
   }
-  
+
 }

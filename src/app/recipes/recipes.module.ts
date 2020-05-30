@@ -22,7 +22,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     RecipeEditComponent],
   imports: [
     CommonModule,
-    FormsModule,    
+    FormsModule,
     RouterModule,
     NgbDropdownModule,
     RecipesRoutingModule,

@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: '', component: ShoppingListComponent, canActivate: [AuthGuard] }
-]
+];
 
 @NgModule({
   declarations: [
@@ -16,7 +16,7 @@ const routes: Routes = [
     ShoppingEditComponent
   ],
   imports: [
-    CommonModule,    
+    CommonModule,
     FormsModule,
     RouterModule.forChild(routes)
   ]

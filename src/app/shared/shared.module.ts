@@ -9,7 +9,7 @@ import { AlertComponent } from './alert/alert.component';
     CommonModule
   ],
   exports: [
-    CommonModule, 
+    CommonModule,
     AlertComponent
   ]
 })

@@ -5,7 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,17 +17,17 @@ import { SharedModule } from './shared/shared.module';
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent      
+    HeaderComponent
   ],
   imports: [
-    BrowserModule,   
+    BrowserModule,
     NgbTooltipModule,
     NgbDropdownModule,
     AppRoutingModule,
-    HttpClientModule,    
-    SharedModule       
+    HttpClientModule,
+    SharedModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

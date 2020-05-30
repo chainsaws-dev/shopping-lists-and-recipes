@@ -15,7 +15,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   DataServiceSub: Subscription;
   FetchOnInint: Subscription;
   IsLoading = false;
-  
+
 
   constructor(private RecServ: RecipeService, private DataServ: DataStorageService) {
   }
@@ -25,7 +25,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.FetchOnInint.unsubscribe();
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
 
     this.RecipeDeletedSub = this.RecServ.RecipesUpdated.subscribe(
       () => {

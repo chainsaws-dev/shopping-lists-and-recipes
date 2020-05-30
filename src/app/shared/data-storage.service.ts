@@ -10,10 +10,10 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class DataStorageService {
-  LoadingData = new Subject<boolean>();  
+  LoadingData = new Subject<boolean>();
 
   constructor(private http: HttpClient,
-    private recipes: RecipeService) { }
+              private recipes: RecipeService) { }
 
   SaveRecipes() {
     this.LoadingData.next(true);
