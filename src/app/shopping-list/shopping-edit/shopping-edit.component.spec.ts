@@ -19,7 +19,11 @@ describe('ShoppingEditComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should be truthy', () => {
+
+    fixture = TestBed.createComponent(ShoppingEditComponent);
+    component = fixture.componentInstance;
     expect(component).toBeTruthy();
+
   });
 });

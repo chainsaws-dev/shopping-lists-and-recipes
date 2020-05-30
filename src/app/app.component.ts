@@ -8,10 +8,13 @@ import { AuthService } from './auth/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private httpClient: HttpClient, private auth: AuthService) { }
+  constructor(private auth: AuthService) { }
   ngOnInit(): void {
     this.auth.AutoSignIn();
     /*
+    add to constructor: 
+    private httpClient: HttpClient
+    
     this.httpClient.get('/api/CreateTablesPostgre').subscribe((curevent: any) => {
     }); */
   }

@@ -19,7 +19,9 @@ describe('ShoppingListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be truthy', () => {
+    fixture = TestBed.createComponent(ShoppingListComponent);
+    component = fixture.componentInstance;
+     expect(component).toBeTruthy();  
   });
 });
