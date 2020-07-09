@@ -145,10 +145,10 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
         this.CurPercentStyle = 'width: ' + String(curevent.loaded / curevent.total * 100) + '%';
       } else if (curevent.type === HttpEventType.Response) {
         if (curevent.ok) {
-          curevent.body.forEach(element => {
-            this.RecipeToEdit.imagePath = '/uploads/' + element.id;
-            this.dbid = element.db_id;
-            this.UploadError = element.error;
+          curevent.body(element => {
+            this.RecipeToEdit.imagePath = '/uploads/' + element.FileID;
+            this.dbid = element.DbID;
+            this.UploadError = element.Error;
           });
 
         }
