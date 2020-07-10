@@ -13,16 +13,17 @@
       <app-recipe-item *ngFor="let recipe of recipes; let i=index" [recipe]="recipe" [index]="i"></app-recipe-item>
     </div>
   </div>
+  <ngb-pagination
+  [collectionSize]="collectionSize"
+  [pageSize]="pageSize"
+  [(page)]="currentPage"
+  [boundaryLinks]="true"
+  [maxSize]="11"
+  (pageChange)="OnPageChanged($event)"></ngb-pagination>
 </div>
 <div class="text-center">
   <div class="spinner-border" role="status" *ngIf="IsLoading">
     <span class="sr-only">Loading...</span>
   </div>
 </div>
-<ngb-pagination
-[collectionSize]="collectionSize"
-[pageSize]="pageSize"
-[(page)]="currentPage"
-[boundaryLinks]="true"
-[maxSize]="11"
-(pageChange)="OnPageChanged($event)"></ngb-pagination>
+
