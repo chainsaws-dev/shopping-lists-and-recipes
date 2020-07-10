@@ -19,14 +19,10 @@
             Shopping list
           </a>
         </li>
-        <li ngbDropdown class="nav-item dropdown">
-          <a style="cursor: pointer;" class="nav-link dropdown-toggle" id="ManagementMenu" ngbDropdownToggle>
-            Management
+        <li class="nav-item">
+          <a routerLink="#" routerLinkActive="active" class="nav-link">
+            Administration
           </a>
-          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="ManagementMenu">
-            <a style="cursor: pointer;" ngbDropdownItem class="dropdown-item" (click)="OnSaveData()">Save</a>
-            <a style="cursor: pointer;" ngbDropdownItem class="dropdown-item" (click)="OnFetchData()">Fetch</a>
-          </div>
         </li>
       </ul>
     </div>

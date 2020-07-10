@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Recipe } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-list',
@@ -10,14 +11,22 @@ import { DataStorageService } from 'src/app/shared/data-storage.service';
   styleUrls: ['./recipe-list.component.css']
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
+
   recipes: Recipe[];
   RecipeDeletedSub: Subscription;
   DataServiceSub: Subscription;
   FetchOnInint: Subscription;
   IsLoading = false;
 
+  collectionSize = 100;
+  pageSize = 4;
+  currentPage = 3;
 
-  constructor(private RecServ: RecipeService, private DataServ: DataStorageService) {
+  constructor(
+    private RecServ: RecipeService,
+    private DataServ: DataStorageService,
+    private activeroute: ActivatedRoute,
+    private router: Router) {
   }
   ngOnDestroy(): void {
     this.RecipeDeletedSub.unsubscribe();
@@ -26,6 +35,9 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.activeroute.params.subscribe((params: Params) => {
+      this.currentPage = +params.pn;
+    });
 
     this.RecipeDeletedSub = this.RecServ.RecipesUpdated.subscribe(
       () => {
@@ -39,12 +51,19 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.FetchOnInint = this.DataServ.FetchRecipes().subscribe(
+    this.FetchOnInint = this.DataServ.FetchRecipes(1).subscribe(
       () => {
         this.recipes = this.RecServ.GetRecipes();
       }
     );
+  }
 
-
+  OnPageChanged(page: number) {
+    this.FetchOnInint.unsubscribe();
+    this.FetchOnInint = this.DataServ.FetchRecipes(page).subscribe(
+      () => {
+        this.recipes = this.RecServ.GetRecipes();
+      }
+    );
   }
 }

@@ -5,8 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltipModule, NgbPaginationModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
@@ -23,6 +22,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     NgbTooltipModule,
     NgbDropdownModule,
+    NgbPaginationModule,
     AppRoutingModule,
     HttpClientModule,
     SharedModule

@@ -7,6 +7,7 @@ import { NgForm } from '@angular/forms';
 import { HttpClient, HttpEventType, HttpResponse, HttpEvent } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -34,7 +35,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   constructor(private activatedroute: ActivatedRoute,
               private recipeservice: RecipeService,
               private httpClient: HttpClient,
-              private router: Router) { }
+              private router: Router,
+              private datastore: DataStorageService) { }
 
   public onReady(editor) {
     editor.ui.getEditableElement().parentElement.insertBefore(
@@ -164,6 +166,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       } else {
         this.recipeservice.AddNewRecipe(this.RecipeToEdit);
       }
+
+      this.datastore.SaveRecipes(this.RecipeToEdit);
 
       this.router.navigate(['../'], { relativeTo: this.activatedroute });
     }

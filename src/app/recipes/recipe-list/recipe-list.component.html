@@ -2,14 +2,14 @@
   <div class="col">
     <div class="input-group mb-1">
       <div class="input-group-prepend mt-1">
-        <button class="btn btn-outline-primary" [routerLink]="['/recipes','new']">Add</button>
+        <button class="btn btn-outline-primary" [routerLink]="['/recipes',currentPage,'new']">Add</button>
       </div>
     </div>
   </div>
 </div>
 <div class="row" *ngIf="!IsLoading">
   <div class="col">
-    <div class="list-group">
+    <div class="list-group mb-1">
       <app-recipe-item *ngFor="let recipe of recipes; let i=index" [recipe]="recipe" [index]="i"></app-recipe-item>
     </div>
   </div>
@@ -19,3 +19,10 @@
     <span class="sr-only">Loading...</span>
   </div>
 </div>
+<ngb-pagination
+[collectionSize]="collectionSize"
+[pageSize]="pageSize"
+[(page)]="currentPage"
+[boundaryLinks]="true"
+[maxSize]="11"
+(pageChange)="OnPageChanged($event)"></ngb-pagination>

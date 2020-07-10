@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe-model';
 import { map, tap } from 'rxjs/operators';
@@ -15,20 +15,26 @@ export class DataStorageService {
   constructor(private http: HttpClient,
               private recipes: RecipeService) { }
 
-  SaveRecipes() {
+  SaveRecipes(RecipeToSave: Recipe) {
     this.LoadingData.next(true);
-    const recipeslocal = this.recipes.GetRecipes();
-    this.http.put(environment.GetSetDataUrl + environment.RecipesUrl, recipeslocal)
+
+    this.http.put(environment.GetSetDataUrl + environment.RecipesUrl, RecipeToSave)
       .subscribe(response => {
-        console.log(response);
         this.LoadingData.next(false);
       });
   }
 
-  FetchRecipes() {
+  FetchRecipes(page: number) {
     this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+         Page: page.toString(),
+      })
+    };
+
     return this.http
-      .get<Recipe[]>(environment.GetSetDataUrl + environment.RecipesUrl)
+      .get<Recipe[]>(environment.GetSetDataUrl + environment.RecipesUrl, httpOptions)
       .pipe(map(recipes => {
         return recipes.map(recipe => {
           return { ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] };
