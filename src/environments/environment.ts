@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   ApiKey: 'AIzaSyB3Jr8tp5wotjeS-re9iBSgX2b1zbM0Fx4',
-  AuthUrl: 'https://identitytoolkit.googleapis.com/v1/accounts',
-  RefTokenUrl: 'https://securetoken.googleapis.com/v1/',
-  GetSetDataUrl: 'https://http-demo-ebec6.firebaseio.com/',
-  RecipesUrl: 'recipes.json'
+  AuthUrl: 'https://localhost/api/accounts',
+  RefTokenUrl: 'https://localhost/api/securetoken',
+  GetSetRecipesUrl: 'https://localhost/api/Recipes',
+  GetSetShoppingListUrl: 'https://localhost/api/ShoppingList',
 };
 
 /*

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
-import { Recipe } from '../recipes/recipe-model';
+import { Recipe, RecipeResponse } from '../recipes/recipe-model';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
@@ -18,7 +18,7 @@ export class DataStorageService {
   SaveRecipes(RecipeToSave: Recipe) {
     this.LoadingData.next(true);
 
-    this.http.put(environment.GetSetDataUrl + environment.RecipesUrl, RecipeToSave)
+    this.http.put(environment.GetSetRecipesUrl, RecipeToSave)
       .subscribe(response => {
         this.LoadingData.next(false);
       });
@@ -34,14 +34,17 @@ export class DataStorageService {
     };
 
     return this.http
-      .get<Recipe[]>(environment.GetSetDataUrl + environment.RecipesUrl, httpOptions)
-      .pipe(map(recipes => {
-        return recipes.map(recipe => {
+      .get<RecipeResponse>(environment.GetSetRecipesUrl, httpOptions)
+      .pipe(map(recresp => {
+        recresp.Recipes = recresp.Recipes.map(recipe => {
           return { ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] };
         });
+
+        return recresp;
       }),
-        tap(recipes => {
-          this.recipes.SetRecipes(recipes);
+        tap(recresp => {
+          this.recipes.SetRecipes(recresp.Recipes);
+          this.recipes.SetPagination(recresp.Total, recresp.Limit);
           this.LoadingData.next(false);
         }));
   }

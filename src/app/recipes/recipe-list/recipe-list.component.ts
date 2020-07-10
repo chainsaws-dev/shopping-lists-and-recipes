@@ -18,9 +18,9 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   FetchOnInint: Subscription;
   IsLoading = false;
 
-  collectionSize = 100;
+  collectionSize: number;
   pageSize = 4;
-  currentPage = 3;
+  currentPage: number;
 
   constructor(
     private RecServ: RecipeService,
@@ -63,6 +63,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.FetchOnInint = this.DataServ.FetchRecipes(page).subscribe(
       () => {
         this.recipes = this.RecServ.GetRecipes();
+        //this.router.navigate(page.toString())
       }
     );
   }

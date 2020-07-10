@@ -1,6 +1,7 @@
 import { Ingredient } from '../shared/ingredients.model';
 
 export class Recipe {
+  public id: number;
   public name: string;
   public description: string;
   public imagePath: string;
@@ -13,3 +14,12 @@ export class Recipe {
     this.ingredients = ingredients;
   }
 }
+
+export class RecipeResponse {
+  public Recipes: Recipe[];
+  public Total: number;
+  public Offset: number;
+  public Limit: number;
+}
+
+
