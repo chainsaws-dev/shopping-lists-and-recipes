@@ -63,7 +63,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.FetchOnInint = this.DataServ.FetchRecipes(page).subscribe(
       () => {
         this.recipes = this.RecServ.GetRecipes();
-        //this.router.navigate(page.toString())
+        this.router.navigate(['../', page.toString()], { relativeTo: this.activeroute });
       }
     );
   }

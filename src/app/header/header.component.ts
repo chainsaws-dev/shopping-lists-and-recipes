@@ -20,6 +20,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private auth: AuthService) { }
 
   ngOnInit(): void {
+    this.LoggedIn = true;
+    this.UserEmail = 'test@test.ru';
+    /*
     this.LoggedIn = this.auth.CheckRegistered();
     this.UserEmail = this.auth.GetUserEmail();
 
@@ -27,6 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.LoggedIn = loggedin;
       this.UserEmail = this.auth.GetUserEmail();
     });
+    */
   }
 
   ngOnDestroy(): void {
