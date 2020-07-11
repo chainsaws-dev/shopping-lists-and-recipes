@@ -45,7 +45,7 @@ export class DataStorageService {
       }),
         tap(recresp => {
           this.recipes.SetRecipes(recresp.Recipes);
-          this.recipes.SetPagination(recresp.Total, recresp.Limit);
+          this.recipes.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
           this.LoadingData.next(false);
         }));
   }

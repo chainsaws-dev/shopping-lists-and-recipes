@@ -11,15 +11,15 @@
   <div class="col">
     <div class="list-group mb-1">
       <app-recipe-item *ngFor="let recipe of recipes; let i=index" [recipe]="recipe" [index]="i"></app-recipe-item>
+      <ngb-pagination
+      [collectionSize]="collectionSize"
+      [pageSize]="PageSize"
+      [(page)]="currentPage"
+      [boundaryLinks]="true"
+      [maxSize]="11"
+      (pageChange)="OnPageChanged($event)"></ngb-pagination>
     </div>
   </div>
-  <ngb-pagination
-  [collectionSize]="collectionSize"
-  [pageSize]="PageSize"
-  [(page)]="currentPage"
-  [boundaryLinks]="true"
-  [maxSize]="11"
-  (pageChange)="OnPageChanged($event)"></ngb-pagination>
 </div>
 <div class="text-center">
   <div class="spinner-border" role="status" *ngIf="IsLoading">

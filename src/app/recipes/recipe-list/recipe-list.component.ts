@@ -57,6 +57,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.FetchOnInint = this.DataServ.FetchRecipes(1, environment.RecipePageSize).subscribe(
       () => {
         this.recipes = this.RecServ.GetRecipes();
+        this.currentPage = this.RecServ.CurrentPage;
+        this.collectionSize = this.RecServ.TotalPages;
       }
     );
   }
@@ -66,6 +68,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.FetchOnInint = this.DataServ.FetchRecipes(page, environment.RecipePageSize).subscribe(
       () => {
         this.recipes = this.RecServ.GetRecipes();
+        this.currentPage = this.RecServ.CurrentPage;
+        this.collectionSize = this.RecServ.TotalPages;
         this.router.navigate(['../', page.toString()], { relativeTo: this.activeroute });
       }
     );
