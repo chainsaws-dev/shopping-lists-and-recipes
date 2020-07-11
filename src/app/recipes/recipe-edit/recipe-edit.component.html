@@ -3,7 +3,7 @@
     <div style="margin: 3px;">
       <h1 *ngIf="editmode">Edit</h1>
       <h1 *ngIf="!editmode">Create</h1>
-      <img [src]="RecipeToEdit.imagePath" [alt]="RecipeToEdit.name" class="rounded d-block mx-auto"
+      <img [src]="RecipeToEdit.ImagePath" [alt]="RecipeToEdit.Name" class="rounded d-block mx-auto"
         style="margin: 3px; max-width: 500px; max-height: 333px;">
       <button type="button" class="btn btn-outline-primary" style="margin: 3px;" (click)="fileInput.click()">
         <span>Upload image</span>
@@ -15,8 +15,8 @@
         </div>
       </div>
       <input type="text" id="name" placeholder="Name" class="form-control mb-1" name="recipename"
-        [ngModel]="RecipeToEdit.name" required>
-      <ckeditor class="mb-1" name="recipedescription" [editor]="HtmlEditor" [ngModel]="RecipeToEdit.description"
+        [ngModel]="RecipeToEdit.Name" required>
+      <ckeditor class="mb-1" name="recipedescription" [editor]="HtmlEditor" [ngModel]="RecipeToEdit.Description"
         (ready)="onReady($event)"></ckeditor>
       <h4>List of ingredients</h4>
       <div class="row">
@@ -55,9 +55,9 @@
       <ul class="list-group">
         <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
           [ngClass]="this.CurrentSelectedItem === ingredient ? 'active' : ''" style="cursor: pointer;"
-          *ngFor="let ingredient of RecipeToEdit.ingredients" (click)="OnIngredientSelect(ingredient)">
-          {{ingredient.name}}
-          <span class="badge badge-success badge-pill">{{ingredient.amount}}</span>
+          *ngFor="let ingredient of RecipeToEdit.Ingredients" (click)="OnIngredientSelect(ingredient)">
+          {{ingredient.Name}}
+          <span class="badge badge-success badge-pill">{{ingredient.Amount}}</span>
         </a>
       </ul>
     </div>

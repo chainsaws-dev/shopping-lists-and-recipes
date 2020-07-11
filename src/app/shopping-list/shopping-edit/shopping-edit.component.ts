@@ -23,8 +23,8 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
         this.selectedingredient = ing;
         this.editmode = true;
         this.slEditForm.setValue({
-          name: this.selectedingredient.name,
-          amount: this.selectedingredient.amount
+          name: this.selectedingredient.Name,
+          amount: this.selectedingredient.Amount
         });
       });
   }

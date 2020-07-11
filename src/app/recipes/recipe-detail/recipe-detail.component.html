@@ -1,12 +1,12 @@
 <div class="row mt-5">
   <div class="col">
-    <img [src]="CurrentRecipe.imagePath" [alt]="CurrentRecipe.name" class="rounded d-block" style="max-width: 500px; max-height: 333px;">
+    <img [src]="CurrentRecipe.ImagePath" [alt]="CurrentRecipe.Name" class="rounded d-block" style="max-width: 500px; max-height: 333px;">
   </div>
 </div>
 <div class="row">
   <div class="col">
     <h1>
-      {{CurrentRecipe.name}}
+      {{CurrentRecipe.Name}}
     </h1>
   </div>
 </div>
@@ -24,16 +24,16 @@
 </div>
 <div class="row">
   <div class="col mb-3">
-    <ckeditor class="mb-1" name="recipedescription" [editor]="CurEditor" [ngModel]="CurrentRecipe.description" (ready)="onReady($event)"></ckeditor>
+    <ckeditor class="mb-1" name="recipedescription" [editor]="CurEditor" [ngModel]="CurrentRecipe.Description" (ready)="onReady($event)"></ckeditor>
   </div>
 </div>
 <div class="row">
   <div class="col" style="max-width: 530px;">
     <ul class="list-group">
       <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-        style="cursor: pointer;" *ngFor="let ingredient of CurrentRecipe.ingredients">
-        {{ingredient.name}}
-        <span class="badge badge-primary badge-pill">{{ingredient.amount}}</span>
+        style="cursor: pointer;" *ngFor="let ingredient of CurrentRecipe.Ingredients">
+        {{ingredient.Name}}
+        <span class="badge badge-primary badge-pill">{{ingredient.Amount}}</span>
       </a>
     </ul>
   </div>

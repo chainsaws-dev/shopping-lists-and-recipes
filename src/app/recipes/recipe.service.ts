@@ -42,7 +42,7 @@ export class RecipeService {
   }
 
   AddNewRecipe(NewRecipe: Recipe) {
-    const NewRecipeToAdd = new Recipe(NewRecipe.name, NewRecipe.description, NewRecipe.imagePath, NewRecipe.ingredients);
+    const NewRecipeToAdd = new Recipe(NewRecipe.Name, NewRecipe.Description, NewRecipe.ImagePath, NewRecipe.Ingredients);
     this.recipes.push(NewRecipeToAdd);
     this.RecipeChanged.next(NewRecipeToAdd);
     this.RecipesUpdated.next();
@@ -68,20 +68,20 @@ export class RecipeService {
   }
 
   AddNewIngredient(NewIngredient: Ingredient) {
-    const FoundIngredient = this.RecipeToEdit.ingredients.find((x) => x.name === NewIngredient.name);
+    const FoundIngredient = this.RecipeToEdit.Ingredients.find((x) => x.Name === NewIngredient.Name);
 
     if (FoundIngredient) {
-      FoundIngredient.amount = FoundIngredient.amount + NewIngredient.amount;
+      FoundIngredient.Amount = FoundIngredient.Amount + NewIngredient.Amount;
     } else {
-      this.RecipeToEdit.ingredients.push(new Ingredient(NewIngredient.name, NewIngredient.amount));
+      this.RecipeToEdit.Ingredients.push(new Ingredient(NewIngredient.Name, NewIngredient.Amount));
     }
   }
 
   UpdateSelectedIngredient(UpdatedIngredient: Ingredient) {
-    const FoundIngredient = this.RecipeToEdit.ingredients.find((x) => x === this.CurrentSelectedItem);
+    const FoundIngredient = this.RecipeToEdit.Ingredients.find((x) => x === this.CurrentSelectedItem);
     if (FoundIngredient) {
-      FoundIngredient.name = UpdatedIngredient.name;
-      FoundIngredient.amount = UpdatedIngredient.amount;
+      FoundIngredient.Name = UpdatedIngredient.Name;
+      FoundIngredient.Amount = UpdatedIngredient.Amount;
     }
 
     this.CurrentSelectedItem = null;
@@ -89,21 +89,21 @@ export class RecipeService {
   }
 
   DeleteSelectedIngredient() {
-    const index: number = this.RecipeToEdit.ingredients.indexOf(this.CurrentSelectedItem);
+    const index: number = this.RecipeToEdit.Ingredients.indexOf(this.CurrentSelectedItem);
     if (index !== -1) {
-      this.RecipeToEdit.ingredients.splice(index, 1);
+      this.RecipeToEdit.Ingredients.splice(index, 1);
     }
 
     this.CurrentSelectedItem = null;
   }
 
   ClearAllIngredients() {
-    this.RecipeToEdit.ingredients = [];
+    this.RecipeToEdit.Ingredients = [];
     this.CurrentSelectedItem = null;
   }
 
   GetIngredientsLength(): number {
-    return this.RecipeToEdit.ingredients.length;
+    return this.RecipeToEdit.Ingredients.length;
   }
 
   IngredientSelect(SelectedIngredient: Ingredient) {

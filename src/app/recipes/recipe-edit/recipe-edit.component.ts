@@ -67,8 +67,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
     this.RecipeChangedSub = this.recipeservice.RecipeChanged.subscribe((SelRecipe: Recipe) => {
       this.RecipeForm.setValue({
-        recipename: SelRecipe.name,
-        recipedescription: SelRecipe.description
+        recipename: SelRecipe.Name,
+        recipedescription: SelRecipe.Description
       });
     });
 
@@ -77,8 +77,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       this.ingredientedit = true;
       if (SelIng) {
         this.IngredientsForm.setValue({
-          ingredientname: SelIng.name,
-          ingredientamount: SelIng.amount
+          ingredientname: SelIng.Name,
+          ingredientamount: SelIng.Amount
         });
       } else {
         this.IngredientsForm.reset();
@@ -125,8 +125,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     this.ingredientedit = true;
 
     this.IngredientsForm.setValue({
-      ingredientname: ingredient.name,
-      ingredientamount: ingredient.amount
+      ingredientname: ingredient.Name,
+      ingredientamount: ingredient.Amount
     });
   }
 
@@ -147,7 +147,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
         this.CurPercentStyle = 'width: ' + String(curevent.loaded / curevent.total * 100) + '%';
       } else if (curevent.type === HttpEventType.Response) {
         if (curevent.ok) {
-            this.RecipeToEdit.imagePath = '/uploads/' + curevent.body.FileID;
+            this.RecipeToEdit.ImagePath = '/uploads/' + curevent.body.FileID;
             this.dbid = curevent.body.DbID;
             this.UploadError = curevent.body.Error;
         }
@@ -158,8 +158,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
   OnSaveClick(SubmittedForm: NgForm) {
     if (SubmittedForm.valid) {
-      this.RecipeToEdit.name = SubmittedForm.value.recipename;
-      this.RecipeToEdit.description = SubmittedForm.value.recipedescription;
+      this.RecipeToEdit.Name = SubmittedForm.value.recipename;
+      this.RecipeToEdit.Description = SubmittedForm.value.recipedescription;
 
       if (this.editmode) {
         this.recipeservice.UpdateExistingRecipe(this.RecipeToEdit, this.index);
