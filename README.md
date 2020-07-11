@@ -1,6 +1,8 @@
 # Shopping Lists And Recipes
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
+Frontend for web app to store recipes and shopping list.
+
+Note that this frontend is specifically developed for this [backend](https://github.com/chainsaws-dev/shopping-lists-and-recipes-backend)
 
 ## Development server
 
