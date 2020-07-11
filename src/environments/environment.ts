@@ -6,10 +6,10 @@ export const environment = {
   production: false,
   RecipePageSize: 4,
   ApiKey: 'AIzaSyB3Jr8tp5wotjeS-re9iBSgX2b1zbM0Fx4',
-  AuthUrl: '/api/accounts',
-  RefTokenUrl: '/api/securetoken',
-  GetSetRecipesUrl: '/api/Recipes',
-  GetSetShoppingListUrl: '/api/ShoppingList',
+  AuthUrl: 'http://localhost:8080/api/accounts',
+  RefTokenUrl: 'http://localhost:8080/api/securetoken',
+  GetSetRecipesUrl: 'http://localhost:8080/api/Recipes',
+  GetSetShoppingListUrl: 'http://localhost:8080/api/ShoppingList',
 };
 
 /*
