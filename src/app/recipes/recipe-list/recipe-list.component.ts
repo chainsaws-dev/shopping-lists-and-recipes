@@ -4,6 +4,7 @@ import { RecipeService } from '../recipe.service';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-recipe-list',
@@ -18,8 +19,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   FetchOnInint: Subscription;
   IsLoading = false;
 
+  PageSize: number;
   collectionSize: number;
-  pageSize = 4;
   currentPage: number;
 
   constructor(
@@ -35,6 +36,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.PageSize = environment.RecipePageSize;
+
     this.activeroute.params.subscribe((params: Params) => {
       this.currentPage = +params.pn;
     });
@@ -51,7 +54,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.FetchOnInint = this.DataServ.FetchRecipes(1).subscribe(
+    this.FetchOnInint = this.DataServ.FetchRecipes(1, environment.RecipePageSize).subscribe(
       () => {
         this.recipes = this.RecServ.GetRecipes();
       }
@@ -60,7 +63,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
   OnPageChanged(page: number) {
     this.FetchOnInint.unsubscribe();
-    this.FetchOnInint = this.DataServ.FetchRecipes(page).subscribe(
+    this.FetchOnInint = this.DataServ.FetchRecipes(page, environment.RecipePageSize).subscribe(
       () => {
         this.recipes = this.RecServ.GetRecipes();
         this.router.navigate(['../', page.toString()], { relativeTo: this.activeroute });

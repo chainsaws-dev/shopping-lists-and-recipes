@@ -24,12 +24,13 @@ export class DataStorageService {
       });
   }
 
-  FetchRecipes(page: number) {
+  FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
 
     const httpOptions = {
       headers: new HttpHeaders({
          Page: page.toString(),
+         Limit: limit.toString()
       })
     };
 
