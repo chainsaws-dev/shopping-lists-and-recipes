@@ -13,8 +13,7 @@ export class RecipeService {
   IngredientSelected = new Subject<Ingredient>();
   RecipeChanged = new Subject<Recipe>();
   RecipesUpdated = new Subject<void>();
-  TotalPages: number;
-  CurrentPage: number;
+  Total: number;
 
   private recipes: Recipe[] = [];
 
@@ -60,14 +59,7 @@ export class RecipeService {
   }
 
   SetPagination(Total: number, Limit: number, Offset: number) {
-    this.TotalPages = Math.round(Total / Limit);
-    if (this.TotalPages === 0) {
-      this.TotalPages++;
-    }
-    this.CurrentPage = Math.round(Offset / Limit);
-    if (this.CurrentPage === 0) {
-      this.TotalPages++;
-    }
+    this.Total = Total;
   }
 
   DeleteRecipe(Index: number) {
