@@ -25,7 +25,6 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   CurrentSelectedItem: Ingredient;
   ingredientedit = false;
   CurPercentStyle = 'width: 0%';
-  dbid: number;
   UploadError = '';
 
   RecipeChangedSub: Subscription;
@@ -148,7 +147,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       } else if (curevent.type === HttpEventType.Response) {
         if (curevent.ok) {
             this.RecipeToEdit.ImagePath = '/uploads/' + curevent.body.FileID;
-            this.dbid = curevent.body.DbID;
+            this.RecipeToEdit.ImageDbID = curevent.body.DbID;
             this.UploadError = curevent.body.Error;
         }
       }
@@ -167,7 +166,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
         this.recipeservice.AddNewRecipe(this.RecipeToEdit);
       }
 
-      this.datastore.SaveRecipe(this.RecipeToEdit, this.dbid);
+      this.datastore.SaveRecipe(this.RecipeToEdit);
 
       this.router.navigate(['../'], { relativeTo: this.activatedroute });
     }
