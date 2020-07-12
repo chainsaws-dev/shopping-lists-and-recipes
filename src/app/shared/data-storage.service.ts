@@ -38,7 +38,7 @@ export class DataStorageService {
       .get<RecipeResponse>(environment.GetSetRecipesUrl, httpOptions)
       .pipe(map(recresp => {
         recresp.Recipes = recresp.Recipes.map(recipe => {
-          return { ...recipe, ingredients: recipe.Ingredients ? recipe.Ingredients : [] };
+          return { ...recipe, Ingredients: recipe.Ingredients ? recipe.Ingredients : [] };
         });
 
         return recresp;
