@@ -1,6 +1,6 @@
 <div class="row mt-5">
   <div class="col">
-    <img [src]="CurrentRecipe.ImagePath" [alt]="CurrentRecipe.Name" class="rounded d-block" style="max-width: 500px; max-height: 333px;">
+    <img [src]="CurrentRecipe.ImagePath" [alt]="CurrentRecipe.Name" class="rounded d-block" style="max-height: 333px;">
   </div>
 </div>
 <div class="row">
@@ -23,12 +23,12 @@
   </div>
 </div>
 <div class="row">
-  <div class="col mb-3">
+  <div class="col">
     <ckeditor class="mb-1" name="recipedescription" [editor]="CurEditor" [ngModel]="CurrentRecipe.Description" (ready)="onReady($event)"></ckeditor>
   </div>
 </div>
 <div class="row">
-  <div class="col" style="max-width: 530px;">
+  <div class="col">
     <ul class="list-group">
       <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
         style="cursor: pointer;" *ngFor="let ingredient of CurrentRecipe.Ingredients">

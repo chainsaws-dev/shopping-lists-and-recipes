@@ -7,7 +7,7 @@
         style="margin: 3px; max-width: 500px; max-height: 333px;">
       <button type="button" class="btn btn-outline-primary" style="margin: 3px;" (click)="fileInput.click()">
         <span>Upload image</span>
-        <input #fileInput type="file" class="form-control-file" (change)="onFileInput($event)" style="display:none;" />
+        <input #fileInput type="file" class="form-control-file" accept="image/*" (change)="onFileInput($event)" style="display:none;" />
       </button>
       <div class="progress mb-1">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
