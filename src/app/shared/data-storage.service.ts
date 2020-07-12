@@ -15,10 +15,10 @@ export class DataStorageService {
   constructor(private http: HttpClient,
               private recipes: RecipeService) { }
 
-  SaveRecipes(RecipeToSave: Recipe) {
+  SaveRecipe(RecipeToSave: Recipe, ImageID: number) {
     this.LoadingData.next(true);
 
-    this.http.put(environment.GetSetRecipesUrl, RecipeToSave)
+    this.http.post(environment.GetSetRecipesUrl, RecipeToSave)
       .subscribe(response => {
         this.LoadingData.next(false);
       });
