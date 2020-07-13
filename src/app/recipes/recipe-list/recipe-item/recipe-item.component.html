@@ -8,7 +8,10 @@
         </h4>
       </div>
       <div class="col">
-        <img [src]="recipe.ImagePath" [alt]="recipe.Name" class="rounded d-block float-right"
+        <div *ngIf="!recipe.ImagePath" class="image-placeholder">
+          <h4>195x130</h4>
+        </div>
+        <img *ngIf="recipe.ImagePath" [src]="recipe.ImagePath" [alt]="recipe.Name" class="rounded d-block float-right"
           style="max-height: 130px; max-width: 195px;">
       </div>
     </div>
