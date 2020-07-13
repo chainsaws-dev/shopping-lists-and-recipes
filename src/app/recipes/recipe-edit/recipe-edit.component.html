@@ -3,7 +3,10 @@
     <div style="margin: 3px;">
       <h1 *ngIf="editmode">Edit</h1>
       <h1 *ngIf="!editmode">Create</h1>
-      <img [src]="RecipeToEdit.ImagePath" [alt]="RecipeToEdit.Name" class="rounded d-block mx-auto"
+      <div *ngIf="!RecipeToEdit.ImagePath" class="image-placeholder">
+        <h4>500x333</h4>
+      </div>
+      <img *ngIf="RecipeToEdit.ImagePath" [src]="RecipeToEdit.ImagePath" [alt]="RecipeToEdit.Name" class="rounded d-block mx-auto"
         style="margin: 3px; max-width: 500px; max-height: 333px;">
       <button type="button" class="btn btn-outline-primary" style="margin: 3px;" (click)="fileInput.click()">
         <span>Upload image</span>
