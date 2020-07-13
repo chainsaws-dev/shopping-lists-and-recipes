@@ -14,6 +14,8 @@ import { environment } from 'src/environments/environment';
 export class RecipeListComponent implements OnInit, OnDestroy {
 
   recipes: Recipe[];
+  RecipeInsertedSub: Subscription;
+  RecipeUpdatedSub: Subscription;
   RecipeDeletedSub: Subscription;
   DataServiceSub: Subscription;
   FetchOnInint: Subscription;
@@ -30,6 +32,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     private router: Router) {
   }
   ngOnDestroy(): void {
+    this.RecipeInsertedSub.unsubscribe();
+    this.RecipeUpdatedSub.unsubscribe();
     this.RecipeDeletedSub.unsubscribe();
     this.DataServiceSub.unsubscribe();
     this.FetchOnInint.unsubscribe();
@@ -41,12 +45,6 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.activeroute.params.subscribe((params: Params) => {
       this.currentPage = +params.pn;
     });
-
-    this.RecipeDeletedSub = this.RecServ.RecipesUpdated.subscribe(
-      () => {
-        this.recipes = this.RecServ.GetRecipes();
-      }
-    );
 
     this.DataServiceSub = this.DataServ.LoadingData.subscribe(
       (State) => {
@@ -60,6 +58,27 @@ export class RecipeListComponent implements OnInit, OnDestroy {
         this.collectionSize = this.RecServ.Total;
       }
     );
+
+    this.RecipeUpdatedSub = this.RecServ.RecipesUpdated.subscribe(
+      () => {
+        this.recipes = this.RecServ.GetRecipes();
+      }
+    );
+
+    this.RecipeInsertedSub = this.RecServ.RecipesInserted.subscribe(
+      () => {
+        this.recipes = this.RecServ.GetRecipes();
+        this.collectionSize = this.collectionSize + 1;
+      }
+    );
+
+    this.RecipeDeletedSub = this.RecServ.RecipesDeleted.subscribe(
+      () => {
+        this.recipes = this.RecServ.GetRecipes();
+        this.collectionSize = this.collectionSize - 1;
+      }
+    );
+
   }
 
   OnPageChanged(page: number) {

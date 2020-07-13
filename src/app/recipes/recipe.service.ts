@@ -3,6 +3,7 @@ import { Recipe } from './recipe-model';
 import { Ingredient } from '../shared/ingredients.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +14,21 @@ export class RecipeService {
   IngredientSelected = new Subject<Ingredient>();
   RecipeChanged = new Subject<Recipe>();
   RecipesUpdated = new Subject<void>();
+  RecipesInserted = new Subject<void>();
+  RecipesDeleted = new Subject<void>();
   Total: number;
 
-
+  // new Recipe('Test', 'Desc', '', [new Ingredient('Bread', 1)])
   private recipes: Recipe[] = [];
 
   constructor(private ShopList: ShoppingListService) { }
 
   GetRecipes() {
-    return this.recipes.slice();
+    return this.recipes.slice(0, environment.RecipePageSize);
+  }
+
+  GetRecipesLen() {
+    return this.recipes.length;
   }
 
   GetRecipeById(id: number) {
@@ -47,7 +54,7 @@ export class RecipeService {
     this.recipes.push(NewRecipeToAdd);
 
     this.RecipeChanged.next(NewRecipeToAdd);
-    this.RecipesUpdated.next();
+    this.RecipesInserted.next();
   }
 
   UpdateExistingRecipe(RecipeToUpdate: Recipe, Index: number) {
@@ -66,7 +73,7 @@ export class RecipeService {
 
   DeleteRecipe(Index: number) {
     this.recipes.splice(Index, 1);
-    this.RecipesUpdated.next();
+    this.RecipesDeleted.next();
   }
 
   AddNewIngredient(NewIngredient: Ingredient) {
