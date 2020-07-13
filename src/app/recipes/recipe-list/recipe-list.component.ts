@@ -46,6 +46,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
     this.activeroute.params.subscribe((params: Params) => {
       this.currentPage = +params.pn;
+      this.RecServ.CurrentPage = this.currentPage;
     });
 
     this.DataServiceSub = this.DataServ.LoadingData.subscribe(
@@ -74,6 +75,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       }
     );
 
+
     this.FetchOnInint = this.DataServ.FetchRecipes(this.currentPage, environment.RecipePageSize).subscribe(
       () => {
         this.recipes = this.RecServ.GetRecipes();
@@ -84,6 +86,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   }
 
   OnPageChanged(page: number) {
+    this.RecServ.CurrentPage = page;
     this.FetchOnInint.unsubscribe();
     this.FetchOnInint = this.DataServ.FetchRecipes(page, environment.RecipePageSize).subscribe(
       () => {

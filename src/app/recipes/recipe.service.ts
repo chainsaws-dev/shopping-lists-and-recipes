@@ -17,6 +17,7 @@ export class RecipeService {
   RecipesInserted = new Subject<void>();
   RecipesDeleted = new Subject<void>();
   Total: number;
+  CurrentPage: number;
 
   // new Recipe('Test', 'Desc', '', [new Ingredient('Bread', 1)])
   private recipes: Recipe[] = [];
