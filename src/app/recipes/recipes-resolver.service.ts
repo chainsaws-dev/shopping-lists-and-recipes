@@ -19,7 +19,7 @@ export class RecipesResolverService implements Resolve<Recipe[]> {
     const recipeswegot = this.recipeservice.GetRecipes();
 
     if (recipeswegot.length === 0) {
-      return this.datastorageservice.FetchRecipes(1, environment.RecipePageSize).pipe(map(resp => {
+      return this.datastorageservice.FetchRecipes(route.params.pn, environment.RecipePageSize).pipe(map(resp => {
         return resp.Recipes;
       }));
     } else {
