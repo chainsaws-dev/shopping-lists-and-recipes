@@ -3,7 +3,7 @@
     <div style="margin: 3px;">
       <h1 *ngIf="editmode">Edit</h1>
       <h1 *ngIf="!editmode">Create</h1>
-      <div *ngIf="!RecipeToEdit.ImagePath" class="image-placeholder">
+      <div *ngIf="!RecipeToEdit.ImagePath" class="image-placeholder mx-auto">
         <h4>500x333</h4>
       </div>
       <img *ngIf="RecipeToEdit.ImagePath" [src]="RecipeToEdit.ImagePath" [alt]="RecipeToEdit.Name" class="rounded d-block mx-auto"
