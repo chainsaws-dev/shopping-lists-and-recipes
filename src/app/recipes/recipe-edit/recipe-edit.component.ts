@@ -8,6 +8,7 @@ import { HttpClient, HttpEventType, HttpResponse, HttpEvent } from '@angular/com
 import { Subscription } from 'rxjs';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -163,7 +164,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       if (this.editmode) {
         this.recipeservice.UpdateExistingRecipe(this.RecipeToEdit, this.index);
       } else {
-        this.recipeservice.AddNewRecipe(this.RecipeToEdit);
+          this.recipeservice.AddNewRecipe(this.RecipeToEdit);
       }
 
       this.datastore.SaveRecipe(this.RecipeToEdit);

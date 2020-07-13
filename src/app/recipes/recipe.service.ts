@@ -15,6 +15,7 @@ export class RecipeService {
   RecipesUpdated = new Subject<void>();
   Total: number;
 
+
   private recipes: Recipe[] = [];
 
   constructor(private ShopList: ShoppingListService) { }
@@ -44,6 +45,7 @@ export class RecipeService {
   AddNewRecipe(NewRecipe: Recipe) {
     const NewRecipeToAdd = new Recipe(NewRecipe.Name, NewRecipe.Description, NewRecipe.ImagePath, NewRecipe.Ingredients);
     this.recipes.push(NewRecipeToAdd);
+
     this.RecipeChanged.next(NewRecipeToAdd);
     this.RecipesUpdated.next();
   }
