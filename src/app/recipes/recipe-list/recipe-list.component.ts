@@ -42,6 +42,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.PageSize = environment.RecipePageSize;
 
+    // this.recipes = this.RecServ.GetRecipes();
+
     this.activeroute.params.subscribe((params: Params) => {
       this.currentPage = +params.pn;
     });
@@ -51,6 +53,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
         this.IsLoading = State;
       }
     );
+
 
     this.FetchOnInint = this.DataServ.FetchRecipes(1, environment.RecipePageSize).subscribe(
       () => {

@@ -2,17 +2,17 @@
   routerLinkActive="active">
   <a style="cursor: pointer">
     <div class="row">
-      <div class="col">
+      <div style="position: absolute; left: 12px;">
         <h4 class="list-group-item-heading">
           {{recipe.Name}}
         </h4>
       </div>
-      <div class="col">
+      <div style="position: absolute; right: 7px;">
         <div *ngIf="!recipe.ImagePath" class="image-placeholder">
           <h4>195x130</h4>
         </div>
         <img *ngIf="recipe.ImagePath" [src]="recipe.ImagePath" [alt]="recipe.Name" class="rounded d-block float-right"
-          style="max-height: 130px; max-width: 195px;">
+          style="height: 130px; width: 195px;">
       </div>
     </div>
   </a>
