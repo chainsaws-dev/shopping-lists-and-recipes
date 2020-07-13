@@ -3,7 +3,7 @@
     <div *ngIf="!CurrentRecipe.ImagePath" class="image-placeholder">
       <h4>500x333</h4>
     </div>
-    <img *ngIf="CurrentRecipe.ImagePath" [src]="CurrentRecipe.ImagePath" [alt]="CurrentRecipe.Name" class="rounded d-block" style="max-height: 333px;">
+    <img *ngIf="CurrentRecipe.ImagePath" [src]="CurrentRecipe.ImagePath" [alt]="CurrentRecipe.Name" class="rounded d-block mx-auto" style="max-height: 333px;">
   </div>
 </div>
 <div class="row">
