@@ -50,8 +50,12 @@ export class RecipeService {
   }
 
   AddNewRecipe(NewRecipe: Recipe) {
+
     const NewRecipeToAdd = new Recipe(NewRecipe.Name, NewRecipe.Description, NewRecipe.ImagePath, NewRecipe.Ingredients);
-    this.recipes.push(NewRecipeToAdd);
+
+    if (this.recipes.length <= environment.RecipePageSize) {
+      this.recipes.push(NewRecipeToAdd);
+    }
 
     this.RecipeChanged.next(NewRecipeToAdd);
     this.RecipesInserted.next();
