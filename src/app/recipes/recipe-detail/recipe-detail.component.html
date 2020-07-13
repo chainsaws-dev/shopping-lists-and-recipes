@@ -1,6 +1,6 @@
 <div class="row mt-5">
   <div class="col">
-    <div *ngIf="!CurrentRecipe.ImagePath" class="image-placeholder rounded d-block">
+    <div *ngIf="!CurrentRecipe.ImagePath" class="image-placeholder">
       <h4>500x333</h4>
     </div>
     <img *ngIf="CurrentRecipe.ImagePath" [src]="CurrentRecipe.ImagePath" [alt]="CurrentRecipe.Name" class="rounded d-block" style="max-height: 333px;">
