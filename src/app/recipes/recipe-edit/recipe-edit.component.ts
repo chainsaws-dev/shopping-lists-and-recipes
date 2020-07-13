@@ -8,7 +8,6 @@ import { HttpClient, HttpEventType, HttpResponse, HttpEvent } from '@angular/com
 import { Subscription } from 'rxjs';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-recipe-edit',
