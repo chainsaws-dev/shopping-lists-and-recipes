@@ -54,14 +54,6 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       }
     );
 
-
-    this.FetchOnInint = this.DataServ.FetchRecipes(1, environment.RecipePageSize).subscribe(
-      () => {
-        this.recipes = this.RecServ.GetRecipes();
-        this.collectionSize = this.RecServ.Total;
-      }
-    );
-
     this.RecipeUpdatedSub = this.RecServ.RecipesUpdated.subscribe(
       () => {
         this.recipes = this.RecServ.GetRecipes();
@@ -79,6 +71,13 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       () => {
         this.recipes = this.RecServ.GetRecipes();
         this.collectionSize = this.collectionSize - 1;
+      }
+    );
+
+    this.FetchOnInint = this.DataServ.FetchRecipes(this.currentPage, environment.RecipePageSize).subscribe(
+      () => {
+        this.recipes = this.RecServ.GetRecipes();
+        this.collectionSize = this.RecServ.Total;
       }
     );
 

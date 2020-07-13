@@ -8,16 +8,17 @@ import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 import { RecipesResolverService } from './recipes-resolver.service';
 
 const routes: Routes = [
-  {path: '', redirectTo: '1', pathMatch: 'full'},
-  {path: ':pn', component: RecipesComponent, resolve: [RecipesResolverService],
-  // canActivate: [AuthGuard],
-  children: [
-    { path: '', component: RecipeStartComponent },
-    { path: 'new', component: RecipeEditComponent },
-    { path: ':id', component: RecipeDetailComponent, resolve: [RecipesResolverService] },
-    { path: ':id/edit', component: RecipeEditComponent, resolve: [RecipesResolverService] }
-  ]
-}];
+  { path: '', redirectTo: '1', pathMatch: 'full' },
+  {
+    path: ':pn', component: RecipesComponent,
+    // canActivate: [AuthGuard],
+    children: [
+      { path: '', component: RecipeStartComponent },
+      { path: 'new', component: RecipeEditComponent },
+      { path: ':id', component: RecipeDetailComponent, resolve: [RecipesResolverService] },
+      { path: ':id/edit', component: RecipeEditComponent, resolve: [RecipesResolverService] }
+    ]
+  }];
 
 @NgModule({
   declarations: [],

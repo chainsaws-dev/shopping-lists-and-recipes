@@ -26,6 +26,7 @@ export class DataStorageService {
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
+    console.log(page);
 
     const httpOptions = {
       headers: new HttpHeaders({
