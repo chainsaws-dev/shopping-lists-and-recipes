@@ -1,0 +1,14 @@
+.image-placeholder {
+  background-color: #eee;
+  display: flex;
+  height: 333px;
+  margin: 5px;
+  width: 500px;
+  border-radius: 3px;
+}
+
+.image-placeholder > h4 {
+  align-self: center;
+  text-align: center;
+  width: 100%;
+}
