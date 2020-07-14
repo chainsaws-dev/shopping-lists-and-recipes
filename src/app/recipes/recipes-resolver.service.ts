@@ -12,8 +12,9 @@ import { environment } from 'src/environments/environment';
 })
 export class RecipesResolverService implements Resolve<Recipe[]> {
 
-  constructor(private datastorageservice: DataStorageService,
-              private recipeservice: RecipeService) { }
+  constructor(
+    private datastorageservice: DataStorageService,
+    private recipeservice: RecipeService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Recipe[] | Observable<Recipe[]> | Promise<Recipe[]> {
     const recipeswegot = this.recipeservice.GetRecipes();

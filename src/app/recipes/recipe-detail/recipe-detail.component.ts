@@ -40,6 +40,6 @@ export class RecipeDetailComponent implements OnInit {
 
     this.datastore.DeleteRecipe(this.CurrentRecipe);
 
-    this.router.navigate(['../'], { relativeTo: this.activeroute });
+    this.router.navigate(['../'], { relativeTo: this.activeroute, queryParamsHandling: 'preserve' });
   }
 }

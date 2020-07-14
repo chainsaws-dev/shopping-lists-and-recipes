@@ -3,7 +3,8 @@
   <div class="col">
     <div class="input-group mb-1">
       <div class="input-group-prepend mt-1">
-        <button class="btn btn-outline-primary" [routerLink]="['/recipes',currentPage,'new']">Add</button>
+        <button class="btn btn-outline-primary" [routerLink]="['/recipes',currentPage,'new']" queryParamsHandling="merge">Add</button>
+        <h3 *ngIf="this.SearchRequest" style="margin-left: 40px;">Search results:</h3>
       </div>
     </div>
   </div>

@@ -168,7 +168,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
       this.datastore.SaveRecipe(this.RecipeToEdit);
 
-      this.router.navigate(['../'], { relativeTo: this.activatedroute });
+      this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
     }
   }
 

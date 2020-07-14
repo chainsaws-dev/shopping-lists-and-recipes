@@ -25,6 +25,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   ShowMessage: boolean;
   MessageType: string;
 
+  SearchRequest: string;
 
   IsLoading = false;
 
@@ -100,26 +101,49 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.activeroute.queryParams.subscribe((params: Params) => {
+      this.SearchRequest = params.search;
 
-
-    this.FetchOnInint = this.DataServ.FetchRecipes(this.currentPage, environment.RecipePageSize).subscribe(
-      () => {
-        this.recipes = this.RecServ.GetRecipes();
-        this.collectionSize = this.RecServ.Total;
+      if (this.SearchRequest) {
+        this.FetchOnInint = this.DataServ.SearchRecipes(this.currentPage, environment.RecipePageSize, this.SearchRequest).subscribe(
+          () => {
+            this.recipes = this.RecServ.GetRecipes();
+            this.collectionSize = this.RecServ.Total;
+          }
+        );
+      } else {
+        this.FetchOnInint = this.DataServ.FetchRecipes(this.currentPage, environment.RecipePageSize).subscribe(
+          () => {
+            this.recipes = this.RecServ.GetRecipes();
+            this.collectionSize = this.RecServ.Total;
+          }
+        );
       }
+    }
     );
+
 
   }
 
   OnPageChanged(page: number) {
     this.RecServ.CurrentPage = page;
     this.FetchOnInint.unsubscribe();
-    this.FetchOnInint = this.DataServ.FetchRecipes(page, environment.RecipePageSize).subscribe(
-      () => {
-        this.recipes = this.RecServ.GetRecipes();
-        this.collectionSize = this.RecServ.Total;
-        this.router.navigate(['../', page.toString()], { relativeTo: this.activeroute });
-      }
-    );
+    if (decodeURI(this.SearchRequest)) {
+      this.FetchOnInint = this.DataServ.SearchRecipes(page, environment.RecipePageSize, this.SearchRequest).subscribe(
+        () => {
+          this.recipes = this.RecServ.GetRecipes();
+          this.collectionSize = this.RecServ.Total;
+          this.router.navigate(['../', page.toString()], { relativeTo: this.activeroute, queryParamsHandling: 'preserve' });
+        }
+      );
+    } else {
+      this.FetchOnInint = this.DataServ.FetchRecipes(page, environment.RecipePageSize).subscribe(
+        () => {
+          this.recipes = this.RecServ.GetRecipes();
+          this.collectionSize = this.RecServ.Total;
+          this.router.navigate(['../', page.toString()], { relativeTo: this.activeroute, queryParamsHandling: 'preserve' });
+        }
+      );
+    }
   }
 }
