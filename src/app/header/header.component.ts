@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (form.valid) {
       const fvalue = form.value;
       this.datastore.SearchRecipes(1, environment.RecipePageSize, fvalue.searchreq);
-      this.router.navigate(['recipes', 'SearchResult']);
+      this.router.navigate(['recipes'],  { queryParams: { search: fvalue } });
     }
   }
 

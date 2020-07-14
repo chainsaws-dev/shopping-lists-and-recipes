@@ -78,7 +78,7 @@ export class DataStorageService {
       headers: new HttpHeaders({
          Page: page.toString(),
          Limit: limit.toString(),
-         Search: search,
+         Search: search
       })
     };
 
