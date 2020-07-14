@@ -1,5 +1,5 @@
+<ngb-alert *ngIf="ShowMessage" [type]="MessageType" (close)="ShowMessage = false">{{ ResponseFromBackend.Error.Message }}</ngb-alert>
 <div class="row" *ngIf="!IsLoading">
-  <ngb-alert *ngIf="ShowMessage" [type]="MessageType" (close)="ShowMessage = false">{{ ResponseFromBackend.Error.Message }}</ngb-alert>
   <div class="col">
     <div class="input-group mb-1">
       <div class="input-group-prepend mt-1">
