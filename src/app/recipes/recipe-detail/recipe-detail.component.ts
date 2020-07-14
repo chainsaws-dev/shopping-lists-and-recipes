@@ -3,6 +3,7 @@ import { Recipe } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -13,10 +14,14 @@ export class RecipeDetailComponent implements OnInit {
   public CurEditor = DecoupledEditor;
   CurrentRecipe: Recipe;
   id: number;
-  constructor(private RecipeServ: RecipeService, private activeroute: ActivatedRoute, private router: Router) { }
+  constructor(
+    private RecipeServ: RecipeService,
+    private activeroute: ActivatedRoute,
+    private router: Router,
+    private datastore: DataStorageService) { }
 
   public onReady(editor) {
-      editor.isReadOnly = true;
+    editor.isReadOnly = true;
   }
 
   ngOnInit(): void {
@@ -32,6 +37,9 @@ export class RecipeDetailComponent implements OnInit {
 
   OnDeleteRecipe(): void {
     this.RecipeServ.DeleteRecipe(this.id);
+
+    this.datastore.DeleteRecipe(this.CurrentRecipe);
+
     this.router.navigate(['../'], { relativeTo: this.activeroute });
   }
 }
