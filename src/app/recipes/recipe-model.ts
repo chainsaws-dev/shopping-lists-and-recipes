@@ -24,3 +24,11 @@ export class RecipeResponse {
 }
 
 
+export class ErrorResponse {
+  public Error: BackendError;
+}
+
+export class BackendError {
+  public Code: number;
+  public Message: string;
+}

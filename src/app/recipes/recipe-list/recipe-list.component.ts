@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Recipe } from '../recipe-model';
+import { Recipe, ErrorResponse } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
@@ -19,6 +19,13 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   RecipeDeletedSub: Subscription;
   DataServiceSub: Subscription;
   FetchOnInint: Subscription;
+
+  RecivedResponseSub: Subscription;
+  ResponseFromBackend: ErrorResponse;
+  ShowMessage: boolean;
+  MessageType: string;
+
+
   IsLoading = false;
 
   PageSize: number;
@@ -37,6 +44,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.RecipeDeletedSub.unsubscribe();
     this.DataServiceSub.unsubscribe();
     this.FetchOnInint.unsubscribe();
+    this.RecivedResponseSub.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -52,6 +60,23 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.DataServiceSub = this.DataServ.LoadingData.subscribe(
       (State) => {
         this.IsLoading = State;
+      }
+    );
+
+    this.RecivedResponseSub = this.DataServ.RecivedResponse.subscribe(
+      (response) => {
+        this.ShowMessage = true;
+        this.ResponseFromBackend = response;
+        setTimeout(() => this.ShowMessage = false, 5000);
+
+        switch (response.Error.Code) {
+          case 200:
+            this.MessageType = 'success';
+            break;
+          default:
+            this.MessageType = 'danger';
+            break;
+        }
       }
     );
 
@@ -74,6 +99,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
         this.collectionSize = this.collectionSize - 1;
       }
     );
+
 
 
     this.FetchOnInint = this.DataServ.FetchRecipes(this.currentPage, environment.RecipePageSize).subscribe(

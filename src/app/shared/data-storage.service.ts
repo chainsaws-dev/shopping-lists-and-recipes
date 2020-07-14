@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
-import { Recipe, RecipeResponse } from '../recipes/recipe-model';
+import { Recipe, RecipeResponse, ErrorResponse } from '../recipes/recipe-model';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
@@ -11,15 +11,33 @@ import { Subject } from 'rxjs';
 })
 export class DataStorageService {
   LoadingData = new Subject<boolean>();
+  RecivedResponse = new Subject<ErrorResponse>();
 
   constructor(private http: HttpClient,
               private recipes: RecipeService) { }
 
+  DeleteRecipe(RecipeToDelete: Recipe) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        RecipeID: RecipeToDelete.ID.toString()
+      })
+    };
+
+    this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl, httpOptions)
+      .subscribe(response => {
+        this.RecivedResponse.next(response);
+        this.LoadingData.next(false);
+      });
+  }
+
   SaveRecipe(RecipeToSave: Recipe) {
     this.LoadingData.next(true);
 
-    this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave)
+    this.http.post<ErrorResponse>(environment.GetSetRecipesUrl, RecipeToSave)
       .subscribe(response => {
+         this.RecivedResponse.next(response);
          this.LoadingData.next(false);
       });
   }
