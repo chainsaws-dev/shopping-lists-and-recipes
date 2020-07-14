@@ -5,6 +5,8 @@ import { Recipe, RecipeResponse, ErrorResponse } from '../recipes/recipe-model';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
+import { ShoppingListResponse } from './ingredients.model';
+import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,8 @@ export class DataStorageService {
   RecivedResponse = new Subject<ErrorResponse>();
 
   constructor(private http: HttpClient,
-              private recipes: RecipeService) { }
+              private recipes: RecipeService,
+              private shoppinglist: ShoppingListService) { }
 
   DeleteRecipe(RecipeToDelete: Recipe) {
     this.LoadingData.next(true);
@@ -64,6 +67,25 @@ export class DataStorageService {
         tap(recresp => {
           this.recipes.SetRecipes(recresp.Recipes);
           this.recipes.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+          this.LoadingData.next(false);
+        }));
+  }
+
+  FetchShoppingList(page: number, limit: number) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+         Page: page.toString(),
+         Limit: limit.toString()
+      })
+    };
+
+    return this.http
+      .get<ShoppingListResponse>(environment.GetSetShoppingListUrl, httpOptions)
+      .pipe(tap(recresp => {
+          this.shoppinglist.SetIngredients(recresp.Items);
+          this.shoppinglist.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
           this.LoadingData.next(false);
         }));
   }

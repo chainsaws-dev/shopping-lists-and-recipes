@@ -7,10 +7,8 @@ import { AuthGuard } from '../auth/auth.guard';
 import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  { path: '',
-   component: ShoppingListComponent,
-   // canActivate: [AuthGuard]
-}
+  { path: '', redirectTo: '1', pathMatch: 'full' },
+  { path: ':pn', component: ShoppingListComponent} // , resolve: [RecipesResolverService], canActivate: [AuthGuard]
 ];
 
 @NgModule({

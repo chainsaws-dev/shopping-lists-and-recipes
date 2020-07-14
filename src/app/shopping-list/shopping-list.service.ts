@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Ingredient } from '../shared/ingredients.model';
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +9,13 @@ import { Subject } from 'rxjs';
 export class ShoppingListService {
   IngredientSelected = new Subject<Ingredient>();
   IngredientChanged = new Subject<Ingredient[]>();
+  IngredientsUpdated = new Subject<void>();
 
   CurrentSelectedItem: Ingredient;
-  private ingredients: Ingredient[] = [
-    new Ingredient('Apple', 5),
-    new Ingredient('Tomatoe', 10)
-  ];
+  Total: number;
+
+  // new Ingredient('Apple', 5), new Ingredient('Tomatoe', 10)
+  private ingredients: Ingredient[] = [];
 
   constructor() { }
 
@@ -25,13 +27,24 @@ export class ShoppingListService {
     return this.ingredients.length;
   }
 
+  SetIngredients(newing: Ingredient[]) {
+    this.ingredients = newing;
+    this.IngredientsUpdated.next();
+  }
+
+  SetPagination(Total: number, Limit: number, Offset: number) {
+    this.Total = Total;
+  }
+
   AddNewItem(NewIngredient: Ingredient) {
     const FoundIngredient = this.ingredients.find((x) => x.Name === NewIngredient.Name);
 
     if (FoundIngredient) {
       FoundIngredient.Amount = FoundIngredient.Amount + NewIngredient.Amount;
     } else {
-      this.ingredients.push(new Ingredient(NewIngredient.Name, NewIngredient.Amount));
+      if (this.ingredients.length <= environment.ShoppingListPageSize) {
+        this.ingredients.push(new Ingredient(NewIngredient.Name, NewIngredient.Amount));
+      }
     }
 
     this.IngredientChanged.next(this.ingredients.slice());
