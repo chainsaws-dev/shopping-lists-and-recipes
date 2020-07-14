@@ -18,6 +18,8 @@ export class RecipesResolverService implements Resolve<Recipe[]> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Recipe[] | Observable<Recipe[]> | Promise<Recipe[]> {
     const recipeswegot = this.recipeservice.GetRecipes();
 
+    console.log(route.outlet);
+
     if (recipeswegot.length === 0) {
       return this.datastorageservice.FetchRecipes(route.params.pn, environment.RecipePageSize).pipe(map(resp => {
         return resp.Recipes;

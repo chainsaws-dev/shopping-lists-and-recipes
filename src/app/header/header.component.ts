@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataStorageService } from '../shared/data-storage.service';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
+import { NgForm } from '@angular/forms';
+import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,7 +19,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private LoginSub: Subscription;
 
   constructor(private datastore: DataStorageService,
-              private auth: AuthService) { }
+              private auth: AuthService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.LoggedIn = true;
@@ -30,6 +34,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.UserEmail = this.auth.GetUserEmail();
     });
     */
+  }
+
+  SearchRecipes(form: NgForm): void {
+    if (form.valid) {
+      const fvalue = form.value;
+      this.datastore.SearchRecipes(1, environment.RecipePageSize, fvalue.searchreq);
+      this.router.navigate(['recipes', 'searchresult', 1]);
+    }
   }
 
   ngOnDestroy(): void {

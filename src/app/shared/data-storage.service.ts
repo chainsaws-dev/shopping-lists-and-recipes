@@ -71,6 +71,33 @@ export class DataStorageService {
         }));
   }
 
+  SearchRecipes(page: number, limit: number, search: string) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+         Page: page.toString(),
+         Limit: limit.toString(),
+         Search: search,
+      })
+    };
+
+    return this.http
+      .get<RecipeResponse>(environment.SearchRecipesUrl, httpOptions)
+      .pipe(map(recresp => {
+        recresp.Recipes = recresp.Recipes.map(recipe => {
+          return { ...recipe, Ingredients: recipe.Ingredients ? recipe.Ingredients : [] };
+        });
+
+        return recresp;
+      }),
+        tap(recresp => {
+          this.recipes.SetRecipes(recresp.Recipes);
+          this.recipes.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+          this.LoadingData.next(false);
+        }));
+  }
+
   FetchShoppingList(page: number, limit: number) {
     this.LoadingData.next(true);
 

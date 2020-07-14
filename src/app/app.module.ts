@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 import { SharedModule } from './shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { SharedModule } from './shared/shared.module';
     NgbAlertModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     SharedModule
   ],
   // providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],

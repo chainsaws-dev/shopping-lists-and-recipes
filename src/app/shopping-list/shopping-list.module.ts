@@ -5,6 +5,7 @@ import { ShoppingEditComponent } from './shopping-edit/shopping-edit.component';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
 import { FormsModule } from '@angular/forms';
+import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: '', redirectTo: '1', pathMatch: 'full' },
@@ -19,6 +20,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
+    NgbAlertModule,
+    NgbPaginationModule,
     RouterModule.forChild(routes)
   ]
 })
