@@ -1,12 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="LoggedIn">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;" *ngIf="LoggedIn">
   <div class="container-fluid">
     <div class="navbar-header">
       <a href="#" class="navbar-brand">Recipe book</a>
     </div>
-    <form class="form-inline">
-      <button class="btn btn-outline-secondary" title="Logout" (click)="OnLogout()">{{UserEmail}}</button>
-    </form>
-    <div class="navbar-expand">
+    <div class="navbar-expand mr-auto mt-2 mt-lg-0">
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <a routerLink="/recipes" routerLinkActive="active" class="nav-link">
@@ -25,9 +22,10 @@
         </li>
       </ul>
     </div>
-    <form (ngSubmit)="SearchRecipes(f)" class="form-inline" #f="ngForm">
-      <input id="searchreq" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" required>
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" [disabled]="f.invalid">Search</button>
+    <form (ngSubmit)="SearchRecipes(searchform)" class="form-inline" #searchform="ngForm">
+      <button class="btn btn-outline-secondary mr-sm-2 my-2 my-sm-0" title="Logout" type="button" (click)="OnLogout()">{{UserEmail}}</button>
+      <input  class="form-control mr-sm-2" type="search" placeholder="Search" ngModel name="searchreq" required>
+      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" [disabled]="searchform.invalid">Search</button>
     </form>
   </div>
 </nav>

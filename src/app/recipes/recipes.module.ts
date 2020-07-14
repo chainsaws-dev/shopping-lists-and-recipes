@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { RecipesRoutingModule } from './recipes-routing.module';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
+
 @NgModule({
   declarations: [
     RecipesComponent,
@@ -19,7 +20,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     RecipeDetailComponent,
     RecipeItemComponent,
     RecipeStartComponent,
-    RecipeEditComponent],
+    RecipeEditComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
