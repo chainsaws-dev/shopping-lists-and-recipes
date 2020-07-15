@@ -146,9 +146,9 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
         this.CurPercentStyle = 'width: ' + String(curevent.loaded / curevent.total * 100) + '%';
       } else if (curevent.type === HttpEventType.Response) {
         if (curevent.ok) {
-            this.RecipeToEdit.ImagePath = '/uploads/' + curevent.body.FileID;
-            this.RecipeToEdit.ImageDbID = curevent.body.DbID;
-            this.UploadError = curevent.body.Error;
+          this.RecipeToEdit.ImagePath = '/uploads/' + curevent.body.FileID;
+          this.RecipeToEdit.ImageDbID = curevent.body.DbID;
+          this.UploadError = curevent.body.Error;
         }
       }
     }
@@ -160,13 +160,15 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       this.RecipeToEdit.Name = SubmittedForm.value.recipename;
       this.RecipeToEdit.Description = SubmittedForm.value.recipedescription;
 
-      if (this.editmode) {
-        this.recipeservice.UpdateExistingRecipe(this.RecipeToEdit, this.index);
-      } else {
-          this.recipeservice.AddNewRecipe(this.RecipeToEdit);
-      }
+      this.datastore.SaveRecipe(this.RecipeToEdit, this.editmode);
 
-      this.datastore.SaveRecipe(this.RecipeToEdit);
+      this.datastore.RecipesUpdateInsert.subscribe((recipe) => {
+        if (this.editmode) {
+          this.recipeservice.UpdateExistingRecipe(recipe, this.index);
+        } else {
+          this.recipeservice.AddNewRecipe(recipe);
+        }
+      });
 
       this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
     }

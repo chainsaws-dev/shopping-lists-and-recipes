@@ -13,7 +13,8 @@ import { ShoppingListService } from '../shopping-list/shopping-list.service';
 })
 export class DataStorageService {
   LoadingData = new Subject<boolean>();
-  RecivedResponse = new Subject<ErrorResponse>();
+  RecipesUpdateInsert = new Subject<Recipe>();
+  RecivedError = new Subject<ErrorResponse>();
 
   constructor(private http: HttpClient,
               private recipes: RecipeService,
@@ -30,18 +31,24 @@ export class DataStorageService {
 
     this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl, httpOptions)
       .subscribe(response => {
-        this.RecivedResponse.next(response);
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        this.RecivedError.next(error);
         this.LoadingData.next(false);
       });
   }
 
-  SaveRecipe(RecipeToSave: Recipe) {
+  SaveRecipe(RecipeToSave: Recipe, EditMode: boolean) {
     this.LoadingData.next(true);
 
-    this.http.post<ErrorResponse>(environment.GetSetRecipesUrl, RecipeToSave)
+    this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave)
       .subscribe(response => {
-         this.RecivedResponse.next(response);
-         this.LoadingData.next(false);
+        this.RecipesUpdateInsert.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        this.RecivedError.next(error);
+        this.LoadingData.next(false);
       });
   }
 
@@ -50,8 +57,8 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-         Page: page.toString(),
-         Limit: limit.toString()
+        Page: page.toString(),
+        Limit: limit.toString()
       })
     };
 
@@ -65,6 +72,7 @@ export class DataStorageService {
         return recresp;
       }),
         tap(recresp => {
+
           this.recipes.SetRecipes(recresp.Recipes);
           this.recipes.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
           this.LoadingData.next(false);
@@ -76,9 +84,9 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-         Page: page.toString(),
-         Limit: limit.toString(),
-         Search: search
+        Page: page.toString(),
+        Limit: limit.toString(),
+        Search: search
       })
     };
 
@@ -103,17 +111,17 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-         Page: page.toString(),
-         Limit: limit.toString()
+        Page: page.toString(),
+        Limit: limit.toString()
       })
     };
 
     return this.http
       .get<ShoppingListResponse>(environment.GetSetShoppingListUrl, httpOptions)
       .pipe(tap(recresp => {
-          this.shoppinglist.SetIngredients(recresp.Items);
-          this.shoppinglist.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
-          this.LoadingData.next(false);
-        }));
+        this.shoppinglist.SetIngredients(recresp.Items);
+        this.shoppinglist.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+        this.LoadingData.next(false);
+      }));
   }
 }

@@ -20,6 +20,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   DataServiceSub: Subscription;
   FetchOnInint: Subscription;
 
+  RecivedErrorSub: Subscription;
   RecivedResponseSub: Subscription;
   ResponseFromBackend: ErrorResponse;
   ShowMessage: boolean;
@@ -45,7 +46,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.RecipeDeletedSub.unsubscribe();
     this.DataServiceSub.unsubscribe();
     this.FetchOnInint.unsubscribe();
-    this.RecivedResponseSub.unsubscribe();
+    this.RecivedErrorSub.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -61,7 +62,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.RecivedResponseSub = this.DataServ.RecivedResponse.subscribe(
+    this.RecivedErrorSub = this.DataServ.RecivedError.subscribe(
       (response) => {
         this.ShowMessage = true;
         this.ResponseFromBackend = response;
