@@ -45,8 +45,8 @@ export class DataStorageService {
     this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave)
       .subscribe(response => {
         this.RecipesUpdateInsert.next(response);
+        this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
         this.LoadingData.next(false);
-
       }, error => {
         this.RecivedError.next(error);
         this.LoadingData.next(false);

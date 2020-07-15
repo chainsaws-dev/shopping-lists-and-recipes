@@ -27,10 +27,21 @@ export class RecipeResponse {
 
 
 export class ErrorResponse {
+
   public Error: BackendError;
+
+  constructor(Code: number, Message: string) {
+    this.Error = new BackendError(Code, Message);
+  }
 }
 
 export class BackendError {
+
   public Code: number;
   public Message: string;
+
+  constructor(Code: number, Message: string) {
+    this.Code = Code;
+    this.Message = Message;
+  }
 }
