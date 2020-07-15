@@ -8,11 +8,13 @@ export class Recipe {
   public ImageDbID: number;
   public Ingredients: Ingredient[];
 
-  constructor(name: string, desc: string, imagePath: string, ingredients: Ingredient[]) {
+  constructor(name: string, desc: string, imagePath: string, ingredients: Ingredient[], ImageDBID: number, ID: number) {
     this.Name = name;
     this.Description = desc;
     this.ImagePath = imagePath;
     this.Ingredients = ingredients;
+    this.ImageDbID = ImageDBID;
+    this.ID = ID;
   }
 }
 

@@ -39,13 +39,14 @@ export class DataStorageService {
       });
   }
 
-  SaveRecipe(RecipeToSave: Recipe, EditMode: boolean) {
+  SaveRecipe(RecipeToSave: Recipe) {
     this.LoadingData.next(true);
 
     this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave)
       .subscribe(response => {
         this.RecipesUpdateInsert.next(response);
         this.LoadingData.next(false);
+
       }, error => {
         this.RecivedError.next(error);
         this.LoadingData.next(false);

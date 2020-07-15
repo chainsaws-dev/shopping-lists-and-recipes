@@ -52,7 +52,8 @@ export class RecipeService {
 
   AddNewRecipe(NewRecipe: Recipe) {
 
-    const NewRecipeToAdd = new Recipe(NewRecipe.Name, NewRecipe.Description, NewRecipe.ImagePath, NewRecipe.Ingredients);
+    const NewRecipeToAdd = new Recipe(NewRecipe.Name, NewRecipe.Description,
+      NewRecipe.ImagePath, NewRecipe.Ingredients, NewRecipe.ImageDbID, NewRecipe.ID);
 
     if (this.recipes.length <= environment.RecipePageSize) {
       this.recipes.push(NewRecipeToAdd);

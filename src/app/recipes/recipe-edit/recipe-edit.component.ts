@@ -29,7 +29,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
   RecipeChangedSub: Subscription;
   IngredientSelectedSub: Subscription;
-
+  DatabaseUpdated: Subscription;
 
   constructor(private activatedroute: ActivatedRoute,
               private recipeservice: RecipeService,
@@ -47,6 +47,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.RecipeChangedSub.unsubscribe();
     this.IngredientSelectedSub.unsubscribe();
+    this.DatabaseUpdated.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -58,7 +59,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
           this.RecipeToEdit = this.recipeservice.GetRecipeById(this.index);
         } else {
           const NewIngList: Ingredient[] = [];
-          this.RecipeToEdit = new Recipe('', '', '', NewIngList);
+          this.RecipeToEdit = new Recipe('', '', '', NewIngList, 0, 0);
         }
         this.recipeservice.RecipeToEdit = this.RecipeToEdit;
       }
@@ -160,17 +161,23 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       this.RecipeToEdit.Name = SubmittedForm.value.recipename;
       this.RecipeToEdit.Description = SubmittedForm.value.recipedescription;
 
-      this.datastore.SaveRecipe(this.RecipeToEdit, this.editmode);
+      console.log('Отправили:');
+      console.log(this.RecipeToEdit);
 
-      this.datastore.RecipesUpdateInsert.subscribe((recipe) => {
+      this.datastore.SaveRecipe(this.RecipeToEdit);
+
+      this.DatabaseUpdated = this.datastore.RecipesUpdateInsert.subscribe((recipe) => {
+        console.log('Получили:');
+        console.log(recipe);
         if (this.editmode) {
-          this.recipeservice.UpdateExistingRecipe(recipe, this.index);
+          this.RecipeToEdit = recipe;
+          this.recipeservice.UpdateExistingRecipe(this.RecipeToEdit, this.index);
         } else {
-          this.recipeservice.AddNewRecipe(recipe);
+          this.RecipeToEdit = recipe;
+          this.recipeservice.AddNewRecipe(this.RecipeToEdit);
         }
+        this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
       });
-
-      this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
     }
   }
 
