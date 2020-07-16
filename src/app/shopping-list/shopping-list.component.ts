@@ -65,9 +65,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   OnPageChanged(page: number) {
     this.CurrentPage = page;
-
-    this.FetchOnInint.unsubscribe();
-    this.FetchOnInint = this.DataServ.FetchRecipes(page, environment.RecipePageSize).subscribe(
+    this.FetchOnInint = this.DataServ.FetchShoppingList(page, environment.RecipePageSize).subscribe(
       () => {
         this.ingredients = this.ShopListServ.GetIngredients();
         this.collectionSize = this.ShopListServ.Total;
