@@ -7,7 +7,7 @@
         <h4>500x333</h4>
       </div>
       <a [href]="RecipeToEdit.ImagePath"><img *ngIf="RecipeToEdit.ImagePath" [src]="RecipeToEdit.ImagePath" [alt]="RecipeToEdit.Name" class="rounded d-block mx-auto"
-        style="margin: 3px; max-width: 500px; max-height: 333px;"></a>
+        style="margin: 3px; max-width: 500px; max-height: 333px; max-width: 100%;"></a>
       <button type="button" class="btn btn-outline-primary" style="margin: 3px;" (click)="fileInput.click()">
         <span>Upload image</span>
         <input #fileInput type="file" class="form-control-file" accept="image/*" (change)="onFileInput($event)" style="display:none;" />
