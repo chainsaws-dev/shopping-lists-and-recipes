@@ -19,10 +19,11 @@ input.ng-valid.ng-touched:focus {
 .image-placeholder {
   background-color: #eee;
   display: flex;
-  height: 333px;
+  max-height: 333px;
+  min-height: 185.63px;
   margin: 5px;
-  width: 500px;
   border-radius: 3px;
+  max-width: 100%;
 }
 
 .image-placeholder > h4 {

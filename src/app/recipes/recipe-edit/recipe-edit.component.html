@@ -4,7 +4,7 @@
       <h1 *ngIf="editmode">Edit</h1>
       <h1 *ngIf="!editmode">Create</h1>
       <div *ngIf="!RecipeToEdit.ImagePath" class="image-placeholder mx-auto">
-        <h4>500x333</h4>
+        <h4>592x333</h4>
       </div>
       <a [href]="RecipeToEdit.ImagePath"><img *ngIf="RecipeToEdit.ImagePath" [src]="RecipeToEdit.ImagePath" [alt]="RecipeToEdit.Name" class="rounded d-block mx-auto"
         style="margin: 3px; max-width: 500px; max-height: 333px; max-width: 100%;"></a>
