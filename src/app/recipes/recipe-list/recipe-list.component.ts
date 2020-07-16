@@ -45,16 +45,15 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.RecipeUpdatedSub.unsubscribe();
     this.RecipeDeletedSub.unsubscribe();
     this.DataServiceSub.unsubscribe();
-    this.FetchOnInint.unsubscribe();
+    if (this.FetchOnInint) {
+      this.FetchOnInint.unsubscribe();
+    }
     this.RecivedErrorSub.unsubscribe();
   }
 
   ngOnInit(): void {
     this.PageSize = environment.RecipePageSize;
-
     // this.recipes = this.RecServ.GetRecipes();
-
-
 
     this.DataServiceSub = this.DataServ.LoadingData.subscribe(
       (State) => {
