@@ -105,21 +105,11 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
       this.activeroute.queryParams.subscribe((Qparams: Params) => {
         this.SearchRequest = Qparams.search;
-
-        if (this.SearchRequest) {
-          this.FetchOnInint = this.DataServ.SearchRecipes(this.currentPage, environment.RecipePageSize, this.SearchRequest).subscribe(
-            () => {
-              this.recipes = this.RecServ.GetRecipes();
-              this.collectionSize = this.RecServ.Total;
-            }
-          );
+        if (!this.SearchRequest) {
+          this.recipes = this.RecServ.GetRecipes();
+          this.collectionSize = this.RecServ.Total;
         } else {
-          this.FetchOnInint = this.DataServ.FetchRecipes(this.currentPage, environment.RecipePageSize).subscribe(
-            () => {
-              this.recipes = this.RecServ.GetRecipes();
-              this.collectionSize = this.RecServ.Total;
-            }
-          );
+          this.SearchFetch(this.currentPage, false);
         }
       }
       );
@@ -128,23 +118,39 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
   OnPageChanged(page: number) {
     this.RecServ.CurrentPage = page;
-    this.FetchOnInint.unsubscribe();
+    this.SearchFetch(page, true);
+  }
+
+  SearchFetch(page: number, navigate: boolean) {
     if (this.SearchRequest) {
       this.FetchOnInint = this.DataServ.SearchRecipes(page, environment.RecipePageSize, this.SearchRequest).subscribe(
-        () => {
+        (value) => {
           this.recipes = this.RecServ.GetRecipes();
           this.collectionSize = this.RecServ.Total;
-          this.router.navigate(['recipes', page.toString()], { queryParamsHandling: 'preserve' });
+          if (navigate) {
+            this.router.navigate(['recipes', page.toString()], { queryParamsHandling: 'preserve' });
+          }
+        },
+        (error) => {
+          this.DataServ.RecivedError.next(error);
+          this.DataServ.LoadingData.next(false);
         }
       );
     } else {
       this.FetchOnInint = this.DataServ.FetchRecipes(page, environment.RecipePageSize).subscribe(
-        () => {
+        (value) => {
           this.recipes = this.RecServ.GetRecipes();
           this.collectionSize = this.RecServ.Total;
-          this.router.navigate(['recipes', page.toString()]);
+          if (navigate) {
+            this.router.navigate(['recipes', page.toString()]);
+          }
+        },
+        (error) => {
+          this.DataServ.RecivedError.next(error);
+          this.DataServ.LoadingData.next(false);
         }
       );
     }
   }
+
 }
