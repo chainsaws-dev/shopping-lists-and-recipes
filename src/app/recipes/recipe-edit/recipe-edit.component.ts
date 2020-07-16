@@ -47,7 +47,9 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.RecipeChangedSub.unsubscribe();
     this.IngredientSelectedSub.unsubscribe();
-    this.DatabaseUpdated.unsubscribe();
+    if (this.DatabaseUpdated) {
+      this.DatabaseUpdated.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
@@ -161,14 +163,10 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       this.RecipeToEdit.Name = SubmittedForm.value.recipename;
       this.RecipeToEdit.Description = SubmittedForm.value.recipedescription;
 
-      console.log('Отправили:');
-      console.log(this.RecipeToEdit);
-
       this.datastore.SaveRecipe(this.RecipeToEdit);
 
       this.DatabaseUpdated = this.datastore.RecipesUpdateInsert.subscribe((recipe) => {
-        console.log('Получили:');
-        console.log(recipe);
+
         if (this.editmode) {
           this.RecipeToEdit = recipe;
           this.recipeservice.UpdateExistingRecipe(this.RecipeToEdit, this.index);
