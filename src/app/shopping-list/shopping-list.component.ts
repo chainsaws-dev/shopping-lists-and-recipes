@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DataStorageService } from '../shared/data-storage.service';
 import { environment } from 'src/environments/environment';
+import { ErrorResponse } from '../recipes/recipe-model';
 
 @Component({
   selector: 'app-shopping-list',
@@ -23,6 +24,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   collectionSize: number;
   IsLoading: boolean;
 
+  ShowMessage: boolean;
+  MessageType: string;
+  ResponseFromBackend: ErrorResponse;
+  RecivedErrorSub: Subscription;
+
   constructor(
     public ShopListServ: ShoppingListService,
     private activeroute: ActivatedRoute,
@@ -34,11 +40,30 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.PageChanged.unsubscribe();
     this.FetchOnInint.unsubscribe();
     this.DataLoading.unsubscribe();
+    this.RecivedErrorSub.unsubscribe();
   }
 
   ngOnInit(): void {
 
     this.PageSize = environment.ShoppingListPageSize;
+
+    this.RecivedErrorSub = this.DataServ.RecivedError.subscribe(
+      (response) => {
+
+        this.ShowMessage = true;
+        this.ResponseFromBackend = response;
+        setTimeout(() => this.ShowMessage = false, 5000);
+
+        switch (response.Error.Code) {
+          case 200:
+            this.MessageType = 'success';
+            break;
+          default:
+            this.MessageType = 'danger';
+            break;
+        }
+      }
+    );
 
     this.IngChanged = this.ShopListServ.IngredientChanged
       .subscribe((ing: Ingredient[]) => {
@@ -56,9 +81,12 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     );
 
     this.FetchOnInint = this.DataServ.FetchShoppingList(this.CurrentPage, environment.RecipePageSize).subscribe(
-      () => {
+      (value) => {
         this.ingredients = this.ShopListServ.GetIngredients();
         this.collectionSize = this.ShopListServ.Total;
+      },
+      (error) => {
+        this.ingredients = [];
       }
     );
   }

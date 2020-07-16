@@ -132,6 +132,10 @@ export class DataStorageService {
         this.shoppinglist.SetIngredients(recresp.Items);
         this.shoppinglist.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
         this.LoadingData.next(false);
+      }, (error) => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
       }));
   }
 }

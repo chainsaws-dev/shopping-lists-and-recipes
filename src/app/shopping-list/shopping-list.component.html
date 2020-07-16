@@ -2,6 +2,7 @@
   <div class="col">
     <app-shopping-edit></app-shopping-edit>
     <hr>
+    <ngb-alert *ngIf="ShowMessage" [type]="MessageType" (close)="ShowMessage = false">{{ ResponseFromBackend.Error.Message }}</ngb-alert>
     <ul class="list-group">
       <a style="cursor: pointer;" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
         [ngClass]="ShopListServ.IsCurrentSelected(ingredient) ? 'active' : ''"
