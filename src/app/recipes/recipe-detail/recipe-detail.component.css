@@ -1,10 +1,9 @@
 .image-placeholder {
   background-color: #eee;
   display: flex;
-  max-height: 592px;
-  min-height: 185.63px;
+  height: 333px;
   margin: 5px;
-  max-width: 100%;
+  max-width: 592px;
   border-radius: 3px;
 }
 
