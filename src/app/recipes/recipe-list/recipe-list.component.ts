@@ -63,6 +63,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
     this.RecivedErrorSub = this.DataServ.RecivedError.subscribe(
       (response) => {
+
         this.ShowMessage = true;
         this.ResponseFromBackend = response;
         setTimeout(() => this.ShowMessage = false, 5000);
@@ -131,8 +132,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.DataServ.RecivedError.next(error);
-          this.DataServ.LoadingData.next(false);
+          this.recipes = [];
         }
       );
     } else {
@@ -145,8 +145,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.DataServ.RecivedError.next(error);
-          this.DataServ.LoadingData.next(false);
+          this.recipes = [];
         }
       );
     }

@@ -34,7 +34,8 @@ export class DataStorageService {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
       }, error => {
-        this.RecivedError.next(error);
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
         this.LoadingData.next(false);
       });
   }
@@ -48,7 +49,8 @@ export class DataStorageService {
         this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
         this.LoadingData.next(false);
       }, error => {
-        this.RecivedError.next(error);
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
         this.LoadingData.next(false);
       });
   }
@@ -73,9 +75,12 @@ export class DataStorageService {
         return recresp;
       }),
         tap(recresp => {
-
           this.recipes.SetRecipes(recresp.Recipes);
           this.recipes.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+          this.LoadingData.next(false);
+        }, (error) => {
+          const errresp = error.error as ErrorResponse;
+          this.RecivedError.next(errresp);
           this.LoadingData.next(false);
         }));
   }
@@ -103,6 +108,10 @@ export class DataStorageService {
         tap(recresp => {
           this.recipes.SetRecipes(recresp.Recipes);
           this.recipes.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+          this.LoadingData.next(false);
+        }, (error) => {
+          const errresp = error.error as ErrorResponse;
+          this.RecivedError.next(errresp);
           this.LoadingData.next(false);
         }));
   }
