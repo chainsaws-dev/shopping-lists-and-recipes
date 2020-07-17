@@ -104,8 +104,17 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       () => {
         this.recipes = this.RecServ.GetRecipes();
         this.collectionSize = this.collectionSize - 1;
+        if (this.recipes.length === 0) {
+          this.currentPage = this.GetPreviousPage(this.currentPage);
+          this.DataServ.LastPagination.Total = this.collectionSize;
+          if (this.collectionSize !== 0) {
+            this.OnPageChanged(this.currentPage);
+          }
+        }
       }
     );
+
+
 
     this.activeroute.params.subscribe((params: Params) => {
       this.currentPage = +params.pn;
@@ -121,6 +130,14 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       }
       );
     });
+  }
+
+  GetPreviousPage(page: number) {
+    if (page > 1) {
+      return page - 1;
+    } else {
+      return 1;
+    }
   }
 
   OnPageChanged(page: number) {
