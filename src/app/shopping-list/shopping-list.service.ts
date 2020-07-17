@@ -11,6 +11,9 @@ export class ShoppingListService {
   IngredientSelected = new Subject<Ingredient>();
   IngredientChanged = new Subject<Ingredient[]>();
   IngredientsUpdated = new Subject<void>();
+  IngredientAdded = new Subject<Ingredient>();
+  IngredientUpdated = new Subject<Ingredient>();
+  IngredientDeleted = new Subject<Ingredient>();
 
   CurrentSelectedItem: Ingredient;
   Total: number;
@@ -49,33 +52,40 @@ export class ShoppingListService {
       }
     }
 
+    this.IngredientAdded.next(FoundIngredient);
     this.IngredientChanged.next(this.ingredients.slice());
-    return FoundIngredient;
   }
 
   UpdateSelectedItem(UpdatedIngredient: Ingredient) {
-    const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
-    if (index !== -1) {
-      this.ingredients[index] = UpdatedIngredient;
-      this.IngredientChanged.next(this.ingredients.slice());
-    }
-    this.CurrentSelectedItem = null;
+    let FoundIngredient = this.ingredients.find((x) => x.Name === UpdatedIngredient.Name);
 
+    if (FoundIngredient && FoundIngredient !== this.CurrentSelectedItem) {
+      FoundIngredient.Name = UpdatedIngredient.Name;
+      FoundIngredient.Amount = FoundIngredient.Amount + UpdatedIngredient.Amount;
+      this.DeleteSelectedItem();
+    } else {
+      const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
+      if (index !== -1) {
+        this.ingredients[index] = UpdatedIngredient;
+        this.IngredientChanged.next(this.ingredients.slice());
+      }
+      FoundIngredient = this.CurrentSelectedItem;
+    }
+
+    this.IngredientUpdated.next(FoundIngredient);
+    this.CurrentSelectedItem = null;
   }
 
   DeleteSelectedItem() {
-
-    const todel = new Ingredient(this.CurrentSelectedItem.Name, this.CurrentSelectedItem.Amount);
 
     const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
     if (index !== -1) {
       this.ingredients.splice(index, 1);
     }
 
-    this.CurrentSelectedItem = null;
+    this.IngredientDeleted.next(this.CurrentSelectedItem);
     this.IngredientChanged.next(this.ingredients.slice());
-
-    return todel;
+    this.CurrentSelectedItem = null;
 
   }
 

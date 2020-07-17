@@ -92,10 +92,19 @@ export class RecipeService {
   }
 
   UpdateSelectedIngredient(UpdatedIngredient: Ingredient) {
-    const FoundIngredient = this.RecipeToEdit.Ingredients.find((x) => x === this.CurrentSelectedItem);
-    if (FoundIngredient) {
+
+    const FoundIngredient = this.RecipeToEdit.Ingredients.find((x) => x.Name === UpdatedIngredient.Name);
+
+    if (FoundIngredient && FoundIngredient !== this.CurrentSelectedItem) {
       FoundIngredient.Name = UpdatedIngredient.Name;
-      FoundIngredient.Amount = UpdatedIngredient.Amount;
+      FoundIngredient.Amount = FoundIngredient.Amount + UpdatedIngredient.Amount;
+      this.DeleteSelectedIngredient();
+    } else {
+      const FoundExact = this.RecipeToEdit.Ingredients.find((x) => x === this.CurrentSelectedItem);
+      if (FoundExact) {
+        FoundExact.Name = UpdatedIngredient.Name;
+        FoundExact.Amount = UpdatedIngredient.Amount;
+      }
     }
 
     this.CurrentSelectedItem = null;

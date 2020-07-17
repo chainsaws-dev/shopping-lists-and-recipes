@@ -16,6 +16,10 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   selectedingredient: Ingredient;
   editmode = false;
 
+  private IngUpd: Subscription;
+  private IngAdd: Subscription;
+  private IngDel: Subscription;
+
   constructor(public ShopListServ: ShoppingListService, private DataServ: DataStorageService) { }
 
   ngOnInit(): void {
@@ -28,25 +32,42 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
           amount: this.selectedingredient.Amount
         });
       });
+
+    this.IngAdd = this.ShopListServ.IngredientAdded.subscribe(
+      (addedIng) => {
+        this.DataServ.SaveShoppingList(addedIng);
+      }
+    );
+    this.IngUpd = this.ShopListServ.IngredientUpdated.subscribe(
+      (updIng) => {
+        this.DataServ.SaveShoppingList(updIng);
+      }
+    );
+    this.IngDel = this.ShopListServ.IngredientDeleted.subscribe(
+      (delIng) => {
+        this.DataServ.DeleteShoppingList(delIng);
+      }
+    );
   }
 
   ngOnDestroy(): void {
     this.ingselected.unsubscribe();
+    this.IngAdd.unsubscribe();
+    this.IngUpd.unsubscribe();
+    this.IngDel.unsubscribe();
   }
 
   AddNewItem(form: NgForm): void {
     if (form.valid) {
       const fvalue = form.value;
-      this.DataServ.SaveShoppingList(this.ShopListServ.AddNewItem(new Ingredient(fvalue.name, parseInt(fvalue.amount, 10))));
+      this.ShopListServ.AddNewItem(new Ingredient(fvalue.name, parseInt(fvalue.amount, 10)));
     }
   }
 
   UpdateItem(form: NgForm): void {
     if (form.valid) {
       const fvalue = form.value;
-      const newing = new Ingredient(fvalue.name, parseInt(fvalue.amount, 10));
-      this.ShopListServ.UpdateSelectedItem(newing);
-      this.DataServ.SaveShoppingList(newing);
+      this.ShopListServ.UpdateSelectedItem(new Ingredient(fvalue.name, parseInt(fvalue.amount, 10)));
 
       this.editmode = false;
       this.slEditForm.reset();
@@ -54,8 +75,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   DeleteSelectedItem() {
-    const deling = this.ShopListServ.DeleteSelectedItem();
-    this.DataServ.DeleteShoppingList(deling);
+    this.ShopListServ.DeleteSelectedItem();
   }
 
   ClearAllItems() {
