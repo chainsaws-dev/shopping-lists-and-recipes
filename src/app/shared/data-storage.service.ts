@@ -16,6 +16,7 @@ export class DataStorageService {
   RecipesUpdateInsert = new Subject<Recipe>();
   RecivedError = new Subject<ErrorResponse>();
   PaginationSet = new Subject<Pagination>();
+  LastPagination: Pagination;
 
   constructor(private http: HttpClient,
               private recipes: RecipeService,

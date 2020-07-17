@@ -55,7 +55,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.PageSize = environment.RecipePageSize;
-    // this.recipes = this.RecServ.GetRecipes();
+    this.collectionSize = this.DataServ.LastPagination.Total;
 
     this.PaginationUpd = this.DataServ.PaginationSet.subscribe(
       (NewPagination) => {
