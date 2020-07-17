@@ -1,8 +1,7 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredients.model';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { DataStorageService } from '../shared/data-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +46,7 @@ export class ShoppingListService {
       FoundIngredient.Amount = FoundIngredient.Amount + NewIngredient.Amount;
     } else {
       FoundIngredient = NewIngredient;
-      if (this.ingredients.length <= environment.ShoppingListPageSize) {
+      if (this.ingredients.length < environment.ShoppingListPageSize) {
         this.ingredients.push(new Ingredient(NewIngredient.Name, NewIngredient.Amount));
       }
     }

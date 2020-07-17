@@ -29,11 +29,15 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   ResponseFromBackend: ErrorResponse;
   RecivedErrorSub: Subscription;
 
+  private WatchIngAdd: Subscription;
+  private WatchIngDel: Subscription;
+
   constructor(
     public ShopListServ: ShoppingListService,
     private activeroute: ActivatedRoute,
     private DataServ: DataStorageService,
     private router: Router) { }
+
 
   ngOnDestroy(): void {
     this.IngChanged.unsubscribe();
@@ -41,6 +45,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.FetchOnInint.unsubscribe();
     this.DataLoading.unsubscribe();
     this.RecivedErrorSub.unsubscribe();
+    this.WatchIngAdd.unsubscribe();
+    this.WatchIngDel.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -89,6 +95,32 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         this.ingredients = [];
       }
     );
+
+    this.WatchIngAdd = this.ShopListServ.IngredientAdded.subscribe(
+      (newing) => {
+        this.slcollectionSize += 1;
+        this.ingredients = this.ShopListServ.GetIngredients();
+      }
+    );
+    this.WatchIngDel = this.ShopListServ.IngredientDeleted.subscribe(
+      (deling) => {
+        this.slcollectionSize -= 1;
+        this.ingredients = this.ShopListServ.GetIngredients();
+        if (this.ingredients.length === 0) {
+          this.slCurrentPage = this.GetPreviousPage(this.slCurrentPage);
+          this.ShopListServ.Total = this.slcollectionSize;
+          this.OnPageChanged(this.slCurrentPage);
+        }
+      }
+    );
+  }
+
+  GetPreviousPage(page: number) {
+    if (page > 1) {
+      return page - 1;
+    } else {
+      return 1;
+    }
   }
 
   OnPageChanged(page: number) {
@@ -96,7 +128,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.FetchOnInint = this.DataServ.FetchShoppingList(page, environment.ShoppingListPageSize).subscribe(
       () => {
         this.ingredients = this.ShopListServ.GetIngredients();
-        this.slcollectionSize = this.ShopListServ.Total;
         this.router.navigate(['../', page.toString()], { relativeTo: this.activeroute });
       }
     );
