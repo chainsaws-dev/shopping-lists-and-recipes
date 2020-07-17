@@ -33,6 +33,9 @@ export class RecipeDetailComponent implements OnInit {
 
   OnSendToShoppingList(): void {
     this.RecipeServ.SendToShoppingList(this.CurrentRecipe.Ingredients);
+    this.RecipeServ.GetShoppingList().forEach(element => {
+      this.datastore.SaveShoppingList(element);
+    });
   }
 
   OnDeleteRecipe(): void {

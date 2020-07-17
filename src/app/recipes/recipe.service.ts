@@ -49,6 +49,10 @@ export class RecipeService {
     });
   }
 
+  GetShoppingList() {
+    return this.ShopList.GetIngredients();
+  }
+
   AddNewRecipe(NewRecipe: Recipe) {
 
     const NewRecipeToAdd = new Recipe(NewRecipe.Name, NewRecipe.Description,
