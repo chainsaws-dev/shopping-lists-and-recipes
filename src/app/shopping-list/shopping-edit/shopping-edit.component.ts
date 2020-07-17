@@ -48,7 +48,8 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       const resing = this.ShopListServ.UpdateSelectedItem(newing);
       this.DataServ.SaveShoppingList(resing);
       if (resing.Amount !== newing.Amount) {
-          this.ShopListServ.DeleteSelectedItem();
+         this.DataServ.DeleteShoppingList(newing);
+         this.ShopListServ.DeleteSelectedItem();
       }
       this.editmode = false;
       this.slEditForm.reset();
@@ -56,7 +57,8 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   DeleteSelectedItem() {
-    this.ShopListServ.DeleteSelectedItem();
+    const deling = this.ShopListServ.DeleteSelectedItem();
+    this.DataServ.DeleteShoppingList(deling);
   }
 
   ClearAllItems() {

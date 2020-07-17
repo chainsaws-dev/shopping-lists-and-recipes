@@ -19,43 +19,8 @@ export class DataStorageService {
   LastPagination: Pagination;
 
   constructor(private http: HttpClient,
-              private recipes: RecipeService,
-              private shoppinglist: ShoppingListService) { }
-
-  DeleteRecipe(RecipeToDelete: Recipe) {
-    this.LoadingData.next(true);
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        RecipeID: RecipeToDelete.ID.toString()
-      })
-    };
-
-    this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl, httpOptions)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
-  }
-
-  SaveRecipe(RecipeToSave: Recipe) {
-    this.LoadingData.next(true);
-
-    this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave)
-      .subscribe(response => {
-        this.RecipesUpdateInsert.next(response);
-        this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
-  }
+    private recipes: RecipeService,
+    private shoppinglist: ShoppingListService) { }
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
@@ -118,6 +83,42 @@ export class DataStorageService {
         }));
   }
 
+  SaveRecipe(RecipeToSave: Recipe) {
+    this.LoadingData.next(true);
+
+    this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave)
+      .subscribe(response => {
+        this.RecipesUpdateInsert.next(response);
+        this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
+  DeleteRecipe(RecipeToDelete: Recipe) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        RecipeID: RecipeToDelete.ID.toString()
+      })
+    };
+
+    this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl, httpOptions)
+      .subscribe(response => {
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
+
   FetchShoppingList(page: number, limit: number) {
     this.LoadingData.next(true);
 
@@ -148,6 +149,25 @@ export class DataStorageService {
       .subscribe(response => {
         this.RecipesUpdateInsert.next(response);
         this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
+  DeleteShoppingList(IngredientToDelete: Ingredient) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders(),
+      body: IngredientToDelete
+    };
+
+    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl, httpOptions)
+      .subscribe(response => {
+        this.RecivedError.next(response);
         this.LoadingData.next(false);
       }, error => {
         const errresp = error.error as ErrorResponse;
