@@ -19,8 +19,8 @@ export class DataStorageService {
   LastPagination: Pagination;
 
   constructor(private http: HttpClient,
-    private recipes: RecipeService,
-    private shoppinglist: ShoppingListService) { }
+              private recipes: RecipeService,
+              private shoppinglist: ShoppingListService) { }
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
@@ -161,8 +161,9 @@ export class DataStorageService {
     this.LoadingData.next(true);
 
     const httpOptions = {
-      headers: new HttpHeaders(),
-      body: IngredientToDelete
+      headers: new HttpHeaders({
+        IngName: encodeURI(IngredientToDelete.Name)
+      })
     };
 
     this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl, httpOptions)
