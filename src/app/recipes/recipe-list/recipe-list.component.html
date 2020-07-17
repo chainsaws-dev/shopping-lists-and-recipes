@@ -13,7 +13,7 @@
   <div class="col">
     <div class="list-group mb-1">
       <app-recipe-item *ngFor="let recipe of recipes; let i=index" [recipe]="recipe" [index]="i"></app-recipe-item>
-      <ngb-pagination
+      <ngb-pagination *ngIf="collectionSize>PageSize"
       [collectionSize]="collectionSize"
       [pageSize]="PageSize"
       [page]="currentPage"

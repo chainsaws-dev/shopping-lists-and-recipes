@@ -3,6 +3,7 @@ import { Ingredient } from '../../shared/ingredients.model';
 import { ShoppingListService } from '../shopping-list.service';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -15,7 +16,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   selectedingredient: Ingredient;
   editmode = false;
 
-  constructor(public ShopListServ: ShoppingListService) { }
+  constructor(public ShopListServ: ShoppingListService, private DataServ: DataStorageService) { }
 
   ngOnInit(): void {
     this.ingselected = this.ShopListServ.IngredientSelected.subscribe(
@@ -36,14 +37,19 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   AddNewItem(form: NgForm): void {
     if (form.valid) {
       const fvalue = form.value;
-      this.ShopListServ.AddNewItem(new Ingredient(fvalue.name, parseInt(fvalue.amount, 10)));
+      this.DataServ.SaveShoppingList(this.ShopListServ.AddNewItem(new Ingredient(fvalue.name, parseInt(fvalue.amount, 10))));
     }
   }
 
   UpdateItem(form: NgForm): void {
     if (form.valid) {
       const fvalue = form.value;
-      this.ShopListServ.UpdateSelectedItem(new Ingredient(fvalue.name, parseInt(fvalue.amount, 10)));
+      const newing = new Ingredient(fvalue.name, parseInt(fvalue.amount, 10));
+      const resing = this.ShopListServ.UpdateSelectedItem(newing);
+      this.DataServ.SaveShoppingList(resing);
+      if (resing.Amount !== newing.Amount) {
+          this.ShopListServ.DeleteSelectedItem();
+      }
       this.editmode = false;
       this.slEditForm.reset();
     }

@@ -2,6 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Ingredient } from '../shared/ingredients.model';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { DataStorageService } from '../shared/data-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,26 +38,36 @@ export class ShoppingListService {
   }
 
   AddNewItem(NewIngredient: Ingredient) {
-    const FoundIngredient = this.ingredients.find((x) => x.Name === NewIngredient.Name);
+    let FoundIngredient = this.ingredients.find((x) => x.Name === NewIngredient.Name);
 
     if (FoundIngredient) {
       FoundIngredient.Amount = FoundIngredient.Amount + NewIngredient.Amount;
     } else {
+      FoundIngredient = NewIngredient;
       if (this.ingredients.length <= environment.ShoppingListPageSize) {
         this.ingredients.push(new Ingredient(NewIngredient.Name, NewIngredient.Amount));
       }
     }
 
     this.IngredientChanged.next(this.ingredients.slice());
+    return FoundIngredient;
   }
 
   UpdateSelectedItem(UpdatedIngredient: Ingredient) {
-    const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
-    if (index !== -1) {
-      this.ingredients[index] = UpdatedIngredient;
-      this.IngredientChanged.next(this.ingredients.slice());
+    let FoundIngredient = this.ingredients.find((x) => x.Name === UpdatedIngredient.Name);
+
+    if (FoundIngredient) {
+      FoundIngredient.Amount = FoundIngredient.Amount + UpdatedIngredient.Amount;
+    } else {
+      FoundIngredient = this.CurrentSelectedItem;
+      const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
+      if (index !== -1) {
+        this.ingredients[index] = UpdatedIngredient;
+        this.IngredientChanged.next(this.ingredients.slice());
+      }
     }
     this.CurrentSelectedItem = null;
+    return FoundIngredient;
   }
 
   DeleteSelectedItem() {
@@ -68,12 +79,14 @@ export class ShoppingListService {
 
     this.CurrentSelectedItem = null;
     this.IngredientChanged.next(this.ingredients.slice());
+    return this.CurrentSelectedItem;
   }
 
   ClearAll() {
     this.ingredients = [];
     this.CurrentSelectedItem = null;
     this.IngredientChanged.next(this.ingredients.slice());
+    this.SetPagination(0, 0, 0);
   }
 
   SelectItemShopList(ingredient: Ingredient) {

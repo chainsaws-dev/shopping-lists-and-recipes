@@ -5,7 +5,7 @@ import { Recipe, RecipeResponse, ErrorResponse, Pagination } from '../recipes/re
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
-import { ShoppingListResponse } from './ingredients.model';
+import { ShoppingListResponse, Ingredient } from './ingredients.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable({
@@ -139,5 +139,20 @@ export class DataStorageService {
         this.RecivedError.next(errresp);
         this.LoadingData.next(false);
       }));
+  }
+
+  SaveShoppingList(ItemToSave: Ingredient) {
+    this.LoadingData.next(true);
+
+    this.http.post<Recipe>(environment.GetSetShoppingListUrl, ItemToSave)
+      .subscribe(response => {
+        this.RecipesUpdateInsert.next(response);
+        this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
   }
 }
