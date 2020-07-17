@@ -23,34 +23,32 @@ export class RecipesResolverService implements Resolve<Recipe[]>, OnDestroy {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Recipe[] | Observable<Recipe[]> | Promise<Recipe[]> {
-    const recipeswegot = this.recipeservice.GetRecipes();
 
-    if (recipeswegot.length === 0) {
-      const searchreq = route.queryParams.search;
+    const searchreq = route.queryParams.search;
 
-      if (!searchreq) {
-        this.RecipesGet = this.datastorageservice.FetchRecipes(route.params.pn, environment.RecipePageSize).subscribe(
-          (value) => {
-           return this.recipeservice.GetRecipes();
-          },
-          (error) => {
-            return [];
-          }
-        );
-      } else {
-        this.RecipesGet = this.datastorageservice.SearchRecipes(route.params.pn, environment.RecipePageSize, searchreq).subscribe(
-          (value) => {
-           return this.recipeservice.GetRecipes();
-          },
-          (error) => {
-            return [];
-          }
-        );
-      }
+    const page = route.params.pn;
 
+    if (!searchreq) {
+      this.RecipesGet = this.datastorageservice.FetchRecipes(page, environment.RecipePageSize).subscribe(
+        (value) => {
+          return this.recipeservice.GetRecipes();
+        },
+        (error) => {
+          return [];
+        }
+      );
     } else {
-      return recipeswegot;
+      this.RecipesGet = this.datastorageservice.SearchRecipes(page, environment.RecipePageSize, searchreq).subscribe(
+        (value) => {
+          return this.recipeservice.GetRecipes();
+        },
+        (error) => {
+          return [];
+        }
+      );
     }
+
+    return [];
 
   }
 

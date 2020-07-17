@@ -19,6 +19,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   RecipeDeletedSub: Subscription;
   DataServiceSub: Subscription;
   FetchOnInint: Subscription;
+  PaginationUpd: Subscription;
 
   RecivedErrorSub: Subscription;
   RecivedResponseSub: Subscription;
@@ -49,11 +50,18 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       this.FetchOnInint.unsubscribe();
     }
     this.RecivedErrorSub.unsubscribe();
+    this.PaginationUpd.unsubscribe();
   }
 
   ngOnInit(): void {
     this.PageSize = environment.RecipePageSize;
     // this.recipes = this.RecServ.GetRecipes();
+
+    this.PaginationUpd = this.DataServ.PaginationSet.subscribe(
+      (NewPagination) => {
+        this.collectionSize = NewPagination.Total;
+      }
+    );
 
     this.DataServiceSub = this.DataServ.LoadingData.subscribe(
       (State) => {
@@ -107,7 +115,6 @@ export class RecipeListComponent implements OnInit, OnDestroy {
         this.SearchRequest = Qparams.search;
         if (!this.SearchRequest) {
           this.recipes = this.RecServ.GetRecipes();
-          this.collectionSize = this.RecServ.Total;
         } else {
           this.SearchFetch(this.currentPage, false);
         }
@@ -126,7 +133,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       this.FetchOnInint = this.DataServ.SearchRecipes(page, environment.RecipePageSize, this.SearchRequest).subscribe(
         (value) => {
           this.recipes = this.RecServ.GetRecipes();
-          this.collectionSize = this.RecServ.Total;
+
           if (navigate) {
             this.router.navigate(['recipes', page.toString()], { queryParamsHandling: 'preserve' });
           }
@@ -139,7 +146,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       this.FetchOnInint = this.DataServ.FetchRecipes(page, environment.RecipePageSize).subscribe(
         (value) => {
           this.recipes = this.RecServ.GetRecipes();
-          this.collectionSize = this.RecServ.Total;
+
           if (navigate) {
             this.router.navigate(['recipes', page.toString()]);
           }

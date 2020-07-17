@@ -1,4 +1,4 @@
-<form style="margin-top: 40px;" #RecipeForm="ngForm" (ngSubmit)="OnSaveClick(RecipeForm)">
+<form style="margin-top: 40px;" #RecipeForm="ngForm" (ngSubmit)="OnSaveClick(RecipeForm)" *ngIf="RecipeToEdit">
   <div class="form-group">
     <div style="margin: 3px;">
       <h1 *ngIf="editmode">Edit</h1>

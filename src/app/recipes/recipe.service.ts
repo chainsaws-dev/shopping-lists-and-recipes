@@ -1,5 +1,5 @@
 import { Injectable, } from '@angular/core';
-import { Recipe } from './recipe-model';
+import { Recipe, Pagination } from './recipe-model';
 import { Ingredient } from '../shared/ingredients.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Subject } from 'rxjs';
@@ -16,7 +16,6 @@ export class RecipeService {
   RecipesUpdated = new Subject<void>();
   RecipesInserted = new Subject<void>();
   RecipesDeleted = new Subject<void>();
-  Total: number;
   CurrentPage: number;
 
   // new Recipe('Test', 'Desc', '', [new Ingredient('Bread', 1)])
@@ -71,10 +70,6 @@ export class RecipeService {
   SetRecipes(recipes: Recipe[]) {
     this.recipes = recipes;
     this.RecipesUpdated.next();
-  }
-
-  SetPagination(Total: number, Limit: number, Offset: number) {
-    this.Total = Total;
   }
 
   DeleteRecipe(Index: number) {

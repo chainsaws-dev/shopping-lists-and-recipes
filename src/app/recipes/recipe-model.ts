@@ -45,3 +45,14 @@ export class BackendError {
     this.Message = Message;
   }
 }
+
+export class Pagination {
+  public Total: number;
+  public Limit: number;
+  public Offset: number;
+  constructor(Total: number, Limit: number, Offset: number) {
+    this.Total = Total;
+    this.Limit = Limit;
+    this.Offset = Offset;
+  }
+}

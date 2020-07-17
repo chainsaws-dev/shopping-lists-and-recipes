@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
-import { Recipe, RecipeResponse, ErrorResponse } from '../recipes/recipe-model';
+import { Recipe, RecipeResponse, ErrorResponse, Pagination } from '../recipes/recipe-model';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
@@ -15,6 +15,7 @@ export class DataStorageService {
   LoadingData = new Subject<boolean>();
   RecipesUpdateInsert = new Subject<Recipe>();
   RecivedError = new Subject<ErrorResponse>();
+  PaginationSet = new Subject<Pagination>();
 
   constructor(private http: HttpClient,
               private recipes: RecipeService,
@@ -76,7 +77,7 @@ export class DataStorageService {
       }),
         tap(recresp => {
           this.recipes.SetRecipes(recresp.Recipes);
-          this.recipes.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+          this.PaginationSet.next(new Pagination(recresp.Total, recresp.Limit, recresp.Offset));
           this.LoadingData.next(false);
         }, (error) => {
           const errresp = error.error as ErrorResponse;
@@ -107,7 +108,7 @@ export class DataStorageService {
       }),
         tap(recresp => {
           this.recipes.SetRecipes(recresp.Recipes);
-          this.recipes.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+          this.PaginationSet.next(new Pagination(recresp.Total, recresp.Limit, recresp.Offset));
           this.LoadingData.next(false);
         }, (error) => {
           const errresp = error.error as ErrorResponse;
