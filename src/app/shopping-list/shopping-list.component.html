@@ -10,10 +10,10 @@
         <span class="badge badge-success badge-pill">{{ingredient.Amount}}</span>
       </a>
     </ul>
-    <ngb-pagination *ngIf="collectionSize>PageSize"
-    [collectionSize]="collectionSize"
-    [pageSize]="PageSize"
-    [(page)]="CurrentPage"
+    <ngb-pagination *ngIf="slcollectionSize>slPageSize"
+    [collectionSize]="slcollectionSize"
+    [pageSize]="slPageSize"
+    [page]="slCurrentPage"
     [rotate]="true"
     [boundaryLinks]="true"
     [maxSize]="11"

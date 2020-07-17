@@ -54,23 +54,18 @@ export class ShoppingListService {
   }
 
   UpdateSelectedItem(UpdatedIngredient: Ingredient) {
-    let FoundIngredient = this.ingredients.find((x) => x.Name === UpdatedIngredient.Name);
-
-    if (FoundIngredient) {
-      FoundIngredient.Amount = FoundIngredient.Amount + UpdatedIngredient.Amount;
-    } else {
-      FoundIngredient = this.CurrentSelectedItem;
-      const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
-      if (index !== -1) {
-        this.ingredients[index] = UpdatedIngredient;
-        this.IngredientChanged.next(this.ingredients.slice());
-      }
+    const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
+    if (index !== -1) {
+      this.ingredients[index] = UpdatedIngredient;
+      this.IngredientChanged.next(this.ingredients.slice());
     }
     this.CurrentSelectedItem = null;
-    return FoundIngredient;
+
   }
 
   DeleteSelectedItem() {
+
+    const todel = new Ingredient(this.CurrentSelectedItem.Name, this.CurrentSelectedItem.Amount);
 
     const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
     if (index !== -1) {
@@ -79,7 +74,9 @@ export class ShoppingListService {
 
     this.CurrentSelectedItem = null;
     this.IngredientChanged.next(this.ingredients.slice());
-    return this.CurrentSelectedItem;
+
+    return todel;
+
   }
 
   ClearAll() {

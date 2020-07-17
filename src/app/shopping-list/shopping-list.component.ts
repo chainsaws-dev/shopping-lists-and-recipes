@@ -19,9 +19,9 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   private FetchOnInint: Subscription;
   private DataLoading: Subscription;
 
-  CurrentPage: number;
-  PageSize: number;
-  collectionSize: number;
+  slCurrentPage: number;
+  slPageSize: number;
+  slcollectionSize: number;
   IsLoading: boolean;
 
   ShowMessage: boolean;
@@ -45,7 +45,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.PageSize = environment.ShoppingListPageSize;
+    this.slPageSize = environment.ShoppingListPageSize;
 
     this.RecivedErrorSub = this.DataServ.RecivedError.subscribe(
       (response) => {
@@ -71,7 +71,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       });
 
     this.PageChanged = this.activeroute.params.subscribe((params: Params) => {
-      this.CurrentPage = +params.pn;
+      this.slCurrentPage = +params.pn;
     });
 
     this.DataLoading = this.DataServ.LoadingData.subscribe(
@@ -80,10 +80,10 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.FetchOnInint = this.DataServ.FetchShoppingList(this.CurrentPage, environment.RecipePageSize).subscribe(
+    this.FetchOnInint = this.DataServ.FetchShoppingList(this.slCurrentPage, environment.ShoppingListPageSize).subscribe(
       (value) => {
         this.ingredients = this.ShopListServ.GetIngredients();
-        this.collectionSize = this.ShopListServ.Total;
+        this.slcollectionSize = this.ShopListServ.Total;
       },
       (error) => {
         this.ingredients = [];
@@ -92,11 +92,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   OnPageChanged(page: number) {
-    this.CurrentPage = page;
-    this.FetchOnInint = this.DataServ.FetchShoppingList(page, environment.RecipePageSize).subscribe(
+    this.slCurrentPage = page;
+    this.FetchOnInint = this.DataServ.FetchShoppingList(page, environment.ShoppingListPageSize).subscribe(
       () => {
         this.ingredients = this.ShopListServ.GetIngredients();
-        this.collectionSize = this.ShopListServ.Total;
+        this.slcollectionSize = this.ShopListServ.Total;
         this.router.navigate(['../', page.toString()], { relativeTo: this.activeroute });
       }
     );
