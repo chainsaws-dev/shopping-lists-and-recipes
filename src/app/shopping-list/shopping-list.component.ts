@@ -109,7 +109,9 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         if (this.ingredients.length === 0) {
           this.slCurrentPage = this.GetPreviousPage(this.slCurrentPage);
           this.ShopListServ.Total = this.slcollectionSize;
-          this.OnPageChanged(this.slCurrentPage);
+          if (this.slcollectionSize !== 0) {
+            this.OnPageChanged(this.slCurrentPage);
+          }
         }
       }
     );
