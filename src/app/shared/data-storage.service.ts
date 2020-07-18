@@ -176,4 +176,16 @@ export class DataStorageService {
         this.LoadingData.next(false);
       });
   }
+
+  DeleteAllShoppingList() {
+    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl)
+    .subscribe(response => {
+      this.RecivedError.next(response);
+      this.LoadingData.next(false);
+    }, error => {
+      const errresp = error.error as ErrorResponse;
+      this.RecivedError.next(errresp);
+      this.LoadingData.next(false);
+    });
+  }
 }

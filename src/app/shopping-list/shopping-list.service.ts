@@ -13,6 +13,7 @@ export class ShoppingListService {
   IngredientAdded = new Subject<Ingredient>();
   IngredientUpdated = new Subject<Ingredient>();
   IngredientDeleted = new Subject<Ingredient>();
+  IngredientClear = new Subject<void>();
 
   CurrentSelectedItem: Ingredient;
   Total: number;
@@ -93,6 +94,7 @@ export class ShoppingListService {
     this.CurrentSelectedItem = null;
     this.IngredientChanged.next(this.ingredients.slice());
     this.SetPagination(0, 0, 0);
+    this.IngredientClear.next();
   }
 
   SelectItemShopList(ingredient: Ingredient) {

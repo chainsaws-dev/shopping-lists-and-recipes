@@ -19,6 +19,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   private IngUpd: Subscription;
   private IngAdd: Subscription;
   private IngDel: Subscription;
+  private IngCle: Subscription;
 
   constructor(public ShopListServ: ShoppingListService, private DataServ: DataStorageService) { }
 
@@ -48,6 +49,11 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
         this.DataServ.DeleteShoppingList(delIng);
       }
     );
+    this.IngCle = this.ShopListServ.IngredientClear.subscribe(
+      () => {
+        this.DataServ.DeleteAllShoppingList();
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -55,6 +61,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.IngAdd.unsubscribe();
     this.IngUpd.unsubscribe();
     this.IngDel.unsubscribe();
+    this.IngCle.unsubscribe();
   }
 
   AddNewItem(form: NgForm): void {
