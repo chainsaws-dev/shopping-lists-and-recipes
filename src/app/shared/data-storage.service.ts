@@ -19,8 +19,8 @@ export class DataStorageService {
   LastPagination: Pagination;
 
   constructor(private http: HttpClient,
-              private recipes: RecipeService,
-              private shoppinglist: ShoppingListService) { }
+    private recipes: RecipeService,
+    private shoppinglist: ShoppingListService) { }
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
@@ -33,7 +33,7 @@ export class DataStorageService {
     };
 
     return this.http
-      .get<RecipeResponse>(environment.GetSetRecipesUrl, httpOptions)
+      .get<RecipeResponse>(environment.GetSetRecipesUrl + '?key=' + environment.ApiKey, httpOptions)
       .pipe(map(recresp => {
         recresp.Recipes = recresp.Recipes.map(recipe => {
           return { ...recipe, Ingredients: recipe.Ingredients ? recipe.Ingredients : [] };
@@ -64,7 +64,7 @@ export class DataStorageService {
     };
 
     return this.http
-      .get<RecipeResponse>(environment.SearchRecipesUrl, httpOptions)
+      .get<RecipeResponse>(environment.SearchRecipesUrl + '?key=' + environment.ApiKey, httpOptions)
       .pipe(map(recresp => {
         recresp.Recipes = recresp.Recipes.map(recipe => {
           return { ...recipe, Ingredients: recipe.Ingredients ? recipe.Ingredients : [] };
@@ -86,7 +86,7 @@ export class DataStorageService {
   SaveRecipe(RecipeToSave: Recipe) {
     this.LoadingData.next(true);
 
-    this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave)
+    this.http.post<Recipe>(environment.GetSetRecipesUrl + '?key=' + environment.ApiKey, RecipeToSave)
       .subscribe(response => {
         this.RecipesUpdateInsert.next(response);
         this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
@@ -107,7 +107,7 @@ export class DataStorageService {
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl, httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl + '?key=' + environment.ApiKey, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -130,7 +130,7 @@ export class DataStorageService {
     };
 
     return this.http
-      .get<ShoppingListResponse>(environment.GetSetShoppingListUrl, httpOptions)
+      .get<ShoppingListResponse>(environment.GetSetShoppingListUrl + '?key=' + environment.ApiKey, httpOptions)
       .pipe(tap(recresp => {
         this.shoppinglist.SetIngredients(recresp.Items);
         this.shoppinglist.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
@@ -145,7 +145,7 @@ export class DataStorageService {
   SaveShoppingList(ItemToSave: Ingredient) {
     this.LoadingData.next(true);
 
-    this.http.post<Recipe>(environment.GetSetShoppingListUrl, ItemToSave)
+    this.http.post<Recipe>(environment.GetSetShoppingListUrl + '?key=' + environment.ApiKey, ItemToSave)
       .subscribe(response => {
         this.RecipesUpdateInsert.next(response);
         this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
@@ -166,7 +166,7 @@ export class DataStorageService {
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl, httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl + '?key=' + environment.ApiKey, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -178,14 +178,14 @@ export class DataStorageService {
   }
 
   DeleteAllShoppingList() {
-    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl)
-    .subscribe(response => {
-      this.RecivedError.next(response);
-      this.LoadingData.next(false);
-    }, error => {
-      const errresp = error.error as ErrorResponse;
-      this.RecivedError.next(errresp);
-      this.LoadingData.next(false);
-    });
+    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl + '?key=' + environment.ApiKey)
+      .subscribe(response => {
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
   }
 }

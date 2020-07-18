@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { RefreshTokenResponseData, AuthResponseData } from './auth.module';
+import { AuthResponseData } from './auth.module';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
@@ -19,23 +19,23 @@ export class AuthService {
   constructor(private http: HttpClient,
               private router: Router) { }
 
-  SignUp(email: string, password: string) {
-    this.authObs = this.http.post<AuthResponseData>(environment.AuthUrl + ':signUp?key=' + environment.ApiKey,
+  SignUp(Email: string, Password: string) {
+    this.authObs = this.http.post<AuthResponseData>(environment.SignUpUrl + '?key=' + environment.ApiKey,
       {
-        email,
-        password,
-        returnSecureToken: true
+        Email,
+        Password,
+        ReturnSecureToken: true
       });
 
     this.RequestSub();
   }
 
-  SignIn(email: string, password: string) {
-    this.authObs = this.http.post<AuthResponseData>(environment.AuthUrl + ':signInWithPassword?key=' + environment.ApiKey,
+  SignIn(Email: string, Password: string) {
+    this.authObs = this.http.post<AuthResponseData>(environment.SignInUrl + '?key=' + environment.ApiKey,
       {
-        email,
-        password,
-        returnSecureToken: true
+        Email,
+        Password,
+        ReturnSecureToken: true
       });
 
     this.RequestSub();
@@ -79,38 +79,14 @@ export class AuthService {
     this.authObs.subscribe(
       response => {
         this.authData = response;
-        this.authData.expirationDate = String(new Date(new Date().getTime() + +this.authData.expiresIn * 1000));
+        this.authData.expirationDate = String(new Date(new Date().getTime() + +this.authData.ExpiresIn * 1000));
         localStorage.setItem('userData', JSON.stringify(this.authData));
         this.AuthResultSub.next(response.registered);
-        this.AutoSignOut(+this.authData.expiresIn * 1000);
+        this.AutoSignOut(+this.authData.ExpiresIn * 1000);
       }, error => {
         this.AuthErrorSub.next(error.error.error.message);
       }
     );
-  }
-
-  RefreshToken() {
-    if (this.authData) {
-      return this.http.post<RefreshTokenResponseData>(environment.RefTokenUrl + 'token?key=' + environment.ApiKey,
-        {
-          grant_type: 'refresh_token',
-          refresh_token: this.authData.refreshToken
-        }).subscribe(
-          response => {
-            this.authData = {
-              ...response, registered: true, idToken: response.id_token,
-              email: this.authData.email,
-              expiresIn: response.expires_in,
-              refreshToken: response.refresh_token,
-              localId: this.authData.localId
-            };
-            this.AuthResultSub.next(true);
-            this.authData.expirationDate = String(new Date(new Date().getTime() + +this.authData.expiresIn * 1000));
-          }, error => {
-            this.AuthErrorSub.next(error.error.error.message);
-          }
-        );
-    }
   }
 
   CheckRegistered() {
@@ -132,7 +108,7 @@ export class AuthService {
 
   GetUserToken() {
     if (this.CheckTokenExpired()) {
-      return this.authData.idToken;
+      return this.authData.Token;
     } else {
       return null;
     }
@@ -140,7 +116,7 @@ export class AuthService {
 
   GetUserEmail() {
     if (this.authData) {
-      return this.authData.email;
+      return this.authData.Email;
     } else {
       return null;
     }
