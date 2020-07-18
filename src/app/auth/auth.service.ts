@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { AuthResponseData } from './auth.module';
+import { AuthResponseData, AuthRequest } from './auth.module';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { ErrorResponse } from '../recipes/recipe-model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,26 +18,34 @@ export class AuthService {
   private authObs: Observable<AuthResponseData>;
 
   constructor(private http: HttpClient,
-              private router: Router) { }
+    private router: Router) { }
 
   SignUp(Email: string, Password: string) {
-    this.authObs = this.http.post<AuthResponseData>(environment.SignUpUrl + '?key=' + environment.ApiKey,
-      {
-        Email,
-        Password,
-        ReturnSecureToken: true
-      });
+
+    const signup: AuthRequest = {
+      Email: btoa(Email),
+      Password: btoa(Password),
+      ReturnSecureToken: true,
+    };
+
+    this.authObs = this.http.post<AuthResponseData>(
+      environment.SignUpUrl + '?key=' + environment.ApiKey,
+      signup);
 
     this.RequestSub();
   }
 
   SignIn(Email: string, Password: string) {
-    this.authObs = this.http.post<AuthResponseData>(environment.SignInUrl + '?key=' + environment.ApiKey,
-      {
-        Email,
-        Password,
-        ReturnSecureToken: true
-      });
+
+    const signin: AuthRequest = {
+      Email: btoa(Email),
+      Password: btoa(Password),
+      ReturnSecureToken: true,
+    };
+
+    this.authObs = this.http.post<AuthResponseData>(
+      environment.SignInUrl + '?key=' + environment.ApiKey,
+      signin);
 
     this.RequestSub();
   }
@@ -61,7 +70,7 @@ export class AuthService {
     } else {
       this.authData = JSON.parse(userData);
 
-      const ExpDur = new Date(this.authData.expirationDate).getTime() -
+      const ExpDur = new Date(this.authData.ExpirationDate).getTime() -
         new Date().getTime();
 
       this.AuthResultSub.next(true);
@@ -79,27 +88,28 @@ export class AuthService {
     this.authObs.subscribe(
       response => {
         this.authData = response;
-        this.authData.expirationDate = String(new Date(new Date().getTime() + +this.authData.ExpiresIn * 1000));
+        this.authData.ExpirationDate = String(new Date(new Date().getTime() + +this.authData.ExpiresIn * 1000));
         localStorage.setItem('userData', JSON.stringify(this.authData));
-        this.AuthResultSub.next(response.registered);
+        this.AuthResultSub.next(response.Registered);
         this.AutoSignOut(+this.authData.ExpiresIn * 1000);
       }, error => {
-        this.AuthErrorSub.next(error.error.error.message);
+        const errresp = error.error as ErrorResponse;
+        this.AuthErrorSub.next(errresp.Error.Message);
       }
     );
   }
 
   CheckRegistered() {
     if (this.authData !== null) {
-      return this.authData.registered;
+      return this.authData.Registered;
     } else {
       return false;
     }
   }
 
   CheckTokenExpired() {
-    if (this.authData.expirationDate !== '' && this.authData.expirationDate !== null) {
-      return !(new Date() > new Date(this.authData.expirationDate));
+    if (this.authData.ExpirationDate !== '' && this.authData.ExpirationDate !== null) {
+      return !(new Date() > new Date(this.authData.ExpirationDate));
     }
     else {
       return false;
@@ -116,7 +126,15 @@ export class AuthService {
 
   GetUserEmail() {
     if (this.authData) {
-      return this.authData.Email;
+      return atob(this.authData.Email);
+    } else {
+      return null;
+    }
+  }
+
+  GetUserRole() {
+    if (this.authData) {
+      return atob(this.authData.Role);
     } else {
       return null;
     }
