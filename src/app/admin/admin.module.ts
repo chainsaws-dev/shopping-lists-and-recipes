@@ -10,8 +10,8 @@ import { AdminEditComponent } from './admin-edit/admin-edit.component';
 import { AdminListComponent } from './admin-list/admin-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '1', pathMatch: 'full' }, // , canActivate: [AuthGuard]
-  { path: ':pn', component: AdminComponent },
+  { path: '', redirectTo: '1', pathMatch: 'full', canActivate: [AuthGuard] },
+  { path: ':pn', component: AdminComponent, canActivate: [AuthGuard] },
   { path: ':pn/new', component: AdminEditComponent },
   { path: ':pn/:id', component: AdminEditComponent }
 ];

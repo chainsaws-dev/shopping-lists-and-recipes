@@ -9,7 +9,7 @@ import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap'
 
 const routes: Routes = [
   { path: '', redirectTo: '1', pathMatch: 'full' },
-  { path: ':pn', component: ShoppingListComponent} // , resolve: [RecipesResolverService], canActivate: [AuthGuard]
+  { path: ':pn', component: ShoppingListComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
