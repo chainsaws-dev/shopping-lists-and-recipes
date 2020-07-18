@@ -18,7 +18,7 @@ export class AuthService {
   private authObs: Observable<AuthResponseData>;
 
   constructor(private http: HttpClient,
-    private router: Router) { }
+              private router: Router) { }
 
   SignUp(Email: string, Password: string) {
 

@@ -19,8 +19,8 @@ export class DataStorageService {
   LastPagination: Pagination;
 
   constructor(private http: HttpClient,
-    private recipes: RecipeService,
-    private shoppinglist: ShoppingListService) { }
+              private recipes: RecipeService,
+              private shoppinglist: ShoppingListService) { }
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
