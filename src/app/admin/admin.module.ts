@@ -2,19 +2,25 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminComponent } from './admin.component';
 
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, ChildActivationEnd } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
 import { FormsModule } from '@angular/forms';
 import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { AdminEditComponent } from './admin-edit/admin-edit.component';
+import { AdminListComponent } from './admin-list/admin-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '1', pathMatch: 'full' },
-  { path: ':pn', component: AdminComponent} // , resolve: [RecipesResolverService], canActivate: [AuthGuard]
+  { path: '', redirectTo: '1', pathMatch: 'full' }, // , canActivate: [AuthGuard]
+  { path: ':pn', component: AdminComponent },
+  { path: ':pn/new', component: AdminEditComponent },
+  { path: ':pn/:id', component: AdminEditComponent }
 ];
 
 @NgModule({
   declarations: [
-    AdminComponent
+    AdminComponent,
+    AdminEditComponent,
+    AdminListComponent
   ],
   imports: [
     CommonModule,
