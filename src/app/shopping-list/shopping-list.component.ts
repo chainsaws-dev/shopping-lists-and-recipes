@@ -31,6 +31,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   private WatchIngAdd: Subscription;
   private WatchIngDel: Subscription;
+  private WatchIngCle: Subscription;
 
   constructor(
     public ShopListServ: ShoppingListService,
@@ -47,6 +48,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.RecivedErrorSub.unsubscribe();
     this.WatchIngAdd.unsubscribe();
     this.WatchIngDel.unsubscribe();
+    this.WatchIngCle.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -113,6 +115,13 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
             this.OnPageChanged(this.slCurrentPage);
           }
         }
+      }
+    );
+
+    this.WatchIngCle = this.ShopListServ.IngredientClear.subscribe(
+      () => {
+        this.slcollectionSize = 0;
+        this.ShopListServ.Total = this.slcollectionSize;
       }
     );
   }
