@@ -8,7 +8,7 @@ import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 import { RecipesResolverService } from './recipes-resolver.service';
 
 const routes: Routes = [
-  { path: '', redirectTo: '1', pathMatch: 'full', canActivate: [AuthGuard] },
+  { path: '', redirectTo: '1', pathMatch: 'full'},
   {
     path: ':pn', component: RecipesComponent, resolve: [RecipesResolverService],  canActivate: [AuthGuard],
     children: [
