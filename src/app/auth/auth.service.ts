@@ -24,7 +24,7 @@ export class AuthService {
 
     const signup: AuthRequest = {
       Email: btoa(Email),
-      Password: btoa(Password),
+      Password: btoa(encodeURI(Password)),
       ReturnSecureToken: true,
     };
 
@@ -39,7 +39,7 @@ export class AuthService {
 
     const signin: AuthRequest = {
       Email: btoa(Email),
-      Password: btoa(Password),
+      Password: btoa(encodeURI(Password)),
       ReturnSecureToken: true,
     };
 
