@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { ErrorResponse } from '../recipes/recipe-model';
 
 @Component({
   selector: 'app-auth',
@@ -13,10 +14,14 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   LoginMode = true;
   IsLoading = false;
-  authError: string;
+
   loggedIn: boolean;
   private authErrSub: Subscription;
   private loginResultSub: Subscription;
+
+  ResponseFromBackend: ErrorResponse;
+  ShowMessage: boolean;
+  MessageType: string;
 
   constructor(private authservice: AuthService,
               private router: Router) { }
@@ -26,8 +31,20 @@ export class AuthComponent implements OnInit, OnDestroy {
       this.Redirect();
     }
 
-    this.authErrSub = this.authservice.AuthErrorSub.subscribe((error: string) => {
-      this.authError = error.replace(/_/g, ' ');
+    this.authErrSub = this.authservice.AuthErrorSub.subscribe((response: ErrorResponse) => {
+      this.ShowMessage = true;
+      this.ResponseFromBackend = response;
+      setTimeout(() => this.ShowMessage = false, 5000);
+
+      switch (response.Error.Code) {
+        case 200:
+          this.MessageType = 'success';
+          break;
+        default:
+          this.MessageType = 'danger';
+          break;
+      }
+
       this.IsLoading = false;
     });
 
@@ -66,7 +83,4 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.router.navigate(['/recipes']);
   }
 
-  onHandleCloseError() {
-    this.authError = null;
-  }
 }

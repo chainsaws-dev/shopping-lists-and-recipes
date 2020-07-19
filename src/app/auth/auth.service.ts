@@ -13,7 +13,7 @@ import { ErrorResponse } from '../recipes/recipe-model';
 export class AuthService {
   private authData: AuthResponseData = null;
   private autoRefreshToken: any;
-  public AuthErrorSub = new Subject<string>();
+  public AuthErrorSub = new Subject<ErrorResponse>();
   public AuthResultSub = new Subject<boolean>();
   private authObs: Observable<AuthResponseData>;
 
@@ -94,7 +94,7 @@ export class AuthService {
         this.AutoSignOut(+this.authData.ExpiresIn * 1000);
       }, error => {
         const errresp = error.error as ErrorResponse;
-        this.AuthErrorSub.next(errresp.Error.Message);
+        this.AuthErrorSub.next(errresp);
       }
     );
   }
