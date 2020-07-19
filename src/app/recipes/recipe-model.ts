@@ -56,3 +56,12 @@ export class Pagination {
     this.Offset = Offset;
   }
 }
+
+export class FileUploadResponse {
+  public FileName: string;
+  public FileSize: number;
+  public FileType: string;
+  public DbID: number;
+  public FileID: string;
+  public Error: string;
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Recipe } from '../recipe-model';
+import { Recipe, FileUploadResponse } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
 import { Ingredient } from 'src/app/shared/ingredients.model';
 import { NgForm } from '@angular/forms';
@@ -30,6 +30,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   RecipeChangedSub: Subscription;
   IngredientSelectedSub: Subscription;
   DatabaseUpdated: Subscription;
+  FileProgress: Subscription;
+  FileUploaded: Subscription;
 
   constructor(private activatedroute: ActivatedRoute,
               private recipeservice: RecipeService,
@@ -50,6 +52,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     if (this.DatabaseUpdated) {
       this.DatabaseUpdated.unsubscribe();
     }
+    this.FileProgress.unsubscribe();
+    this.FileUploaded.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -86,6 +90,20 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
         this.IngredientsForm.reset();
       }
     });
+
+    this.FileProgress = this.datastore.FileUploadProgress.subscribe(
+      (pr: string) => {
+        this.CurPercentStyle = 'width: ' + pr + '%';
+      }
+    );
+
+    this.FileUploaded = this.datastore.FileUploaded.subscribe(
+      (res: FileUploadResponse) => {
+        this.RecipeToEdit.ImagePath = '/uploads/' + res.FileID;
+        this.RecipeToEdit.ImageDbID = res.DbID;
+        this.UploadError = res.Error;
+      }
+    );
   }
 
   onAddNewIngredient(form: NgForm) {
@@ -139,23 +157,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   onFileInput(event) {
     this.CurPercentStyle = 'width: 0%';
     const FileToUpload = event.target.files[0] as File;
-    const formdatafile = new FormData();
-    formdatafile.append('image', FileToUpload, FileToUpload.name);
-    this.httpClient.post('/api/SaveRecipePhoto', formdatafile, {
-      reportProgress: true,
-      observe: 'events'
-    }).subscribe((curevent: any) => {
-      if (curevent.type === HttpEventType.UploadProgress) {
-        this.CurPercentStyle = 'width: ' + String(curevent.loaded / curevent.total * 100) + '%';
-      } else if (curevent.type === HttpEventType.Response) {
-        if (curevent.ok) {
-          this.RecipeToEdit.ImagePath = '/uploads/' + curevent.body.FileID;
-          this.RecipeToEdit.ImageDbID = curevent.body.DbID;
-          this.UploadError = curevent.body.Error;
-        }
-      }
-    }
-    );
+    this.datastore.FileUpload(FileToUpload);
   }
 
   OnSaveClick(SubmittedForm: NgForm) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders, HttpEventType } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
-import { Recipe, RecipeResponse, ErrorResponse, Pagination } from '../recipes/recipe-model';
+import { Recipe, RecipeResponse, ErrorResponse, Pagination, FileUploadResponse } from '../recipes/recipe-model';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
@@ -16,6 +16,9 @@ export class DataStorageService {
   RecipesUpdateInsert = new Subject<Recipe>();
   RecivedError = new Subject<ErrorResponse>();
   PaginationSet = new Subject<Pagination>();
+  FileUploadProgress = new Subject<string>();
+  FileUploaded = new Subject<FileUploadResponse>();
+
   LastPagination: Pagination;
 
   constructor(private http: HttpClient,
@@ -96,6 +99,28 @@ export class DataStorageService {
         this.RecivedError.next(errresp);
         this.LoadingData.next(false);
       });
+  }
+
+  FileUpload(FileToUpload: File) {
+    const formdatafile = new FormData();
+    formdatafile.append('image', FileToUpload, FileToUpload.name);
+    this.http.post(environment.UploadFileUrl + '?key=' + environment.ApiKey, formdatafile, {
+      reportProgress: true,
+      observe: 'events'
+    }).subscribe((curevent: any) => {
+      if (curevent.type === HttpEventType.UploadProgress) {
+        this.FileUploadProgress.next(String(curevent.loaded / curevent.total * 100));
+      } else if (curevent.type === HttpEventType.Response) {
+        if (curevent.ok) {
+          this.FileUploaded.next(curevent.body as FileUploadResponse);
+        }
+      }
+    }, error => {
+      const errresp = error.error as ErrorResponse;
+      this.RecivedError.next(errresp);
+      this.LoadingData.next(false);
+    }
+    );
   }
 
   DeleteRecipe(RecipeToDelete: Recipe) {

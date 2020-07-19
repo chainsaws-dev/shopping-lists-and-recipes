@@ -6,6 +6,7 @@ export const environment = {
   SignUpUrl: '/api/Accounts/SignUp',
   SignInUrl: '/api/Accounts/SignIn',
   GetSetRecipesUrl: '/api/Recipes',
+  UploadFileUrl: '/api/SaveRecipePhoto',
   SearchRecipesUrl: '/api/Recipes/Search',
   GetSetShoppingListUrl: '/api/ShoppingList',
 };
