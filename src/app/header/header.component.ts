@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit, OnDestroy {
   LoggedIn = false;
   UserEmail: string;
+  UserAdmin: boolean;
+
   private LoginSub: Subscription;
 
   constructor(private auth: AuthService,
@@ -22,13 +24,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.LoggedIn = true;
     this.UserEmail = 'test@test.ru';
+    this.UserAdmin = false;
 
     this.LoggedIn = this.auth.CheckRegistered();
     this.UserEmail = this.auth.GetUserEmail();
+    this.UserAdmin = this.auth.CheckIfUserIsAdmin();
 
     this.LoginSub = this.auth.AuthResultSub.subscribe((loggedin) => {
       this.LoggedIn = loggedin;
       this.UserEmail = this.auth.GetUserEmail();
+      this.UserAdmin = this.auth.CheckIfUserIsAdmin();
     });
 
   }
@@ -48,5 +53,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.auth.SignOut();
     this.LoggedIn = false;
     this.UserEmail = '';
+    this.UserAdmin = false;
   }
 }

@@ -11,12 +11,12 @@
           </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/shopping-list" routerLinkActive="active" class="nav-link">
+          <a routerLink="/shopping-list" routerLinkActive="active" class="nav-link" *ngIf="UserAdmin">
             Shopping list
           </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/admin" routerLinkActive="active" class="nav-link">
+          <a routerLink="/admin" routerLinkActive="active" class="nav-link" *ngIf="UserAdmin">
             Admin
           </a>
         </li>

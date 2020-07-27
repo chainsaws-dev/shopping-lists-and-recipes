@@ -73,7 +73,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         .SignIn(SignupForm.value.email, SignupForm.value.password);
     } else {
       this.authservice
-        .SignUp(SignupForm.value.email, SignupForm.value.password);
+        .SignUp(SignupForm.value.email, SignupForm.value.name, SignupForm.value.password);
     }
 
     SignupForm.reset();

@@ -9,6 +9,7 @@ export interface AuthResponseData {
 
 export interface AuthRequest {
   Email: string;
+  Name?: string;
   Password: string;
   ReturnSecureToken: boolean;
 }

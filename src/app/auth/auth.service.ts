@@ -20,10 +20,11 @@ export class AuthService {
   constructor(private http: HttpClient,
               private router: Router) { }
 
-  SignUp(Email: string, Password: string) {
+  SignUp(Email: string, Name: string, Password: string) {
 
     const signup: AuthRequest = {
       Email: btoa(Email),
+      Name: btoa(encodeURI(Name)),
       Password: btoa(encodeURI(Password)),
       ReturnSecureToken: true,
     };
@@ -87,17 +88,20 @@ export class AuthService {
   private RequestSub() {
     this.authObs.subscribe(
       response => {
-        this.authData = response;
-        this.authData.ExpirationDate = String(new Date(new Date().getTime() + +this.authData.ExpiresIn * 1000));
-        localStorage.setItem('userData', JSON.stringify(this.authData));
-        this.AuthResultSub.next(response.Registered);
-        this.AutoSignOut(+this.authData.ExpiresIn * 1000);
+          this.authData = response;
+          this.authData.ExpirationDate = String(new Date(new Date().getTime() + +this.authData.ExpiresIn * 1000));
+          localStorage.setItem('userData', JSON.stringify(this.authData));
+          this.AuthResultSub.next(response.Registered);
+          this.AutoSignOut(+this.authData.ExpiresIn * 1000);
       }, error => {
         const errresp = error.error as ErrorResponse;
         this.AuthErrorSub.next(errresp);
       }
     );
   }
+
+
+
 
   CheckRegistered() {
     if (this.authData !== null) {
@@ -138,6 +142,14 @@ export class AuthService {
     } else {
       return null;
     }
+  }
+
+  CheckIfUserIsAdmin() {
+    if (this.GetUserRole() === 'admin_role_CRUD') {
+      return true;
+    }
+
+    return false;
   }
 }
 

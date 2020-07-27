@@ -6,20 +6,23 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class RoleGuard implements CanActivate {
   constructor(private auth: AuthService,
               private router: Router) { }
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    const IsAuth = this.auth.CheckRegistered();
+    // this will be passed from the route config
+    // on the data property
+    const expectedRole = next.data.expectedRole;
 
-    if (IsAuth) {
+    if (expectedRole === this.auth.GetUserRole()) {
       return true;
-    } else {
-      return this.router.createUrlTree(['/auth']);
     }
+
+    return this.router.createUrlTree(['/']);
+
   }
 
 }

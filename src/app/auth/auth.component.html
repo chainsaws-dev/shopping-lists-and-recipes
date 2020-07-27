@@ -8,6 +8,9 @@
         <div class="input-group form-group">
           <input type="email" name="email" class="form-control" placeholder="E-mail" ngModel email required>
         </div>
+        <div class="input-group form-group" *ngIf="!LoginMode">
+          <input type="text" name="name" class="form-control" placeholder="Name" ngModel>
+        </div>
         <div class="input-group form-group">
           <input type="password" name="password" class="form-control" placeholder="Password" ngModel required
             minlength='6' placement="right" ngbTooltip="Minimum 6 chars">
