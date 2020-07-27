@@ -18,7 +18,7 @@
   <div class="row">
     <div class="col mb-3">
       <div ngbDropdown class="btn-group">
-        <button class="btn btn-outline-primary dropdown-toggle" ngbDropdownToggle>Manage recipe</button>
+        <button class="btn btn-outline-primary dropdown-toggle" ngbDropdownToggle *ngIf="UserAdmin">Manage recipe</button>
         <ul ngbDropdownMenu class="dropdown-menu">
           <li ngbDropdownItem class="dropdown-item" (click)="OnSendToShoppingList()"><a style="cursor: pointer;">To
               shopping list</a></li>

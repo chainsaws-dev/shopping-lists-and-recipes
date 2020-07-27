@@ -4,10 +4,10 @@ import { Recipe, FileUploadResponse } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
 import { Ingredient } from 'src/app/shared/ingredients.model';
 import { NgForm } from '@angular/forms';
-import { HttpClient, HttpEventType, HttpResponse, HttpEvent } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -33,11 +33,12 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   FileProgress: Subscription;
   FileUploaded: Subscription;
 
+
   constructor(private activatedroute: ActivatedRoute,
               private recipeservice: RecipeService,
-              private httpClient: HttpClient,
               private router: Router,
-              private datastore: DataStorageService) { }
+              private datastore: DataStorageService,
+              ) { }
 
   public onReady(editor) {
     editor.ui.getEditableElement().parentElement.insertBefore(
@@ -57,6 +58,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.activatedroute.params.subscribe(
       (params: Params) => {
         this.editmode = params.id != null;
