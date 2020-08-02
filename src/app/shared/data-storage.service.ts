@@ -6,7 +6,9 @@ import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
 import { ShoppingListResponse, Ingredient } from './ingredients.model';
+import { UsersResponse } from '../admin/admin.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
+import { AdminService } from '../admin/admin.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +25,8 @@ export class DataStorageService {
 
   constructor(private http: HttpClient,
               private recipes: RecipeService,
-              private shoppinglist: ShoppingListService) { }
+              private shoppinglist: ShoppingListService,
+              private users: AdminService) { }
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
@@ -213,4 +216,29 @@ export class DataStorageService {
         this.LoadingData.next(false);
       });
   }
+
+  FetchUsersList(page: number, limit: number) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Page: page.toString(),
+        Limit: limit.toString()
+      })
+    };
+
+    return this.http
+      .get<UsersResponse>(environment.GetSetUsersUrl + '?key=' + environment.ApiKey, httpOptions)
+      .pipe(tap(recresp => {
+        this.users.SetUsers(recresp.Users);
+        this.users.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+        this.LoadingData.next(false);
+      }, (error) => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      }));
+  }
 }
+
+

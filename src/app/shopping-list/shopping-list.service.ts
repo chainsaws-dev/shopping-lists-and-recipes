@@ -18,7 +18,6 @@ export class ShoppingListService {
   CurrentSelectedItem: Ingredient;
   Total: number;
 
-  // new Ingredient('Apple', 5), new Ingredient('Tomatoe', 10)
   private ingredients: Ingredient[] = [];
 
   constructor() { }
