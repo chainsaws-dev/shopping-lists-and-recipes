@@ -6,6 +6,15 @@ export class User {
   public Name: string;
   public IsAdmin: boolean;
   public Confirmed: boolean;
+  constructor(Role: string, Email: string, Phone: string, Name: string) {
+    this.GUID = '';
+    this.Role = Role;
+    this.Email = Email;
+    this.Phone = Phone;
+    this.Name = Name;
+    this.IsAdmin = false;
+    this.Confirmed = false;
+  }
 }
 
 export class UsersResponse {

@@ -38,4 +38,14 @@ export class AdminService {
   IsCurrentSelected(user: User) {
     return this.CurrentSelectedItem === user;
   }
+
+  GetUserById(id: number) {
+
+    if (id < this.Users.length && id > 0) {
+      return this.Users[id];
+    } else {
+      return this.Users[0];
+    }
+  }
 }
+
