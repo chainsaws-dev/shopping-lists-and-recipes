@@ -6,7 +6,7 @@ import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
 import { ShoppingListResponse, Ingredient } from './ingredients.model';
-import { UsersResponse } from '../admin/admin.model';
+import { UsersResponse, User } from '../admin/admin.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { AdminService } from '../admin/admin.service';
 
@@ -20,13 +20,15 @@ export class DataStorageService {
   PaginationSet = new Subject<Pagination>();
   FileUploadProgress = new Subject<string>();
   FileUploaded = new Subject<FileUploadResponse>();
+  UserUpdateInsert = new Subject<User>();
 
   LastPagination: Pagination;
 
-  constructor(private http: HttpClient,
-              private recipes: RecipeService,
-              private shoppinglist: ShoppingListService,
-              private users: AdminService) { }
+  constructor(
+    private http: HttpClient,
+    private recipes: RecipeService,
+    private shoppinglist: ShoppingListService,
+    private users: AdminService) { }
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
@@ -239,6 +241,61 @@ export class DataStorageService {
         this.LoadingData.next(false);
       }));
   }
+
+  SaveUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {
+    this.LoadingData.next(true);
+
+    if (ItemToSave.GUID.length === 0) {
+      ItemToSave.GUID = '00000000-0000-0000-0000-000000000000';
+    }
+
+    this.GetObsForSaveUser(ItemToSave, ChangePassword, NewPassword)
+      .subscribe(response => {
+        this.UserUpdateInsert.next(response);
+        this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
+  GetObsForSaveUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {
+    if (ChangePassword) {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          NewPassword: btoa(encodeURI(NewPassword))
+        })
+      };
+
+      return this.http.post<User>(environment.GetSetUsersUrl + '?key=' + environment.ApiKey, ItemToSave, httpOptions);
+    } else {
+      return this.http.post<User>(environment.GetSetUsersUrl + '?key=' + environment.ApiKey, ItemToSave);
+    }
+  }
+
+  DeleteUser(UserToDelete: User) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        UserID: btoa(encodeURI(UserToDelete.GUID))
+      })
+    };
+
+    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl + '?key=' + environment.ApiKey, httpOptions)
+      .subscribe(response => {
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
 }
+
 
 

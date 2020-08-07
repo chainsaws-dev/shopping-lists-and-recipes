@@ -34,11 +34,12 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   FileUploaded: Subscription;
 
 
-  constructor(private activatedroute: ActivatedRoute,
-              private recipeservice: RecipeService,
-              private router: Router,
-              private datastore: DataStorageService,
-              ) { }
+  constructor(
+    private activatedroute: ActivatedRoute,
+    private recipeservice: RecipeService,
+    private router: Router,
+    private datastore: DataStorageService,
+  ) { }
 
   public onReady(editor) {
     editor.ui.getEditableElement().parentElement.insertBefore(

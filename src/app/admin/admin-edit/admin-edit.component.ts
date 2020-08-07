@@ -1,26 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AdminService } from '../admin.service';
 import { User } from '../admin.model';
 import { NgForm } from '@angular/forms';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { Subscription } from 'rxjs';
+import { ErrorResponse } from 'src/app/recipes/recipe-model';
 
 @Component({
   selector: 'app-admin-edit',
   templateUrl: './admin-edit.component.html',
   styleUrls: ['./admin-edit.component.css']
 })
-export class AdminEditComponent implements OnInit {
+export class AdminEditComponent implements OnInit, OnDestroy {
 
   editmode: boolean;
   index: number;
   UserToEdit: User;
 
+  IsLoading: boolean;
+
   changepassword: boolean;
+
+  private DatabaseUpdated: Subscription;
+  private DataLoading: Subscription;
+  private RecivedErrorSub: Subscription;
+
+  ShowMessage: boolean;
+  MessageType: string;
+  ResponseFromBackend: ErrorResponse;
 
   constructor(
     private AdminServ: AdminService,
     private activatedroute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private datastore: DataStorageService) { }
+
+  ngOnDestroy(): void {
+
+    this.DataLoading.unsubscribe();
+    this.RecivedErrorSub.unsubscribe();
+
+    if (this.DatabaseUpdated) {
+      this.DatabaseUpdated.unsubscribe();
+    }
+
+  }
 
   ngOnInit(): void {
     this.activatedroute.params.subscribe(
@@ -30,9 +55,34 @@ export class AdminEditComponent implements OnInit {
           this.index = +params.id;
           this.UserToEdit = this.AdminServ.GetUserById(this.index);
         } else {
+          this.changepassword = true;
           this.UserToEdit = new User('guest_role_read_only', '', '', '');
         }
         this.AdminServ.CurrentSelectedItem = this.UserToEdit;
+      }
+    );
+
+    this.RecivedErrorSub = this.datastore.RecivedError.subscribe(
+      (response) => {
+
+        this.ShowMessage = true;
+        this.ResponseFromBackend = response;
+        setTimeout(() => this.ShowMessage = false, 5000);
+
+        switch (response.Error.Code) {
+          case 200:
+            this.MessageType = 'success';
+            break;
+          default:
+            this.MessageType = 'danger';
+            break;
+        }
+      }
+    );
+
+    this.DataLoading = this.datastore.LoadingData.subscribe(
+      (State) => {
+        this.IsLoading = State;
       }
     );
   }
@@ -40,32 +90,31 @@ export class AdminEditComponent implements OnInit {
   OnSaveClick(SubmittedForm: NgForm) {
     if (SubmittedForm.valid) {
 
+      if (SubmittedForm.value.changepassword && SubmittedForm.value.newpassword.length === 0) {
+        return;
+      }
+
       this.UserToEdit.Email = SubmittedForm.value.useremail;
       this.UserToEdit.Name = SubmittedForm.value.username;
       this.UserToEdit.Phone = SubmittedForm.value.userphone;
       this.UserToEdit.Role = SubmittedForm.value.roles;
-      if (SubmittedForm.value.changepassword) {
-        // Отправляем с новым паролем
-        // SubmittedForm.value.newpassword
-      } else {
 
-      }
+      this.datastore.SaveUser(this.UserToEdit, SubmittedForm.value.changepassword, SubmittedForm.value.newpassword);
 
-      // this.datastore.SaveRecipe(this.UserToEdit);
-
-      /*
-      this.DatabaseUpdated = this.datastore.RecipesUpdateInsert.subscribe((user) => {
+      this.DatabaseUpdated = this.datastore.UserUpdateInsert.subscribe((user) => {
 
         if (this.editmode) {
           this.UserToEdit = user;
-          this.recipeservice.UpdateExistingRecipe(this.UserToEdit, this.index);
+          this.AdminServ.UpdateExistingUser(this.UserToEdit, this.index);
         } else {
           this.UserToEdit = user;
-          this.recipeservice.AddNewRecipe(this.UserToEdit);
+          this.AdminServ.AddNewUser(this.UserToEdit);
         }
-        this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
+
+        setTimeout(() => this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' }), 1000);
+
       });
-      */
+
     }
   }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from './admin.model';
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,9 @@ import { Subject } from 'rxjs';
 export class AdminService {
   UserSelected = new Subject<User>();
   UsersUpdated = new Subject<void>();
+  UsersInserted = new Subject<void>();
+  UsersDeleted = new Subject<void>();
+  UsersChanged = new Subject<User>();
 
   CurrentSelectedItem: User;
   Total: number;
@@ -47,5 +51,23 @@ export class AdminService {
       return this.Users[0];
     }
   }
+
+  UpdateExistingUser(UserToUpdate: User, Index: number) {
+    this.Users[Index] = UserToUpdate;
+    this.UsersChanged.next(UserToUpdate);
+  }
+
+  AddNewUser(NewUser: User) {
+
+    const NewUserToAdd = new User(NewUser.Role, NewUser.Email, NewUser.Phone, NewUser.Name);
+
+    if (this.Users.length < environment.AdminUserListPageSize) {
+      this.Users.push(NewUserToAdd);
+    }
+
+    this.UsersChanged.next(NewUserToAdd);
+    this.UsersInserted.next();
+  }
+
 }
 
