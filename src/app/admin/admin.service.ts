@@ -69,5 +69,10 @@ export class AdminService {
     this.UsersInserted.next();
   }
 
+  DeleteUser(Index: number) {
+    this.Users.splice(Index, 1);
+    this.UsersDeleted.next();
+  }
+
 }
 

@@ -101,4 +101,12 @@ export class AdminListComponent implements OnInit, OnDestroy {
 
   }
 
+  OnDeleteUser(usertodelete: User, index: number): void {
+
+    this.AdminServ.DeleteUser(index);
+
+    this.DataServ.DeleteUser(usertodelete);
+
+  }
+
 }

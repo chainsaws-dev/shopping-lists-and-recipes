@@ -284,7 +284,7 @@ export class DataStorageService {
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl + '?key=' + environment.ApiKey, httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetUsersUrl + '?key=' + environment.ApiKey, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
