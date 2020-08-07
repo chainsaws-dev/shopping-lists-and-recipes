@@ -15,6 +15,8 @@ export class AdminEditComponent implements OnInit {
   index: number;
   UserToEdit: User;
 
+  changepassword: boolean;
+
   constructor(
     private AdminServ: AdminService,
     private activatedroute: ActivatedRoute,
@@ -37,9 +39,36 @@ export class AdminEditComponent implements OnInit {
 
   OnSaveClick(SubmittedForm: NgForm) {
     if (SubmittedForm.valid) {
-      this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
+
+      this.UserToEdit.Email = SubmittedForm.value.useremail;
+      this.UserToEdit.Name = SubmittedForm.value.username;
+      this.UserToEdit.Phone = SubmittedForm.value.userphone;
+      this.UserToEdit.Role = SubmittedForm.value.roles;
+      if (SubmittedForm.value.changepassword) {
+        // Отправляем с новым паролем
+        // SubmittedForm.value.newpassword
+      } else {
+
+      }
+
+      // this.datastore.SaveRecipe(this.UserToEdit);
+
+      /*
+      this.DatabaseUpdated = this.datastore.RecipesUpdateInsert.subscribe((user) => {
+
+        if (this.editmode) {
+          this.UserToEdit = user;
+          this.recipeservice.UpdateExistingRecipe(this.UserToEdit, this.index);
+        } else {
+          this.UserToEdit = user;
+          this.recipeservice.AddNewRecipe(this.UserToEdit);
+        }
+        this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
+      });
+      */
     }
   }
+
 }
 
 

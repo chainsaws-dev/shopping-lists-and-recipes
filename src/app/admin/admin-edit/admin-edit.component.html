@@ -4,13 +4,23 @@
       <h2 *ngIf="editmode">Edit</h2>
       <h2 *ngIf="!editmode">Create</h2>
 
-      <input type="text" id="name" placeholder="Name" class="form-control mb-1" name="username"
-        [ngModel]="UserToEdit.Name" required>
-      <input type="email" id="email" placeholder="Email" class="form-control mb-1" name="useremail"
-        [ngModel]="UserToEdit.Email" required email>
-      <input type="tel" id="phone" placeholder="Phone" class="form-control mb-1" name="userphone"
-        [ngModel]="UserToEdit.Phone" pattern="^((\\+91-?)|0)?[0-9]{10}$">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="example" class="form-control mb-1" name="username"
+          [ngModel]="UserToEdit.Name" required>
+      </div>
 
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="exampe@example.com" class="form-control mb-1" name="useremail"
+          [ngModel]="UserToEdit.Email" required email>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" placeholder="+7 (965) 777-77-77" class="form-control mb-1" name="userphone"
+          [ngModel]="UserToEdit.Phone" pattern="^((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10}$">
+      </div>
 
       <div class="form-group">
         <label for="roles">Select role:</label>
@@ -18,6 +28,16 @@
           <option value="guest_role_read_only">Guest</option>
           <option value="admin_role_CRUD">Admin</option>
         </select>
+      </div>
+
+      <label for="newpassword">Password</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" id="changepassword" name="changepassword" [(ngModel)]="changepassword">
+          </div>
+        </div>
+        <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Enter new password" [disabled]="!changepassword" ngModel>
       </div>
 
       <button class="btn btn-outline-primary" type="submit" [disabled]="UserEditForm.invalid">Save</button>
