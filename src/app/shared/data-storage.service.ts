@@ -305,7 +305,7 @@ export class DataStorageService {
       })
     };
 
-    this.http.post<ErrorResponse>(environment.ConfirmEmailUrl + '?key=' + environment.ApiKey, httpOptions)
+    this.http.post<ErrorResponse>(environment.ConfirmEmailUrl + '?key=' + environment.ApiKey, null, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -325,7 +325,9 @@ export class DataStorageService {
       })
     };
 
-    this.http.post<ErrorResponse>(environment.ResendEmailUrl + '?key=' + environment.ApiKey, httpOptions)
+    console.log(EmailToSend);
+
+    this.http.post<ErrorResponse>(environment.ResendEmailUrl + '?key=' + environment.ApiKey, null, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);

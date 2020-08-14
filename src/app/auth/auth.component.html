@@ -29,7 +29,8 @@
     </div>
     <div class="card-footer">
       <div class="d-flex justify-content-center">
-        <a href="#">Forgot your password?</a>
+        <a href="#" *ngIf="LoginMode">Forgot your password?</a>
+        <a href="/confirm-email" *ngIf="!LoginMode">No confirmation email?</a>
       </div>
     </div>
     <div style="padding: 3px" *ngIf="ShowMessage">
