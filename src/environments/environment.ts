@@ -8,6 +8,8 @@ export const environment = {
   ShoppingListPageSize: 14,
   AdminUserListPageSize: 11,
   ApiKey: 'AIzaSyB3Jr8tp5wotjeS-re9iBSgX2b1zbM0Fx4',
+  ConfirmEmailUrl: '/api/ConfirmEmail',
+  ResendEmailUrl: '/api/ConfirmEmail/Send',
   SignUpUrl: '/api/Accounts/SignUp',
   SignInUrl: '/api/Accounts/SignIn',
   GetSetRecipesUrl: '/api/Recipes',

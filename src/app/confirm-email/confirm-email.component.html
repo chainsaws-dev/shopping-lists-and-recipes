@@ -1,0 +1,28 @@
+<div class="main-parent-login">
+  <div class="card mx-auto" style="margin-top: 3px;" *ngIf="!IsLoading">
+    <div class="card-header">
+      <h3>Confirm email</h3>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="OnSubmitForm(ResendConfEmailForm)" #ResendConfEmailForm="ngForm">
+        <div class="input-group form-group">
+          <input type="email" name="email" class="form-control" placeholder="E-mail" ngModel email required>
+        </div>
+        <div class="form-group float-right">
+          <div class="input-group">
+            <button type="submit" class="btn btn btn-outline-primary"
+            [disabled]="SignupForm.invalid">Send</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div style="padding: 3px" *ngIf="ShowMessage">
+      <ngb-alert *ngIf="ShowMessage" [type]="MessageType" (close)="ShowMessage = false">{{ ResponseFromBackend.Error.Message }}</ngb-alert>
+    </div>
+  </div>
+  <div class="text-center">
+    <div class="spinner-border" role="status" *ngIf="IsLoading">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</div>

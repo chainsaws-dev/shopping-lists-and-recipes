@@ -295,6 +295,47 @@ export class DataStorageService {
       });
   }
 
+
+  ConfirmEmail(UniqueToken: string) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Token: UniqueToken
+      })
+    };
+
+    this.http.post<ErrorResponse>(environment.ConfirmEmailUrl + '?key=' + environment.ApiKey, httpOptions)
+      .subscribe(response => {
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
+  ResendEmail(EmailToSend: string) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Email: EmailToSend
+      })
+    };
+
+    this.http.post<ErrorResponse>(environment.ResendEmailUrl + '?key=' + environment.ApiKey, httpOptions)
+      .subscribe(response => {
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
 }
 
 
