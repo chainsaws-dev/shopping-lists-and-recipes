@@ -1,6 +1,7 @@
 # Shopping Lists And Recipes
 
 Frontend for web app to store recipes and shopping list.
+(In development)
 
 Note that this frontend is specifically developed for this [backend](https://github.com/chainsaws-dev/shopping-lists-and-recipes-backend)
 
