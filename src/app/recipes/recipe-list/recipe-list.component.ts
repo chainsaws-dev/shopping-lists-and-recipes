@@ -114,19 +114,18 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       }
     );
 
-
-
     this.activeroute.params.subscribe((params: Params) => {
       this.currentPage = +params.pn;
       this.RecServ.CurrentPage = this.currentPage;
 
       this.activeroute.queryParams.subscribe((Qparams: Params) => {
+        console.log(Qparams.search);
         this.SearchRequest = Qparams.search;
-        if (!this.SearchRequest) {
-          this.recipes = this.RecServ.GetRecipes();
-        } else {
-          this.SearchFetch(this.currentPage, false);
+        if (this.SearchRequest) {
+          // TODO
+
         }
+        this.recipes = this.RecServ.GetRecipes();
       }
       );
     });
@@ -150,36 +149,6 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       this.router.navigate(['recipes', page.toString()], { queryParamsHandling: 'preserve' });
     } else {
       this.router.navigate(['recipes', page.toString()]);
-    }
-  }
-
-  SearchFetch(page: number, navigate: boolean) {
-    if (this.SearchRequest) {
-      this.FetchOnInint = this.DataServ.SearchRecipes(page, environment.RecipePageSize, this.SearchRequest).subscribe(
-        (value) => {
-          this.recipes = this.RecServ.GetRecipes();
-
-          if (navigate) {
-            this.router.navigate(['recipes', page.toString()], { queryParamsHandling: 'preserve' });
-          }
-        },
-        (error) => {
-          this.recipes = [];
-        }
-      );
-    } else {
-      this.FetchOnInint = this.DataServ.FetchRecipes(page, environment.RecipePageSize).subscribe(
-        (value) => {
-          this.recipes = this.RecServ.GetRecipes();
-
-          if (navigate) {
-            this.router.navigate(['recipes', page.toString()]);
-          }
-        },
-        (error) => {
-          this.recipes = [];
-        }
-      );
     }
   }
 
