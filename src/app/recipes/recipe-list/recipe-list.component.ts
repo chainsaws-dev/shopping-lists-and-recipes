@@ -142,7 +142,15 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
   OnPageChanged(page: number) {
     this.RecServ.CurrentPage = page;
-    this.SearchFetch(page, true);
+    this.NavigatePage(page);
+  }
+
+  NavigatePage(page: number) {
+    if (this.SearchRequest) {
+      this.router.navigate(['recipes', page.toString()], { queryParamsHandling: 'preserve' });
+    } else {
+      this.router.navigate(['recipes', page.toString()]);
+    }
   }
 
   SearchFetch(page: number, navigate: boolean) {
