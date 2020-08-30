@@ -20,13 +20,13 @@ export class RecipesResolverService implements Resolve<Recipe[]> {
     const page = route.params.pn;
 
     if (!searchreq) {
-      return this.datastorageservice.FetchRecipes(route.params.pn, environment.RecipePageSize).pipe(
+      return this.datastorageservice.FetchRecipes(page, environment.RecipePageSize).pipe(
         map(resp => {
         this.datastorageservice.LastPagination = new Pagination(resp.Total, resp.Limit, resp.Offset);
         return resp.Recipes;
       }));
     } else {
-      return this.datastorageservice.SearchRecipes(route.params.pn, environment.RecipePageSize, searchreq).pipe(
+      return this.datastorageservice.SearchRecipes(page, environment.RecipePageSize, searchreq).pipe(
         map(resp => {
         this.datastorageservice.LastPagination = new Pagination(resp.Total, resp.Limit, resp.Offset);
         return resp.Recipes;
