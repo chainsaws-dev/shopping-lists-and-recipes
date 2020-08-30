@@ -326,8 +326,6 @@ export class DataStorageService {
       })
     };
 
-    console.log(EmailToSend);
-
     this.http.post<ErrorResponse>(environment.ResendEmailUrl + '?key=' + environment.ApiKey, null, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);

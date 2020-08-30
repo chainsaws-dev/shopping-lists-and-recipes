@@ -71,8 +71,6 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
 
       const cururl = this.getUrlWithoutParams();
 
-      console.log(cururl);
-
       this.ResetPasswordMode = cururl === '/reset-password';
 
       if (!this.ResetPasswordMode) {
