@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from '../shared/data-storage.service';
 import { ActivatedRoute, Router, Params, UrlSegment } from '@angular/router';
+import * as url from 'url';
 
 @Component({
   selector: 'app-confirm-email',
@@ -68,21 +69,25 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
 
       this.Token = Qparams.Token;
 
+      const cururl = this.getUrlWithoutParams();
 
-      if (this.router.url === '/reset-password') {
-        this.ResetPasswordMode = true;
-      }
+      console.log(cururl);
 
-      if (this.Token && !this.ResetPasswordMode) {
-        this.DataServ.ConfirmEmail(this.Token);
-      }
+      this.ResetPasswordMode = cururl === '/reset-password';
 
-      if (this.ResetPasswordMode) {
-        // TODO
-        // Redirect to password reset form keeping token in params
+      if (!this.ResetPasswordMode) {
+        if (this.Token) {
+          this.DataServ.ConfirmEmail(this.Token);
+        }
       }
     }
     );
+  }
+
+  getUrlWithoutParams() {
+    const urlTree = this.router.parseUrl(this.router.url);
+    urlTree.queryParams = {};
+    return urlTree.toString();
   }
 
   OnSubmitForm(ResendConfEmailForm: NgForm) {
@@ -90,12 +95,15 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
 
       this.IsLoading = true;
 
-      if (this.ResetPasswordMode) {
-        this.DataServ.SendEmailResetPassword(ResendConfEmailForm.value.email);
+      if (this.ResetPasswordMode && this.Token) {
+        this.DataServ.SubmitNewPassword(this.Token, ResendConfEmailForm.value.newpassword);
       } else {
-        this.DataServ.SendEmailConfirmEmail(ResendConfEmailForm.value.email);
+        if (this.ResetPasswordMode) {
+          this.DataServ.SendEmailResetPassword(ResendConfEmailForm.value.email);
+        } else {
+          this.DataServ.SendEmailConfirmEmail(ResendConfEmailForm.value.email);
+        }
       }
-
 
       ResendConfEmailForm.reset();
 

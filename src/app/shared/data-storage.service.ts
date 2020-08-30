@@ -14,6 +14,7 @@ import { AdminService } from '../admin/admin.service';
   providedIn: 'root'
 })
 export class DataStorageService {
+
   LoadingData = new Subject<boolean>();
   RecipesUpdateInsert = new Subject<Recipe>();
   RecivedError = new Subject<ErrorResponse>();
@@ -347,8 +348,6 @@ export class DataStorageService {
       })
     };
 
-    console.log(EmailToSend);
-
     this.http.post<ErrorResponse>(environment.SendEmailResetPassUrl + '?key=' + environment.ApiKey, null, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
@@ -359,6 +358,28 @@ export class DataStorageService {
         this.LoadingData.next(false);
       });
   }
+
+  SubmitNewPassword(UniqueToken: string, NewPass: string) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Token: UniqueToken,
+        NewPassword: btoa(encodeURI(NewPass))
+      })
+    };
+
+    this.http.post<ErrorResponse>(environment.ResetPasswordUrl + '?key=' + environment.ApiKey, null, httpOptions)
+      .subscribe(response => {
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
 
 }
 
