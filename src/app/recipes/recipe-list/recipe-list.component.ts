@@ -122,13 +122,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
         console.log(Qparams.search);
         this.SearchRequest = Qparams.search;
         if (this.SearchRequest) {
-          if (this.DataServ.Resolved) {
-            this.recipes = this.RecServ.GetRecipes();
-            this.DataServ.Resolved = false;
-          } else {
-            this.SearchFetch(this.currentPage, false);
-          }
-
+          this.SearchFetch(this.currentPage, false);
         } else {
           this.recipes = this.RecServ.GetRecipes();
         }
