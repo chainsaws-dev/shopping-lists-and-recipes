@@ -6,7 +6,7 @@
     <div class="card-body">
       <form (ngSubmit)="OnSubmitForm(SignupForm)" #SignupForm="ngForm">
         <div class="input-group form-group">
-          <input type="email" name="email" class="form-control" placeholder="E-mail" ngModel email required>
+          <input type="email" name="email" class="form-control" placeholder="E-mail" placement="right" ngbTooltip="Real email required" ngModel email required>
         </div>
         <div class="input-group form-group" *ngIf="!LoginMode">
           <input type="text" name="name" class="form-control" placeholder="Name" ngModel>

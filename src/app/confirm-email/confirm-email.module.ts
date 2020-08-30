@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import {ConfirmEmailComponent} from './confirm-email.component';
 import { FormsModule } from '@angular/forms';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: '', component: ConfirmEmailComponent, },
@@ -18,6 +18,7 @@ const routes: Routes = [
     FormsModule,
     NgbAlertModule,
     RouterModule.forChild(routes),
+    NgbTooltipModule
   ]
 })
 export class ConfirmEmailModule { }

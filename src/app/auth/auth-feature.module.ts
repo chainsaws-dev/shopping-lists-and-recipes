@@ -4,7 +4,7 @@ import { AuthComponent } from './auth.component';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: '', component: AuthComponent }
@@ -17,7 +17,8 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forChild(routes),
     SharedModule,
-    NgbAlertModule
+    NgbAlertModule,
+    NgbTooltipModule
   ]
 })
 export class AuthFeatureModule { }
