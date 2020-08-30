@@ -3,7 +3,7 @@ import { ErrorResponse } from '../admin/admin.model';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from '../shared/data-storage.service';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { ActivatedRoute, Router, Params, UrlSegment } from '@angular/router';
 
 @Component({
   selector: 'app-confirm-email',
@@ -24,6 +24,8 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
   DataServiceSub: Subscription;
 
   Token: string;
+
+  ResetPasswordMode: boolean;
 
   constructor(
     private DataServ: DataStorageService,
@@ -66,10 +68,19 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
 
       this.Token = Qparams.Token;
 
-      if (this.Token) {
+
+      if (this.router.url === '/reset-password') {
+        this.ResetPasswordMode = true;
+      }
+
+      if (this.Token && !this.ResetPasswordMode) {
         this.DataServ.ConfirmEmail(this.Token);
       }
 
+      if (this.ResetPasswordMode) {
+        // TODO
+        // Redirect to password reset form keeping token in params
+      }
     }
     );
   }
@@ -79,7 +90,12 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
 
       this.IsLoading = true;
 
-      this.DataServ.ResendEmail(ResendConfEmailForm.value.email);
+      if (this.ResetPasswordMode) {
+        this.DataServ.SendEmailResetPassword(ResendConfEmailForm.value.email);
+      } else {
+        this.DataServ.SendEmailConfirmEmail(ResendConfEmailForm.value.email);
+      }
+
 
       ResendConfEmailForm.reset();
 

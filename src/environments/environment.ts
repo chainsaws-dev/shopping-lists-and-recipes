@@ -10,6 +10,8 @@ export const environment = {
   ApiKey: 'AIzaSyB3Jr8tp5wotjeS-re9iBSgX2b1zbM0Fx4',
   ConfirmEmailUrl: '/api/ConfirmEmail',
   ResendEmailUrl: '/api/ConfirmEmail/Send',
+  ResetPasswordUrl: '/api/PasswordReset',
+  SendEmailResetPassUrl: '/api/PasswordReset/Send',
   SignUpUrl: '/api/Accounts/SignUp',
   SignInUrl: '/api/Accounts/SignIn',
   GetSetRecipesUrl: '/api/Recipes',

@@ -316,7 +316,7 @@ export class DataStorageService {
       });
   }
 
-  ResendEmail(EmailToSend: string) {
+  SendEmailConfirmEmail(EmailToSend: string) {
     this.LoadingData.next(true);
 
     const httpOptions = {
@@ -328,6 +328,28 @@ export class DataStorageService {
     console.log(EmailToSend);
 
     this.http.post<ErrorResponse>(environment.ResendEmailUrl + '?key=' + environment.ApiKey, null, httpOptions)
+      .subscribe(response => {
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
+  SendEmailResetPassword(EmailToSend: string) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Email: EmailToSend
+      })
+    };
+
+    console.log(EmailToSend);
+
+    this.http.post<ErrorResponse>(environment.SendEmailResetPassUrl + '?key=' + environment.ApiKey, null, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
