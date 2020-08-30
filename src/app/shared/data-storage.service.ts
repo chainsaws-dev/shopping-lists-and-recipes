@@ -25,6 +25,8 @@ export class DataStorageService {
 
   LastPagination: Pagination;
 
+  Searched: boolean;
+
   constructor(
     private http: HttpClient,
     private recipes: RecipeService,

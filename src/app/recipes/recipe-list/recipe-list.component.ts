@@ -39,7 +39,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     private RecServ: RecipeService,
     private DataServ: DataStorageService,
     private activeroute: ActivatedRoute,
-    private router: Router) {
+    private router: Router
+  ) {
   }
   ngOnDestroy(): void {
     this.RecipeInsertedSub.unsubscribe();
@@ -119,13 +120,10 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       this.RecServ.CurrentPage = this.currentPage;
 
       this.activeroute.queryParams.subscribe((Qparams: Params) => {
-        console.log(Qparams.search);
         this.SearchRequest = Qparams.search;
-        if (this.SearchRequest) {
-          this.SearchFetch(this.currentPage, false);
-        } else {
-          this.recipes = this.RecServ.GetRecipes();
-        }
+
+        this.StartFetch(this.currentPage);
+
       }
       );
     });
@@ -152,34 +150,23 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     }
   }
 
-  SearchFetch(page: number, navigate: boolean) {
-    if (this.SearchRequest) {
+  StartFetch(page: number) {
+
+    if (this.SearchRequest && !this.DataServ.Searched) {
       this.FetchOnInint = this.DataServ.SearchRecipes(page, environment.RecipePageSize, this.SearchRequest).subscribe(
         (value) => {
           this.recipes = this.RecServ.GetRecipes();
-
-          if (navigate) {
-            this.router.navigate(['recipes', page.toString()], { queryParamsHandling: 'preserve' });
-          }
         },
         (error) => {
           this.recipes = [];
         }
       );
     } else {
-      this.FetchOnInint = this.DataServ.FetchRecipes(page, environment.RecipePageSize).subscribe(
-        (value) => {
-          this.recipes = this.RecServ.GetRecipes();
+      this.recipes = this.RecServ.GetRecipes();
+    }
 
-          if (navigate) {
-            this.router.navigate(['recipes', page.toString()]);
-          }
-        },
-        (error) => {
-          this.recipes = [];
-        }
-      );
+    if (this.DataServ.Searched) {
+      this.DataServ.Searched = false;
     }
   }
-
 }

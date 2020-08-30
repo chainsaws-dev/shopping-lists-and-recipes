@@ -22,15 +22,16 @@ export class RecipesResolverService implements Resolve<Recipe[]> {
     if (!searchreq) {
       return this.datastorageservice.FetchRecipes(page, environment.RecipePageSize).pipe(
         map(resp => {
-        this.datastorageservice.LastPagination = new Pagination(resp.Total, resp.Limit, resp.Offset);
-        return resp.Recipes;
-      }));
+          this.datastorageservice.LastPagination = new Pagination(resp.Total, resp.Limit, resp.Offset);
+          return resp.Recipes;
+        }));
     } else {
       return this.datastorageservice.SearchRecipes(page, environment.RecipePageSize, searchreq).pipe(
         map(resp => {
-        this.datastorageservice.LastPagination = new Pagination(resp.Total, resp.Limit, resp.Offset);
-        return resp.Recipes;
-      }));
+          this.datastorageservice.LastPagination = new Pagination(resp.Total, resp.Limit, resp.Offset);
+          this.datastorageservice.Searched = true;
+          return resp.Recipes;
+        }));
     }
   }
 }

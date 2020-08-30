@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   SearchRecipes(form: NgForm): void {
     if (form.valid) {
       const fvalue = form.value;
-      this.router.navigate(['recipes'], { queryParams: { search: encodeURI(fvalue.searchreq) } });
+      this.router.navigate(['recipes'], { queryParams: { search: encodeURI(fvalue.searchreq)}  });
     }
   }
 
