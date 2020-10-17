@@ -19,6 +19,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   @ViewChild('RecipeForm', { static: false }) RecipeForm: NgForm;
 
   HtmlEditor = DecoupledEditor;
+
   RecipeToEdit: Recipe;
   index: number;
   editmode = false;

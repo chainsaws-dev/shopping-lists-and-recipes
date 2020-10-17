@@ -20,7 +20,7 @@
       <input type="text" id="name" placeholder="Name" class="form-control mb-1" name="recipename"
         [ngModel]="RecipeToEdit.Name" required>
       <ckeditor class="mb-1" name="recipedescription" [editor]="HtmlEditor" [ngModel]="RecipeToEdit.Description"
-        (ready)="onReady($event)"></ckeditor>
+        (ready)="onReady($event)" [config]="{'toolbar':{'items':['heading','|','fontSize','fontFamily','|','bold','italic','underline','strikethrough','highlight','|','alignment','|','numberedList','bulletedList','|','indent','outdent','|','todoList','link','blockQuote','insertTable','mediaEmbed','imageInsert','|','undo','redo']},'language':'ru','image':{toolbar:['imageTextAlternative','imageStyle:full','imageStyle:side']},'table':{contentToolbar:['tableColumn','tableRow','mergeTableCells','tableCellProperties','tableProperties']},'licenseKey':''}"></ckeditor>
       <h4>List of ingredients</h4>
       <div class="row">
         <div class="col">
