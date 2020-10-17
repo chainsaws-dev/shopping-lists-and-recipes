@@ -303,7 +303,14 @@ export class DataStorageService {
 
       return this.http.post<User>(environment.GetSetUsersUrl, ItemToSave, httpOptions);
     } else {
-      return this.http.post<User>(environment.GetSetUsersUrl, ItemToSave);
+
+      const httpOptions = {
+        headers: new HttpHeaders({
+          ApiKey: environment.ApiKey
+        })
+      };
+
+      return this.http.post<User>(environment.GetSetUsersUrl, ItemToSave, httpOptions);
     }
   }
 
