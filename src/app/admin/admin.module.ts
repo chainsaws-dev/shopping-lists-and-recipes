@@ -9,6 +9,8 @@ import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap'
 import { AdminEditComponent } from './admin-edit/admin-edit.component';
 import { AdminListComponent } from './admin-list/admin-list.component';
 import { AdminResolverService } from './admin-resolver.service';
+import { AdminMediaComponent } from './admin-media/admin-media.component';
+import { AdminSessionsComponent } from './admin-sessions/admin-sessions.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '1', pathMatch: 'full' },
@@ -21,7 +23,9 @@ const routes: Routes = [
   declarations: [
     AdminComponent,
     AdminEditComponent,
-    AdminListComponent
+    AdminListComponent,
+    AdminMediaComponent,
+    AdminSessionsComponent
   ],
   imports: [
     CommonModule,
