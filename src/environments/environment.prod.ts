@@ -11,7 +11,7 @@ export const environment = {
   SignUpUrl: '/api/Accounts/SignUp',
   SignInUrl: '/api/Accounts/SignIn',
   GetSetRecipesUrl: '/api/Recipes',
-  UploadFileUrl: '/api/SaveRecipePhoto',
+  UploadFileUrl: '/api/Files',
   SearchRecipesUrl: '/api/Recipes/Search',
   GetSetShoppingListUrl: '/api/ShoppingList',
   GetSetUsersUrl: '/api/Users',

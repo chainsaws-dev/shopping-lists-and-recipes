@@ -102,7 +102,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
     this.FileUploaded = this.datastore.FileUploaded.subscribe(
       (res: FileUploadResponse) => {
-        this.RecipeToEdit.ImagePath = '/uploads/' + res.FileID;
+        this.RecipeToEdit.ImagePath = res.FileID;
         this.RecipeToEdit.ImageDbID = res.DbID;
         this.UploadError = res.Error;
       }
