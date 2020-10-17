@@ -119,7 +119,7 @@ export class DataStorageService {
 
   FileUpload(FileToUpload: File) {
     const formdatafile = new FormData();
-    formdatafile.append('image', FileToUpload, FileToUpload.name);
+    formdatafile.append('file', FileToUpload, FileToUpload.name);
     this.http.post(environment.UploadFileUrl, formdatafile, {
       headers: new HttpHeaders({
         ApiKey: environment.ApiKey
