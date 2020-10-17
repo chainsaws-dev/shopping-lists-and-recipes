@@ -39,12 +39,13 @@ export class DataStorageService {
     const httpOptions = {
       headers: new HttpHeaders({
         Page: page.toString(),
-        Limit: limit.toString()
+        Limit: limit.toString(),
+        ApiKey: environment.ApiKey
       })
     };
 
     return this.http
-      .get<RecipeResponse>(environment.GetSetRecipesUrl + '?key=' + environment.ApiKey, httpOptions)
+      .get<RecipeResponse>(environment.GetSetRecipesUrl , httpOptions)
       .pipe(map(recresp => {
         recresp.Recipes = recresp.Recipes.map(recipe => {
           return { ...recipe, Ingredients: recipe.Ingredients ? recipe.Ingredients : [] };
@@ -70,12 +71,13 @@ export class DataStorageService {
       headers: new HttpHeaders({
         Page: page.toString(),
         Limit: limit.toString(),
-        Search: search
+        Search: search,
+        ApiKey: environment.ApiKey
       })
     };
 
     return this.http
-      .get<RecipeResponse>(environment.SearchRecipesUrl + '?key=' + environment.ApiKey, httpOptions)
+      .get<RecipeResponse>(environment.SearchRecipesUrl , httpOptions)
       .pipe(map(recresp => {
         recresp.Recipes = recresp.Recipes.map(recipe => {
           return { ...recipe, Ingredients: recipe.Ingredients ? recipe.Ingredients : [] };
@@ -97,7 +99,13 @@ export class DataStorageService {
   SaveRecipe(RecipeToSave: Recipe) {
     this.LoadingData.next(true);
 
-    this.http.post<Recipe>(environment.GetSetRecipesUrl + '?key=' + environment.ApiKey, RecipeToSave)
+    const httpOptions = {
+      headers: new HttpHeaders({
+        ApiKey: environment.ApiKey
+      })
+    };
+
+    this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave, httpOptions)
       .subscribe(response => {
         this.RecipesUpdateInsert.next(response);
         this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
@@ -112,10 +120,12 @@ export class DataStorageService {
   FileUpload(FileToUpload: File) {
     const formdatafile = new FormData();
     formdatafile.append('image', FileToUpload, FileToUpload.name);
-    this.http.post(environment.UploadFileUrl + '?key=' + environment.ApiKey, formdatafile, {
+    this.http.post(environment.UploadFileUrl, formdatafile, {
+      headers: new HttpHeaders({
+        ApiKey: environment.ApiKey
+      }),
       reportProgress: true,
-      observe: 'events'
-    }).subscribe((curevent: any) => {
+      observe: 'events'}).subscribe((curevent: any) => {
       if (curevent.type === HttpEventType.UploadProgress) {
         this.FileUploadProgress.next(String(curevent.loaded / curevent.total * 100));
       } else if (curevent.type === HttpEventType.Response) {
@@ -136,11 +146,12 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        RecipeID: RecipeToDelete.ID.toString()
+        RecipeID: RecipeToDelete.ID.toString(),
+        ApiKey: environment.ApiKey
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl + '?key=' + environment.ApiKey, httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl , httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -158,12 +169,13 @@ export class DataStorageService {
     const httpOptions = {
       headers: new HttpHeaders({
         Page: page.toString(),
-        Limit: limit.toString()
+        Limit: limit.toString(),
+        ApiKey: environment.ApiKey
       })
     };
 
     return this.http
-      .get<ShoppingListResponse>(environment.GetSetShoppingListUrl + '?key=' + environment.ApiKey, httpOptions)
+      .get<ShoppingListResponse>(environment.GetSetShoppingListUrl , httpOptions)
       .pipe(tap(recresp => {
         this.shoppinglist.SetIngredients(recresp.Items);
         this.shoppinglist.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
@@ -178,7 +190,14 @@ export class DataStorageService {
   SaveShoppingList(ItemToSave: Ingredient) {
     this.LoadingData.next(true);
 
-    this.http.post<Recipe>(environment.GetSetShoppingListUrl + '?key=' + environment.ApiKey, ItemToSave)
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        ApiKey: environment.ApiKey
+      })
+    };
+
+    this.http.post<Recipe>(environment.GetSetShoppingListUrl, ItemToSave, httpOptions)
       .subscribe(response => {
         this.RecipesUpdateInsert.next(response);
         this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
@@ -195,11 +214,12 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        IngName: encodeURI(IngredientToDelete.Name)
+        IngName: encodeURI(IngredientToDelete.Name),
+        ApiKey: environment.ApiKey
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl + '?key=' + environment.ApiKey, httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl , httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -211,7 +231,14 @@ export class DataStorageService {
   }
 
   DeleteAllShoppingList() {
-    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl + '?key=' + environment.ApiKey)
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        ApiKey: environment.ApiKey
+      })
+    };
+
+    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -228,12 +255,13 @@ export class DataStorageService {
     const httpOptions = {
       headers: new HttpHeaders({
         Page: page.toString(),
-        Limit: limit.toString()
+        Limit: limit.toString(),
+        ApiKey: environment.ApiKey
       })
     };
 
     return this.http
-      .get<UsersResponse>(environment.GetSetUsersUrl + '?key=' + environment.ApiKey, httpOptions)
+      .get<UsersResponse>(environment.GetSetUsersUrl, httpOptions)
       .pipe(tap(recresp => {
         this.users.SetUsers(recresp.Users);
         this.users.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
@@ -268,13 +296,14 @@ export class DataStorageService {
     if (ChangePassword) {
       const httpOptions = {
         headers: new HttpHeaders({
-          NewPassword: btoa(encodeURI(NewPassword))
+          NewPassword: btoa(encodeURI(NewPassword)),
+          ApiKey: environment.ApiKey
         })
       };
 
-      return this.http.post<User>(environment.GetSetUsersUrl + '?key=' + environment.ApiKey, ItemToSave, httpOptions);
+      return this.http.post<User>(environment.GetSetUsersUrl, ItemToSave, httpOptions);
     } else {
-      return this.http.post<User>(environment.GetSetUsersUrl + '?key=' + environment.ApiKey, ItemToSave);
+      return this.http.post<User>(environment.GetSetUsersUrl, ItemToSave);
     }
   }
 
@@ -283,11 +312,12 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        UserID: btoa(encodeURI(UserToDelete.GUID))
+        UserID: btoa(encodeURI(UserToDelete.GUID)),
+        ApiKey: environment.ApiKey
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.GetSetUsersUrl + '?key=' + environment.ApiKey, httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetUsersUrl , httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -304,11 +334,12 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        Token: UniqueToken
+        Token: UniqueToken,
+        ApiKey: environment.ApiKey
       })
     };
 
-    this.http.post<ErrorResponse>(environment.ConfirmEmailUrl + '?key=' + environment.ApiKey, null, httpOptions)
+    this.http.post<ErrorResponse>(environment.ConfirmEmailUrl, null, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -324,11 +355,12 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        Email: EmailToSend
+        Email: EmailToSend,
+        ApiKey: environment.ApiKey
       })
     };
 
-    this.http.post<ErrorResponse>(environment.ResendEmailUrl + '?key=' + environment.ApiKey, null, httpOptions)
+    this.http.post<ErrorResponse>(environment.ResendEmailUrl, null, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -344,11 +376,12 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        Email: EmailToSend
+        Email: EmailToSend,
+        ApiKey: environment.ApiKey
       })
     };
 
-    this.http.post<ErrorResponse>(environment.SendEmailResetPassUrl + '?key=' + environment.ApiKey, null, httpOptions)
+    this.http.post<ErrorResponse>(environment.SendEmailResetPassUrl, null, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -365,11 +398,12 @@ export class DataStorageService {
     const httpOptions = {
       headers: new HttpHeaders({
         Token: UniqueToken,
-        NewPassword: btoa(encodeURI(NewPass))
+        NewPassword: btoa(encodeURI(NewPass)),
+        ApiKey: environment.ApiKey
       })
     };
 
-    this.http.post<ErrorResponse>(environment.ResetPasswordUrl + '?key=' + environment.ApiKey, null, httpOptions)
+    this.http.post<ErrorResponse>(environment.ResetPasswordUrl, null, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);

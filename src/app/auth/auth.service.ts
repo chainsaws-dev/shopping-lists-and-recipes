@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { AuthResponseData, AuthRequest } from './auth.module';
 import { Subject, Observable } from 'rxjs';
@@ -29,9 +29,14 @@ export class AuthService {
       ReturnSecureToken: true,
     };
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        ApiKey: environment.ApiKey
+      })
+    };
+
     this.authObs = this.http.post<AuthResponseData>(
-      environment.SignUpUrl + '?key=' + environment.ApiKey,
-      signup);
+      environment.SignUpUrl, signup, httpOptions);
 
     this.RequestSub();
   }
@@ -44,9 +49,14 @@ export class AuthService {
       ReturnSecureToken: true,
     };
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        ApiKey: environment.ApiKey
+      })
+    };
+
     this.authObs = this.http.post<AuthResponseData>(
-      environment.SignInUrl + '?key=' + environment.ApiKey,
-      signin);
+      environment.SignInUrl, signin, httpOptions);
 
     this.RequestSub();
   }
