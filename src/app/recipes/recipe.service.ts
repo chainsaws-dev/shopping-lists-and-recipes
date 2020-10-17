@@ -45,7 +45,7 @@ export class RecipeService {
 
   SendToShoppingList(RecipeIngredients: Ingredient[]) {
     RecipeIngredients.forEach(element => {
-      this.ShopList.AddNewItem(element);
+      this.ShopList.AddNewItem(element, true);
     });
   }
 

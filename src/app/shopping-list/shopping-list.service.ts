@@ -39,14 +39,14 @@ export class ShoppingListService {
     this.Total = Total;
   }
 
-  AddNewItem(NewIngredient: Ingredient) {
+  AddNewItem(NewIngredient: Ingredient, Force: boolean) {
     let FoundIngredient = this.ingredients.find((x) => x.Name === NewIngredient.Name);
 
     if (FoundIngredient) {
       FoundIngredient.Amount = FoundIngredient.Amount + NewIngredient.Amount;
     } else {
       FoundIngredient = NewIngredient;
-      if (this.ingredients.length < environment.ShoppingListPageSize) {
+      if (this.ingredients.length < environment.ShoppingListPageSize || Force) {
         this.ingredients.push(new Ingredient(NewIngredient.Name, NewIngredient.Amount));
       }
     }
