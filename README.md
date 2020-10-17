@@ -3,6 +3,8 @@
 Frontend for web app to store recipes and shopping list.
 (In development)
 
+Using custom ckeditor5 [download](https://drive.google.com/file/d/1xpuZrxC3LIWx6YREb5rX8O7jy7fA9nFH/view?usp=sharing)
+
 Note that this frontend is specifically developed for this [backend](https://github.com/chainsaws-dev/shopping-lists-and-recipes-backend)
 
 ## Development server
