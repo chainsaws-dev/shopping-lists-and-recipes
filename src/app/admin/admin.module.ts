@@ -9,10 +9,15 @@ import { UserEditComponent } from './users/user-edit/user-edit.component';
 import { UserListComponent } from './users/user-list/user-list.component';
 
 import { MediaListComponent } from './media/media-list/media-list.component';
+import { MediaEditComponent } from './media/media-edit/media-edit.component';
 
 import { SessionsListComponent } from './sessions/sessions-list/sessions-list.component';
+import { SessionsEditComponent } from './sessions/sessions-edit/sessions-edit.component';
 
 import { AdminRoutingModule } from './admin-routing.module';
+
+
+
 
 @NgModule({
   declarations: [
@@ -20,7 +25,9 @@ import { AdminRoutingModule } from './admin-routing.module';
     UserEditComponent,
     UserListComponent,
     MediaListComponent,
-    SessionsListComponent
+    SessionsListComponent,
+    SessionsEditComponent,
+    MediaEditComponent
   ],
   imports: [
     CommonModule,

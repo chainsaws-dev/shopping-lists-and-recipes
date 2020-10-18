@@ -3,12 +3,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
 import { RoleGuard } from '../auth/role.guard';
 
-import { AdminComponent } from './admin.component';
-import { AdminEditComponent } from './admin-edit/admin-edit.component';
-import { AdminListComponent } from './admin-list/admin-list.component';
 import { AdminResolverService } from './admin-resolver.service';
-import { AdminMediaComponent } from './admin-media/admin-media.component';
-import { SessionsListComponent } from './sessions-list/sessions-list.component';
+
+import { AdminComponent } from './admin.component';
+
+import { UserEditComponent } from './users/user-edit/user-edit.component';
+import { UserListComponent } from './users/user-list/user-list.component';
+
+import { MediaListComponent } from './media/media-list/media-list.component';
+import { MediaEditComponent } from './media/media-edit/media-edit.component';
+
+import { SessionsListComponent } from './sessions/sessions-list/sessions-list.component';
+import { SessionsEditComponent } from './sessions/sessions-edit/sessions-edit.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'users', pathMatch: 'full' },
@@ -16,9 +22,9 @@ const routes: Routes = [
     path: 'users', component: AdminComponent,  canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: '1', pathMatch: 'full'  },
-      { path: ':pn', component: AdminListComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
-      { path: ':pn/new', component: AdminEditComponent, },
-      { path: ':pn/:id', component: AdminEditComponent, resolve: [AdminResolverService] }
+      { path: ':pn', component: UserListComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
+      { path: ':pn/new', component: UserEditComponent, },
+      { path: ':pn/:id', component: UserEditComponent, resolve: [AdminResolverService] }
     ]
   },
   {
@@ -26,17 +32,17 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: '1', pathMatch: 'full'  },
       { path: ':pn', component: SessionsListComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
-      { path: ':pn/new', component: AdminEditComponent, },
-      { path: ':pn/:id', component: AdminEditComponent, resolve: [AdminResolverService] }
+      { path: ':pn/new', component: SessionsEditComponent, },
+      { path: ':pn/:id', component: SessionsEditComponent, resolve: [AdminResolverService] }
     ]
   },
   {
     path: 'media', component: AdminComponent, canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: '1', pathMatch: 'full'  },
-      { path: ':pn', component: AdminMediaComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
-      { path: ':pn/new', component: AdminEditComponent, },
-      { path: ':pn/:id', component: AdminEditComponent, resolve: [AdminResolverService] }
+      { path: ':pn', component: MediaListComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
+      { path: ':pn/new', component: MediaEditComponent, },
+      { path: ':pn/:id', component: MediaEditComponent, resolve: [AdminResolverService] }
     ]
   },
 ];
