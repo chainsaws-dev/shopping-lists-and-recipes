@@ -13,10 +13,17 @@ import { AdminMediaComponent } from './admin-media/admin-media.component';
 import { AdminSessionsComponent } from './admin-sessions/admin-sessions.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '1', pathMatch: 'full' },
-  { path: ':pn', component: AdminComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
-  { path: ':pn/new', component: AdminEditComponent, },
-  { path: ':pn/:id', component: AdminEditComponent, resolve: [AdminResolverService] }
+  { path: '', redirectTo: 'users', pathMatch: 'full' },
+  {
+    path: 'users', component: AdminComponent,
+    children: [
+      { path: '', redirectTo: '1', pathMatch: 'full'  },
+      { path: ':pn', component: AdminListComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
+      { path: ':pn/new', component: AdminEditComponent, },
+      { path: ':pn/:id', component: AdminEditComponent, resolve: [AdminResolverService] }
+    ]
+  },
+
 ];
 
 @NgModule({

@@ -68,22 +68,24 @@ export class AdminListComponent implements OnInit, OnDestroy {
 
     this.PageChanged = this.ActiveRoute.params.subscribe((params: Params) => {
       this.usCurrentPage = +params.pn;
+
+      console.log(params);
+      console.log(params.pn);
+
+      this.FetchOnInint = this.DataServ.FetchUsersList(this.usCurrentPage, environment.AdminUserListPageSize).subscribe(
+        (value) => {
+          this.Users = this.AdminServ.GetUsers();
+          this.usCollectionSize = this.AdminServ.Total;
+        },
+        (error) => {
+          this.Users = [];
+        }
+      );
     });
 
     this.DataLoading = this.DataServ.LoadingData.subscribe(
       (State) => {
         this.IsLoading = State;
-      }
-    );
-
-
-    this.FetchOnInint = this.DataServ.FetchUsersList(this.usCurrentPage, environment.AdminUserListPageSize).subscribe(
-      (value) => {
-        this.Users = this.AdminServ.GetUsers();
-        this.usCollectionSize = this.AdminServ.Total;
-      },
-      (error) => {
-        this.Users = [];
       }
     );
 

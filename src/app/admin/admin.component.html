@@ -1,6 +1,6 @@
-<h2 class="ml-1">Sessions</h2>
-<app-admin-sessions></app-admin-sessions>
-<h2 class="ml-1">Users</h2>
-<app-admin-list></app-admin-list>
-<h2 class="ml-1">Media</h2>
-<app-admin-media></app-admin-media>
+<ul class="nav nav-tabs">
+  <li class="active"><a routerLink="/admin/users" routerLinkActive="active" class="nav-link">Users</a></li>
+  <li><a routerLink="/admin/sessions" routerLinkActive="active" class="nav-link">Sessions</a></li>
+  <li><a routerLink="/admin/media" routerLinkActive="active" class="nav-link">Media</a></li>
+</ul>
+<router-outlet></router-outlet>
