@@ -58,10 +58,9 @@ export class Pagination {
 }
 
 export class FileUploadResponse {
-  public FileName: string;
-  public FileSize: number;
-  public FileType: string;
-  public DbID: number;
+  public ID: number;
+  public Filename: string;
+  public Filesize: number;
+  public Filetype: string;
   public FileID: string;
-  public Error: string;
 }

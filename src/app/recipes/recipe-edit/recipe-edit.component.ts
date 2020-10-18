@@ -26,7 +26,6 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   CurrentSelectedItem: Ingredient;
   ingredientedit = false;
   CurPercentStyle = 'width: 0%';
-  UploadError = '';
 
   RecipeChangedSub: Subscription;
   IngredientSelectedSub: Subscription;
@@ -106,15 +105,14 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     this.FileUploaded = this.datastore.FileUploaded.subscribe(
       (res: FileUploadResponse) => {
 
-        this.FilesToCleanOnCancel.push(res.DbID);
+        this.FilesToCleanOnCancel.push(res.ID);
 
         if (this.RecipeToEdit.ImageDbID > 1) {
           this.FilesToCleanOnSave.push(this.RecipeToEdit.ImageDbID);
         }
 
         this.RecipeToEdit.ImagePath = res.FileID;
-        this.RecipeToEdit.ImageDbID = res.DbID;
-        this.UploadError = res.Error;
+        this.RecipeToEdit.ImageDbID = res.ID;
       }
     );
   }
