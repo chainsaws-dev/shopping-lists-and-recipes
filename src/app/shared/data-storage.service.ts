@@ -141,6 +141,30 @@ export class DataStorageService {
     );
   }
 
+  DeleteFile(FileID: number, NoMessage: boolean) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        FileID: FileID.toString(),
+        ApiKey: environment.ApiKey
+      })
+    };
+
+    this.http.delete<ErrorResponse>(environment.UploadFileUrl , httpOptions)
+      .subscribe(response => {
+        if (!NoMessage) {
+          this.RecivedError.next(response);
+        }
+
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
   DeleteRecipe(RecipeToDelete: Recipe) {
     this.LoadingData.next(true);
 

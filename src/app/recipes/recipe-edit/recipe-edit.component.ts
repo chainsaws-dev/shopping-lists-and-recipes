@@ -34,6 +34,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   FileProgress: Subscription;
   FileUploaded: Subscription;
 
+  FilesToCleanOnCancel: number[] = [];
+  FilesToCleanOnSave: number[] = [];
 
   constructor(
     private activatedroute: ActivatedRoute,
@@ -103,11 +105,28 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
     this.FileUploaded = this.datastore.FileUploaded.subscribe(
       (res: FileUploadResponse) => {
+
+        this.FilesToCleanOnCancel.push(res.DbID);
+
+        if (this.RecipeToEdit.ImageDbID > 1) {
+          this.FilesToCleanOnSave.push(this.RecipeToEdit.ImageDbID);
+        }
+
         this.RecipeToEdit.ImagePath = res.FileID;
         this.RecipeToEdit.ImageDbID = res.DbID;
         this.UploadError = res.Error;
       }
     );
+  }
+
+  onDiscardChanges() {
+    if (this.FilesToCleanOnCancel.length > 0) {
+      this.FilesToCleanOnCancel.forEach((FileID: number) => {
+        this.datastore.DeleteFile(FileID, true);
+      });
+    }
+
+    this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
   }
 
   onAddNewIngredient(form: NgForm) {
@@ -180,6 +199,13 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
           this.RecipeToEdit = recipe;
           this.recipeservice.AddNewRecipe(this.RecipeToEdit);
         }
+
+        if (this.FilesToCleanOnSave.length > 0) {
+          this.FilesToCleanOnSave.forEach((FileID: number) => {
+            this.datastore.DeleteFile(FileID, true);
+          });
+        }
+
         this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
       });
     }

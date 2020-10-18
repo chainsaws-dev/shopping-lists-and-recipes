@@ -64,6 +64,8 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
     this.datastore.DeleteRecipe(this.CurrentRecipe);
 
+    this.datastore.DeleteFile(this.CurrentRecipe.ImageDbID, true);
+
     this.router.navigate(['../'], { relativeTo: this.activeroute, queryParamsHandling: 'preserve' });
   }
 }
