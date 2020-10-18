@@ -2,18 +2,18 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ErrorResponse } from 'src/app/recipes/recipe-model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
-import { User } from '../admin.model';
-import { AdminService } from '../admin.service';
+import { User } from '../../admin.model';
+import { AdminService } from '../../admin.service';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 
 
 @Component({
-  selector: 'app-admin-list',
-  templateUrl: './admin-list.component.html',
-  styleUrls: ['./admin-list.component.css']
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.css']
 })
-export class AdminListComponent implements OnInit, OnDestroy {
+export class UserListComponent implements OnInit, OnDestroy {
 
   private PageChanged: Subscription;
   private FetchOnInint: Subscription;

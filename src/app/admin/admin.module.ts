@@ -1,45 +1,33 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminComponent } from './admin.component';
-
-import { Routes, RouterModule } from '@angular/router';
-import { RoleGuard } from '../auth/role.guard';
 import { FormsModule } from '@angular/forms';
 import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { AdminEditComponent } from './admin-edit/admin-edit.component';
-import { AdminListComponent } from './admin-list/admin-list.component';
-import { AdminResolverService } from './admin-resolver.service';
-import { AdminMediaComponent } from './admin-media/admin-media.component';
-import { AdminSessionsComponent } from './admin-sessions/admin-sessions.component';
 
-const routes: Routes = [
-  { path: '', redirectTo: 'users', pathMatch: 'full' },
-  {
-    path: 'users', component: AdminComponent,
-    children: [
-      { path: '', redirectTo: '1', pathMatch: 'full'  },
-      { path: ':pn', component: AdminListComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
-      { path: ':pn/new', component: AdminEditComponent, },
-      { path: ':pn/:id', component: AdminEditComponent, resolve: [AdminResolverService] }
-    ]
-  },
+import { AdminComponent } from './admin.component';
 
-];
+import { UserEditComponent } from './users/user-edit/user-edit.component';
+import { UserListComponent } from './users/user-list/user-list.component';
+
+import { MediaListComponent } from './media/media-list/media-list.component';
+
+import { SessionsListComponent } from './sessions/sessions-list/sessions-list.component';
+
+import { AdminRoutingModule } from './admin-routing.module';
 
 @NgModule({
   declarations: [
     AdminComponent,
-    AdminEditComponent,
-    AdminListComponent,
-    AdminMediaComponent,
-    AdminSessionsComponent
+    UserEditComponent,
+    UserListComponent,
+    MediaListComponent,
+    SessionsListComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     NgbAlertModule,
     NgbPaginationModule,
-    RouterModule.forChild(routes)
+    AdminRoutingModule
   ]
 })
 export class AdminModule { }

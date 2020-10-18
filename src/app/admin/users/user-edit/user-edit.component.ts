@@ -8,11 +8,11 @@ import { Subscription } from 'rxjs';
 import { ErrorResponse } from 'src/app/recipes/recipe-model';
 
 @Component({
-  selector: 'app-admin-edit',
-  templateUrl: './admin-edit.component.html',
-  styleUrls: ['./admin-edit.component.css']
+  selector: 'app-user-edit',
+  templateUrl: './user-edit.component.html',
+  styleUrls: ['./user-edit.component.css']
 })
-export class AdminEditComponent implements OnInit, OnDestroy {
+export class UserEditComponent implements OnInit, OnDestroy {
 
   editmode: boolean;
   index: number;
