@@ -179,6 +179,7 @@ export class DataStorageService {
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
+        this.DeleteFile(RecipeToDelete.ImageDbID, true);
       }, error => {
         const errresp = error.error as ErrorResponse;
         this.RecivedError.next(errresp);
