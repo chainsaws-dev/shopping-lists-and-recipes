@@ -1,0 +1,17 @@
+.parent-media-box {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-auto-rows: minmax(240px, auto);
+  padding: 1rem;
+}
+
+.media-box {
+  font-size: 2rem;
+  padding: 1rem;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(0,0,0,.125);
+  color: #495057;
+}
