@@ -1,5 +1,18 @@
+<div class="input-group ml-3">
+  <div class="input-group-prepend mt-2">
+    <button class="btn btn-outline-primary">Add</button>
+  </div>
+</div>
 <div class="parent-media-box">
-  <div class="media-box">1</div>
+  <div class="media-box">
+    <a href="/uploads/1243a0d7eb154ec669a1c937791c80e532eaf5ef.png">
+      <img src="/uploads/1243a0d7eb154ec669a1c937791c80e532eaf5ef.png" alt="1">
+    </a>
+    <div class="media-box-overlay">
+      <button class="btn btn-outline-success" type="button" [routerLink]="1">Edit</button>
+      <button class="btn btn-outline-danger" type="button" (click)="OnDeleteFile()">Delete</button>
+    </div>
+  </div>
   <div class="media-box">2</div>
   <div class="media-box">3</div>
   <div class="media-box">4</div>
@@ -11,4 +24,9 @@
   <div class="media-box">10</div>
   <div class="media-box">11</div>
   <div class="media-box">12</div>
+</div>
+<div class="ml-3">
+  <ngb-pagination *ngIf="collectionSize>PageSize" [collectionSize]="collectionSize" [pageSize]="PageSize"
+    [page]="currentPage" [rotate]="true" [boundaryLinks]="true" [maxSize]="11" (pageChange)="OnPageChanged($event)">
+  </ngb-pagination>
 </div>
