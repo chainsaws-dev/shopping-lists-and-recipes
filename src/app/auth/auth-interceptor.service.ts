@@ -12,21 +12,14 @@ export class AuthInterceptorService implements HttpInterceptor {
 
     if (this.auth.CheckRegistered()) {
 
-      const headers = new HttpHeaders({
-        Auth: this.auth.GetUserToken(),
-        ApiKey: environment.ApiKey
-      });
-
-      const modreq = req.clone({headers});
+      const modreq = req.clone({headers: req.headers.set('Auth', this.auth.GetUserToken())
+      .set('ApiKey', environment.ApiKey)});
 
       return next.handle(modreq);
+
     } else {
 
-      const headers = new HttpHeaders({
-        ApiKey: environment.ApiKey
-      });
-
-      const modreq = req.clone({headers});
+      const modreq = req.clone({headers: req.headers.set('ApiKey', environment.ApiKey)});
 
       return next.handle(modreq);
     }
