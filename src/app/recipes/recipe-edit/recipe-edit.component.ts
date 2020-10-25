@@ -120,7 +120,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   onDiscardChanges() {
     if (this.FilesToCleanOnCancel.length > 0) {
       this.FilesToCleanOnCancel.forEach((FileID: number) => {
-        this.datastore.DeleteFile(-1, FileID, true);
+        this.datastore.DeleteFile(FileID, true);
       });
     }
 
@@ -200,7 +200,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
         if (this.FilesToCleanOnSave.length > 0) {
           this.FilesToCleanOnSave.forEach((FileID: number) => {
-            this.datastore.DeleteFile(-1, FileID, true);
+            this.datastore.DeleteFile(FileID, true);
           });
         }
 

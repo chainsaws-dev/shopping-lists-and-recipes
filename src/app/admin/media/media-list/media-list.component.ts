@@ -94,7 +94,9 @@ export class MediaListComponent implements OnInit, OnDestroy {
 
   OnDeleteFile(f: FiLe, index: number) {
 
-    this.DataServ.DeleteFile(index, f.ID, false);
+    this.MediaServ.DeleteFile(index);
+
+    this.DataServ.DeleteFile(f.ID, false);
 
     this.Files = this.MediaServ.GetFiles();
 
