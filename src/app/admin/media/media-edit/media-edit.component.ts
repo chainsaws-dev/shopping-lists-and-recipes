@@ -99,6 +99,7 @@ export class MediaEditComponent implements OnInit, OnDestroy {
     this.FileUploaded = this.datastore.FileUploaded.subscribe(
       (res: FiLe) => {
         this.FileToEdit = res;
+        this.editmode = true;
       }
     );
   }
