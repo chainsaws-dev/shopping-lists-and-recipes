@@ -161,7 +161,7 @@ export class DataStorageService {
     );
   }
 
-  DeleteFile(FileID: number, NoMessage: boolean) {
+  DeleteFile(ArrID: number, FileID: number, NoMessage: boolean) {
     this.LoadingData.next(true);
 
     const httpOptions = {
@@ -174,6 +174,9 @@ export class DataStorageService {
       .subscribe(response => {
         if (!NoMessage) {
           this.RecivedError.next(response);
+        }
+        if (ArrID >= 0) {
+          this.media.DeleteFile(ArrID);
         }
 
         this.LoadingData.next(false);
@@ -197,7 +200,7 @@ export class DataStorageService {
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
-        this.DeleteFile(RecipeToDelete.ImageDbID, true);
+        this.DeleteFile(-1, RecipeToDelete.ImageDbID, true);
       }, error => {
         const errresp = error.error as ErrorResponse;
         this.RecivedError.next(errresp);
