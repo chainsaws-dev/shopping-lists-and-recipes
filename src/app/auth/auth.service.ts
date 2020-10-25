@@ -5,7 +5,7 @@ import { AuthResponseData, AuthRequest } from './auth.module';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { ErrorResponse } from '../recipes/recipe-model';
+import { ErrorResponse } from '../shared/shared.model';
 
 @Injectable({
   providedIn: 'root'

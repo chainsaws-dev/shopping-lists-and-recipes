@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { ErrorResponse } from '../recipes/recipe-model';
+import { ErrorResponse } from '../shared/shared.model';
 
 @Component({
   selector: 'app-auth',

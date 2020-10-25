@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ErrorResponse } from 'src/app/recipes/recipe-model';
+import { ErrorResponse } from '../../../shared/shared.model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { User } from '../users.model';

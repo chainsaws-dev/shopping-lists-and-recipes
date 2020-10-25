@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Recipe, Pagination } from './recipe-model';
+import { Recipe } from './recipe-model';
+import { Pagination } from '../shared/shared.model';
 import { Observable } from 'rxjs';
 import { DataStorageService } from '../shared/data-storage.service';
 import { map } from 'rxjs/operators';

@@ -5,7 +5,7 @@ import { User } from '../users.model';
 import { NgForm } from '@angular/forms';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { Subscription } from 'rxjs';
-import { ErrorResponse } from 'src/app/recipes/recipe-model';
+import { ErrorResponse } from '../../../shared/shared.model';
 
 @Component({
   selector: 'app-user-edit',

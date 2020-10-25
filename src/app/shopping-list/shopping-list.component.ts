@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Ingredient } from '../shared/ingredients.model';
+import { Ingredient } from '../shared/shared.model';
 import { ShoppingListService } from './shopping-list.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DataStorageService } from '../shared/data-storage.service';
 import { environment } from 'src/environments/environment';
-import { ErrorResponse } from '../recipes/recipe-model';
+import { ErrorResponse } from '../shared/shared.model';
 
 @Component({
   selector: 'app-shopping-list',

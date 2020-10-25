@@ -1,4 +1,4 @@
-import { Ingredient } from '../shared/ingredients.model';
+import { Ingredient } from '../shared/shared.model';
 
 export class Recipe {
   public ID: number;
@@ -26,41 +26,3 @@ export class RecipeResponse {
 }
 
 
-export class ErrorResponse {
-
-  public Error: BackendError;
-
-  constructor(Code: number, Message: string) {
-    this.Error = new BackendError(Code, Message);
-  }
-}
-
-export class BackendError {
-
-  public Code: number;
-  public Message: string;
-
-  constructor(Code: number, Message: string) {
-    this.Code = Code;
-    this.Message = Message;
-  }
-}
-
-export class Pagination {
-  public Total: number;
-  public Limit: number;
-  public Offset: number;
-  constructor(Total: number, Limit: number, Offset: number) {
-    this.Total = Total;
-    this.Limit = Limit;
-    this.Offset = Offset;
-  }
-}
-
-export class FileUploadResponse {
-  public ID: number;
-  public Filename: string;
-  public Filesize: number;
-  public Filetype: string;
-  public FileID: string;
-}

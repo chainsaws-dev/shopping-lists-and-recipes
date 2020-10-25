@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Recipe, FileUploadResponse } from '../recipe-model';
+import { Recipe } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
-import { Ingredient } from 'src/app/shared/ingredients.model';
+import { Ingredient } from '../../shared/shared.model';
+import { FiLe } from '../../admin/media/media.model';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
-import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -103,7 +103,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     );
 
     this.FileUploaded = this.datastore.FileUploaded.subscribe(
-      (res: FileUploadResponse) => {
+      (res: FiLe) => {
 
         this.FilesToCleanOnCancel.push(res.ID);
 

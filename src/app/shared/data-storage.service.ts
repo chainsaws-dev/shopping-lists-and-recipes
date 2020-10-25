@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpEventType } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
-import { Recipe, RecipeResponse, ErrorResponse, Pagination, FileUploadResponse } from '../recipes/recipe-model';
+import { Recipe, RecipeResponse } from '../recipes/recipe-model';
+import { ErrorResponse, Pagination } from '../shared/shared.model';
+import { FiLe } from '../admin/media/media.model';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
-import { ShoppingListResponse, Ingredient } from './ingredients.model';
+import { ShoppingListResponse, Ingredient } from './shared.model';
 import { UsersResponse, User } from '../admin/users/users.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { UsersService } from '../admin/users/users.service';
@@ -20,7 +22,7 @@ export class DataStorageService {
   RecivedError = new Subject<ErrorResponse>();
   PaginationSet = new Subject<Pagination>();
   FileUploadProgress = new Subject<string>();
-  FileUploaded = new Subject<FileUploadResponse>();
+  FileUploaded = new Subject<FiLe>();
   UserUpdateInsert = new Subject<User>();
 
   LastPagination: Pagination;
@@ -130,7 +132,7 @@ export class DataStorageService {
         this.FileUploadProgress.next(String(curevent.loaded / curevent.total * 100));
       } else if (curevent.type === HttpEventType.Response) {
         if (curevent.ok) {
-          this.FileUploaded.next(curevent.body as FileUploadResponse);
+          this.FileUploaded.next(curevent.body as FiLe);
         }
       }
     }, error => {
