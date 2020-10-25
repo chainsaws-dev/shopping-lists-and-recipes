@@ -12,6 +12,9 @@ import { UsersResponse, User } from '../admin/users/users.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { UsersService } from '../admin/users/users.service';
 import { MediaService } from '../admin/media/media.service';
+import { SessionsResponse } from '../admin/sessions/sessions.model';
+import { SessionsService } from '../admin/sessions/sessions.service';
+import { Session } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +38,8 @@ export class DataStorageService {
     private recipes: RecipeService,
     private shoppinglist: ShoppingListService,
     private users: UsersService,
-    private media: MediaService) { }
+    private media: MediaService,
+    private sessions: SessionsService) { }
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
@@ -267,6 +271,50 @@ export class DataStorageService {
   DeleteAllShoppingList() {
 
     this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl)
+      .subscribe(response => {
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
+  FetchSessionsList(page: number, limit: number) {
+
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Page: page.toString(),
+        Limit: limit.toString()
+      })
+    };
+
+    return this.http
+      .get<SessionsResponse>(environment.GetSetSessionsUrl, httpOptions)
+      .pipe(tap(recresp => {
+        this.sessions.SetSessions(recresp.Sessions);
+        this.sessions.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+        this.LoadingData.next(false);
+      }, (error) => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      }));
+  }
+
+  DeleteSessionByToken(token: string) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Token: token
+      })
+    };
+
+    this.http.delete<ErrorResponse>(environment.GetSetUsersUrl, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);

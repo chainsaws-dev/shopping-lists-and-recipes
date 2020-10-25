@@ -16,4 +16,5 @@ export const environment = {
   SearchRecipesUrl: '/api/Recipes/Search',
   GetSetShoppingListUrl: '/api/ShoppingList',
   GetSetUsersUrl: '/api/Users',
+  GetSetSessionsUrl: '/api/Sessions',
 };
