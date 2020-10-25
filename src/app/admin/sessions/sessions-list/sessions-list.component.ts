@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
@@ -102,6 +103,16 @@ export class SessionsListComponent implements OnInit, OnDestroy {
 
     this.Sessions = this.SessServ.GetSessions();
 
+  }
+
+  OnDeleteSessionByEmail(SubmittedForm: NgForm): void {
+    if (SubmittedForm.valid) {
+      const email = SubmittedForm.value.useremail;
+
+      this.DataServ.DeleteSessionByEmail(email);
+
+      this.router.navigate(['../', this.sesCurrentPage.toString()], { relativeTo: this.ActiveRoute });
+    }
   }
 
 }

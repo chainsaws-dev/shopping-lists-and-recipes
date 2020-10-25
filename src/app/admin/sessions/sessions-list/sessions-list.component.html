@@ -3,6 +3,15 @@
 
     <ngb-alert *ngIf="ShowMessage" [type]="MessageType" (close)="ShowMessage = false">
       {{ ResponseFromBackend.Error.Message }}</ngb-alert>
+
+    <form class="mb-1" #DelSesByEmailForm="ngForm" (ngSubmit)="OnDeleteSessionByEmail(DelSesByEmailForm)">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="exampe@example.com" class="form-control mb-1" name="useremail" required email>
+        <button class="btn btn-outline-danger" type="submit">Delete</button>
+      </div>
+    </form>
+
     <ul class="list-group mb-1">
 
       <li style="cursor: pointer;"
@@ -21,7 +30,8 @@
 
     </ul>
     <ngb-pagination *ngIf="sesCollectionSize>sesPageSize" [collectionSize]="sesCollectionSize" [pageSize]="sesPageSize"
-      [page]="sesCurrentPage" [rotate]="true" [boundaryLinks]="true" [maxSize]="11" (pageChange)="OnPageChanged($event)">
+      [page]="sesCurrentPage" [rotate]="true" [boundaryLinks]="true" [maxSize]="11"
+      (pageChange)="OnPageChanged($event)">
     </ngb-pagination>
   </div>
 </div>

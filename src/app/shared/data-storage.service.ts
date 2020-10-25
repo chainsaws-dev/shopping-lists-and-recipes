@@ -325,6 +325,26 @@ export class DataStorageService {
       });
   }
 
+  DeleteSessionByEmail(email: string) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Email: email
+      })
+    };
+
+    this.http.delete<ErrorResponse>(environment.GetSetSessionsUrl, httpOptions)
+      .subscribe(response => {
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
   FetchUsersList(page: number, limit: number) {
     this.LoadingData.next(true);
 
