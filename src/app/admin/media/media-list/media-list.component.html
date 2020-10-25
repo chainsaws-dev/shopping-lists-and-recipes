@@ -1,11 +1,11 @@
 <div *ngIf="!IsLoading">
+  <ngb-alert *ngIf="ShowMessage" [type]="MessageType" (close)="ShowMessage = false">
+    {{ ResponseFromBackend.Error.Message }}</ngb-alert>
   <div class="input-group ml-3">
     <div class="input-group-prepend mt-2">
       <button class="btn btn-outline-primary">Add</button>
     </div>
   </div>
-  <ngb-alert *ngIf="ShowMessage" [type]="MessageType" (close)="ShowMessage = false">
-    {{ ResponseFromBackend.Error.Message }}</ngb-alert>
   <div class="parent-media-box">
     <div class="media-box" *ngFor="let f of Files; let i=index">
       <a [href]="f.FileID">

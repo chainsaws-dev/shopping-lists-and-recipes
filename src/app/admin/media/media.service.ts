@@ -22,7 +22,7 @@ export class MediaService {
   constructor() { }
 
   GetFiles() {
-    return this.Files.slice();
+    return this.Files.slice(1);
   }
 
   SetFiles(newfiles: FiLe[]) {
