@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
 import { RoleGuard } from '../auth/role.guard';
 
-import { AdminResolverService } from './admin-resolver.service';
+import { UsersResolverService } from './users/users-resolver.service';
 
 import { AdminComponent } from './admin.component';
 
@@ -24,7 +24,7 @@ const routes: Routes = [
       { path: '', redirectTo: '1', pathMatch: 'full'  },
       { path: ':pn', component: UserListComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
       { path: ':pn/new', component: UserEditComponent, },
-      { path: ':pn/:id', component: UserEditComponent, resolve: [AdminResolverService] }
+      { path: ':pn/:id', component: UserEditComponent, resolve: [UsersResolverService] }
     ]
   },
   {
@@ -33,7 +33,7 @@ const routes: Routes = [
       { path: '', redirectTo: '1', pathMatch: 'full'  },
       { path: ':pn', component: SessionsListComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
       { path: ':pn/new', component: SessionsEditComponent, },
-      { path: ':pn/:id', component: SessionsEditComponent, resolve: [AdminResolverService] }
+      { path: ':pn/:id', component: SessionsEditComponent, resolve: [UsersResolverService] }
     ]
   },
   {
@@ -42,7 +42,7 @@ const routes: Routes = [
       { path: '', redirectTo: '1', pathMatch: 'full'  },
       { path: ':pn', component: MediaListComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
       { path: ':pn/new', component: MediaEditComponent, },
-      { path: ':pn/:id', component: MediaEditComponent, resolve: [AdminResolverService] }
+      { path: ':pn/:id', component: MediaEditComponent, resolve: [UsersResolverService] }
     ]
   },
 ];
