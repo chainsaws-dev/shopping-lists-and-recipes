@@ -3,6 +3,7 @@ export const environment = {
   RecipePageSize: 5,
   ShoppingListPageSize: 14,
   AdminUserListPageSize: 11,
+  SessionsListPageSize: 11,
   MediaListPageSize: 12,
   ApiKey: 'AIzaSyB3Jr8tp5wotjeS-re9iBSgX2b1zbM0Fx4',
   ConfirmEmailUrl: '/api/ConfirmEmail',
