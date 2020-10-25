@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ErrorResponse } from '../admin/admin.model';
+import { ErrorResponse } from '../admin/users/users.model';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from '../shared/data-storage.service';

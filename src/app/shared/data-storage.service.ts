@@ -6,9 +6,9 @@ import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
 import { ShoppingListResponse, Ingredient } from './ingredients.model';
-import { UsersResponse, User } from '../admin/admin.model';
+import { UsersResponse, User } from '../admin/users/users.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
-import { AdminService } from '../admin/admin.service';
+import { UsersService } from '../admin/users/users.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,7 @@ export class DataStorageService {
     private http: HttpClient,
     private recipes: RecipeService,
     private shoppinglist: ShoppingListService,
-    private users: AdminService) { }
+    private users: UsersService) { }
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);

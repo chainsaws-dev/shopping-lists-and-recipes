@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { AdminService } from '../../admin.service';
-import { User } from '../../admin.model';
+import { UsersService } from '../users.service';
+import { User } from '../users.model';
 import { NgForm } from '@angular/forms';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { Subscription } from 'rxjs';
@@ -31,7 +31,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   ResponseFromBackend: ErrorResponse;
 
   constructor(
-    private AdminServ: AdminService,
+    private AdminServ: UsersService,
     private activatedroute: ActivatedRoute,
     private router: Router,
     private datastore: DataStorageService) { }

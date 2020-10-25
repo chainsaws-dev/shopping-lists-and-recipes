@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ErrorResponse } from 'src/app/recipes/recipe-model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
-import { User } from '../../admin.model';
-import { AdminService } from '../../admin.service';
+import { User } from '../users.model';
+import { UsersService } from '../users.service';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 
@@ -34,7 +34,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   constructor(
     private ActiveRoute: ActivatedRoute,
     private DataServ: DataStorageService,
-    public AdminServ: AdminService,
+    public AdminServ: UsersService,
     private router: Router,
   ) { }
 

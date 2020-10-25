@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { User } from './admin.model';
+import { User } from './users.model';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AdminService {
+export class UsersService {
   UserSelected = new Subject<User>();
   UsersUpdated = new Subject<void>();
   UsersInserted = new Subject<void>();
