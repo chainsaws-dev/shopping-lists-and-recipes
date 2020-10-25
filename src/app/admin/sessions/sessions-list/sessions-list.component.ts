@@ -110,7 +110,6 @@ export class SessionsListComponent implements OnInit, OnDestroy {
 
   OnDeleteSessionByEmail(SubmittedForm: NgForm): void {
     if (SubmittedForm.valid) {
-      console.log(SubmittedForm.value);
       this.DataServ.DeleteSessionByEmail(SubmittedForm.value.useremail);
       this.GetRecentData();
     }

@@ -328,8 +328,6 @@ export class DataStorageService {
   DeleteSessionByEmail(email: string) {
     this.LoadingData.next(true);
 
-    console.log(email);
-
     const httpOptions = {
       headers: new HttpHeaders({
         Email: email
