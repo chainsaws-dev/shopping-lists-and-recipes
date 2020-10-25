@@ -45,7 +45,7 @@ export class SessionsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sesPageSize = environment.AdminUserListPageSize;
+    this.sesPageSize = environment.SessionsListPageSize;
 
     this.RecivedErrorSub = this.DataServ.RecivedError.subscribe(
       (response) => {
@@ -68,7 +68,7 @@ export class SessionsListComponent implements OnInit, OnDestroy {
     this.PageChanged = this.ActiveRoute.params.subscribe((params: Params) => {
       this.sesCurrentPage = +params.pn;
 
-      this.FetchOnInint = this.DataServ.FetchUsersList(this.sesCurrentPage, environment.AdminUserListPageSize).subscribe(
+      this.FetchOnInint = this.DataServ.FetchSessionsList(this.sesCurrentPage, environment.SessionsListPageSize).subscribe(
         (value) => {
           this.Sessions = this.SessServ.GetSessions();
           this.sesCollectionSize = this.SessServ.Total;
