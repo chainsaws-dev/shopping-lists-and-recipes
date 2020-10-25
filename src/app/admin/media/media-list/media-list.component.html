@@ -3,7 +3,8 @@
     {{ ResponseFromBackend.Error.Message }}</ngb-alert>
   <div class="input-group ml-3">
     <div class="input-group-prepend mt-2">
-      <button class="btn btn-outline-primary">Add</button>
+      <button class="btn btn-outline-primary" [routerLink]="['/admin/media',meCurrentPage,'new']"
+      queryParamsHandling="merge">Add</button>
     </div>
   </div>
   <div class="parent-media-box">
