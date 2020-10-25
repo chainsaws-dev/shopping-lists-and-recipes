@@ -57,7 +57,7 @@ export class MediaService {
     this.FilesChanged.next(f);
   }
 
-  AddNewUser(f: FiLe) {
+  AddNewFile(f: FiLe) {
 
     const nf = new FiLe(f.Filename, f.Filesize, f.Filetype, f.FileID, f.ID);
 
@@ -69,7 +69,7 @@ export class MediaService {
     this.FilesInserted.next();
   }
 
-  DeleteUser(Index: number) {
+  DeleteFile(Index: number) {
     this.Files.splice(Index, 1);
     this.FilesDeleted.next();
   }
