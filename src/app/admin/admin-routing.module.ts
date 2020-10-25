@@ -4,6 +4,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { RoleGuard } from '../auth/role.guard';
 
 import { UsersResolverService } from './users/users-resolver.service';
+import { MediaResolverService } from './media/media-resolver.service';
 
 import { AdminComponent } from './admin.component';
 
@@ -42,7 +43,7 @@ const routes: Routes = [
       { path: '', redirectTo: '1', pathMatch: 'full'  },
       { path: ':pn', component: MediaListComponent, canActivate: [RoleGuard] , data: { expectedRole: 'admin_role_CRUD' } },
       { path: ':pn/new', component: MediaEditComponent, },
-      { path: ':pn/:id', component: MediaEditComponent, resolve: [UsersResolverService] }
+      { path: ':pn/:id', component: MediaEditComponent, resolve: [MediaResolverService] }
     ]
   },
 ];
