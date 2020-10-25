@@ -4,10 +4,10 @@
     <ngb-alert *ngIf="ShowMessage" [type]="MessageType" (close)="ShowMessage = false">
       {{ ResponseFromBackend.Error.Message }}</ngb-alert>
 
-    <form class="mb-1" #DelSesByEmailForm="ngForm" (ngSubmit)="OnDeleteSessionByEmail(DelSesByEmailForm)">
+    <form class="mt-1 mb-1" #DelSesByEmailForm="ngForm" (ngSubmit)="OnDeleteSessionByEmail(DelSesByEmailForm)">
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="exampe@example.com" class="form-control mb-1" name="useremail" required email>
+        <input type="email" id="email" placeholder="exampe@example.com" class="form-control mb-1" name="useremail" ngModel required email>
         <button class="btn btn-outline-danger" type="submit">Delete</button>
       </div>
     </form>

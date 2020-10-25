@@ -68,16 +68,7 @@ export class SessionsListComponent implements OnInit, OnDestroy {
 
     this.PageChanged = this.ActiveRoute.params.subscribe((params: Params) => {
       this.sesCurrentPage = +params.pn;
-
-      this.FetchOnInint = this.DataServ.FetchSessionsList(this.sesCurrentPage, environment.SessionsListPageSize).subscribe(
-        (value) => {
-          this.Sessions = this.SessServ.GetSessions();
-          this.sesCollectionSize = this.SessServ.Total;
-        },
-        (error) => {
-          this.Sessions = [];
-        }
-      );
+      this.GetRecentData();
     });
 
     this.DataLoading = this.DataServ.LoadingData.subscribe(
@@ -86,6 +77,18 @@ export class SessionsListComponent implements OnInit, OnDestroy {
       }
     );
 
+  }
+
+  GetRecentData() {
+    this.FetchOnInint = this.DataServ.FetchSessionsList(this.sesCurrentPage, environment.SessionsListPageSize).subscribe(
+      (value) => {
+        this.Sessions = this.SessServ.GetSessions();
+        this.sesCollectionSize = this.SessServ.Total;
+      },
+      (error) => {
+        this.Sessions = [];
+      }
+    );
   }
 
   OnPageChanged(page: number) {
@@ -107,11 +110,9 @@ export class SessionsListComponent implements OnInit, OnDestroy {
 
   OnDeleteSessionByEmail(SubmittedForm: NgForm): void {
     if (SubmittedForm.valid) {
-      const email = SubmittedForm.value.useremail;
-
-      this.DataServ.DeleteSessionByEmail(email);
-
-      this.router.navigate(['../', this.sesCurrentPage.toString()], { relativeTo: this.ActiveRoute });
+      console.log(SubmittedForm.value);
+      this.DataServ.DeleteSessionByEmail(SubmittedForm.value.useremail);
+      this.GetRecentData();
     }
   }
 
