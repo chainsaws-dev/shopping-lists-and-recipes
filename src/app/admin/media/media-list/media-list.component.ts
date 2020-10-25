@@ -89,12 +89,7 @@ export class MediaListComponent implements OnInit, OnDestroy {
 
   OnPageChanged(page: number) {
     this.meCurrentPage = page;
-    this.FetchOnInint = this.DataServ.FetchFilesList(page, environment.MediaListPageSize).subscribe(
-      () => {
-        this.Files = this.MediaServ.GetFiles();
-        this.router.navigate(['../', page.toString()], { relativeTo: this.ActiveRoute });
-      }
-    );
+    this.router.navigate(['../', page.toString()], { relativeTo: this.ActiveRoute });
   }
 
   OnDeleteFile(f: FiLe, index: number) {

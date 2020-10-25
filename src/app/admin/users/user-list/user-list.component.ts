@@ -91,12 +91,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   OnPageChanged(page: number) {
 
     this.usCurrentPage = page;
-    this.FetchOnInint = this.DataServ.FetchUsersList(page, environment.AdminUserListPageSize).subscribe(
-      () => {
-        this.Users = this.AdminServ.GetUsers();
-        this.router.navigate(['../', page.toString()], { relativeTo: this.ActiveRoute });
-      }
-    );
+    this.router.navigate(['../', page.toString()], { relativeTo: this.ActiveRoute });
 
   }
 
