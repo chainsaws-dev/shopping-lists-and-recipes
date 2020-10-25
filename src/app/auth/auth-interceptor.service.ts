@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
@@ -11,10 +12,23 @@ export class AuthInterceptorService implements HttpInterceptor {
 
     if (this.auth.CheckRegistered()) {
 
-      const modreq = req.clone({headers: req.headers.set('Auth', this.auth.GetUserToken()) });
+      const headers = new HttpHeaders({
+        Auth: this.auth.GetUserToken(),
+        ApiKey: environment.ApiKey
+      });
+
+      const modreq = req.clone({headers});
+
       return next.handle(modreq);
     } else {
-      return next.handle(req);
+
+      const headers = new HttpHeaders({
+        ApiKey: environment.ApiKey
+      });
+
+      const modreq = req.clone({headers});
+
+      return next.handle(modreq);
     }
 
   }

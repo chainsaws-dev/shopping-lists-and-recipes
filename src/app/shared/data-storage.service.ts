@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpEventType } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe, RecipeResponse } from '../recipes/recipe-model';
 import { ErrorResponse, Pagination } from '../shared/shared.model';
-import { FiLe } from '../admin/media/media.model';
+import { FiLe, FilesResponse } from '../admin/media/media.model';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
@@ -11,6 +11,7 @@ import { ShoppingListResponse, Ingredient } from './shared.model';
 import { UsersResponse, User } from '../admin/users/users.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { UsersService } from '../admin/users/users.service';
+import { MediaService } from '../admin/media/media.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,8 @@ export class DataStorageService {
     private http: HttpClient,
     private recipes: RecipeService,
     private shoppinglist: ShoppingListService,
-    private users: UsersService) { }
+    private users: UsersService,
+    private media: MediaService) { }
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
@@ -41,13 +43,12 @@ export class DataStorageService {
     const httpOptions = {
       headers: new HttpHeaders({
         Page: page.toString(),
-        Limit: limit.toString(),
-        ApiKey: environment.ApiKey
+        Limit: limit.toString()
       })
     };
 
     return this.http
-      .get<RecipeResponse>(environment.GetSetRecipesUrl , httpOptions)
+      .get<RecipeResponse>(environment.GetSetRecipesUrl, httpOptions)
       .pipe(map(recresp => {
         recresp.Recipes = recresp.Recipes.map(recipe => {
           return { ...recipe, Ingredients: recipe.Ingredients ? recipe.Ingredients : [] };
@@ -73,13 +74,12 @@ export class DataStorageService {
       headers: new HttpHeaders({
         Page: page.toString(),
         Limit: limit.toString(),
-        Search: search,
-        ApiKey: environment.ApiKey
+        Search: search
       })
     };
 
     return this.http
-      .get<RecipeResponse>(environment.SearchRecipesUrl , httpOptions)
+      .get<RecipeResponse>(environment.SearchRecipesUrl, httpOptions)
       .pipe(map(recresp => {
         recresp.Recipes = recresp.Recipes.map(recipe => {
           return { ...recipe, Ingredients: recipe.Ingredients ? recipe.Ingredients : [] };
@@ -101,13 +101,7 @@ export class DataStorageService {
   SaveRecipe(RecipeToSave: Recipe) {
     this.LoadingData.next(true);
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        ApiKey: environment.ApiKey
-      })
-    };
-
-    this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave, httpOptions)
+    this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave)
       .subscribe(response => {
         this.RecipesUpdateInsert.next(response);
         this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
@@ -119,15 +113,39 @@ export class DataStorageService {
       });
   }
 
+  FetchFilesList(page: number, limit: number) {
+    this.LoadingData.next(true);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Page: page.toString(),
+        Limit: limit.toString()
+      })
+    };
+
+    return this.http
+      .get<FilesResponse>(environment.GetSetFileUrl, httpOptions)
+      .pipe(tap(recresp => {
+        this.media.SetFiles(recresp.Files);
+        this.media.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+        this.LoadingData.next(false);
+      }, (error) => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      }));
+  }
+
   FileUpload(FileToUpload: File) {
     const formdatafile = new FormData();
     formdatafile.append('file', FileToUpload, FileToUpload.name);
-    this.http.post(environment.UploadFileUrl, formdatafile, {
+    this.http.post(environment.GetSetFileUrl, formdatafile, {
       headers: new HttpHeaders({
-        ApiKey: environment.ApiKey
+
       }),
       reportProgress: true,
-      observe: 'events'}).subscribe((curevent: any) => {
+      observe: 'events'
+    }).subscribe((curevent: any) => {
       if (curevent.type === HttpEventType.UploadProgress) {
         this.FileUploadProgress.next(String(curevent.loaded / curevent.total * 100));
       } else if (curevent.type === HttpEventType.Response) {
@@ -148,12 +166,11 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        FileID: FileID.toString(),
-        ApiKey: environment.ApiKey
+        FileID: FileID.toString()
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.UploadFileUrl , httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetFileUrl, httpOptions)
       .subscribe(response => {
         if (!NoMessage) {
           this.RecivedError.next(response);
@@ -172,12 +189,11 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        RecipeID: RecipeToDelete.ID.toString(),
-        ApiKey: environment.ApiKey
+        RecipeID: RecipeToDelete.ID.toString()
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl , httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -196,13 +212,12 @@ export class DataStorageService {
     const httpOptions = {
       headers: new HttpHeaders({
         Page: page.toString(),
-        Limit: limit.toString(),
-        ApiKey: environment.ApiKey
+        Limit: limit.toString()
       })
     };
 
     return this.http
-      .get<ShoppingListResponse>(environment.GetSetShoppingListUrl , httpOptions)
+      .get<ShoppingListResponse>(environment.GetSetShoppingListUrl, httpOptions)
       .pipe(tap(recresp => {
         this.shoppinglist.SetIngredients(recresp.Items);
         this.shoppinglist.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
@@ -217,14 +232,7 @@ export class DataStorageService {
   SaveShoppingList(ItemToSave: Ingredient) {
     this.LoadingData.next(true);
 
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        ApiKey: environment.ApiKey
-      })
-    };
-
-    this.http.post<Recipe>(environment.GetSetShoppingListUrl, ItemToSave, httpOptions)
+    this.http.post<Recipe>(environment.GetSetShoppingListUrl, ItemToSave)
       .subscribe(response => {
         this.RecipesUpdateInsert.next(response);
         this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
@@ -241,12 +249,11 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        IngName: encodeURI(IngredientToDelete.Name),
-        ApiKey: environment.ApiKey
+        IngName: encodeURI(IngredientToDelete.Name)
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl , httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -259,13 +266,7 @@ export class DataStorageService {
 
   DeleteAllShoppingList() {
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        ApiKey: environment.ApiKey
-      })
-    };
-
-    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl, httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -282,8 +283,7 @@ export class DataStorageService {
     const httpOptions = {
       headers: new HttpHeaders({
         Page: page.toString(),
-        Limit: limit.toString(),
-        ApiKey: environment.ApiKey
+        Limit: limit.toString()
       })
     };
 
@@ -323,21 +323,13 @@ export class DataStorageService {
     if (ChangePassword) {
       const httpOptions = {
         headers: new HttpHeaders({
-          NewPassword: btoa(encodeURI(NewPassword)),
-          ApiKey: environment.ApiKey
+          NewPassword: btoa(encodeURI(NewPassword))
         })
       };
 
       return this.http.post<User>(environment.GetSetUsersUrl, ItemToSave, httpOptions);
     } else {
-
-      const httpOptions = {
-        headers: new HttpHeaders({
-          ApiKey: environment.ApiKey
-        })
-      };
-
-      return this.http.post<User>(environment.GetSetUsersUrl, ItemToSave, httpOptions);
+      return this.http.post<User>(environment.GetSetUsersUrl, ItemToSave);
     }
   }
 
@@ -346,12 +338,11 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        UserID: btoa(encodeURI(UserToDelete.GUID)),
-        ApiKey: environment.ApiKey
+        UserID: btoa(encodeURI(UserToDelete.GUID))
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.GetSetUsersUrl , httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetUsersUrl, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
@@ -368,8 +359,7 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        Token: UniqueToken,
-        ApiKey: environment.ApiKey
+        Token: UniqueToken
       })
     };
 
@@ -389,8 +379,7 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        Email: EmailToSend,
-        ApiKey: environment.ApiKey
+        Email: EmailToSend
       })
     };
 
@@ -410,8 +399,7 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        Email: EmailToSend,
-        ApiKey: environment.ApiKey
+        Email: EmailToSend
       })
     };
 
@@ -432,8 +420,7 @@ export class DataStorageService {
     const httpOptions = {
       headers: new HttpHeaders({
         Token: UniqueToken,
-        NewPassword: btoa(encodeURI(NewPass)),
-        ApiKey: environment.ApiKey
+        NewPassword: btoa(encodeURI(NewPass))
       })
     };
 
@@ -447,8 +434,6 @@ export class DataStorageService {
         this.LoadingData.next(false);
       });
   }
-
-
 }
 
 
