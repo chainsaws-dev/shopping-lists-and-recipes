@@ -314,7 +314,7 @@ export class DataStorageService {
       })
     };
 
-    this.http.delete<ErrorResponse>(environment.GetSetUsersUrl, httpOptions)
+    this.http.delete<ErrorResponse>(environment.GetSetSessionsUrl, httpOptions)
       .subscribe(response => {
         this.RecivedError.next(response);
         this.LoadingData.next(false);
