@@ -12,12 +12,12 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 import { SharedModule } from './shared/shared.module';
 import { FormsModule } from '@angular/forms';
-
+import { TotpComponent } from './totp/totp.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +30,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     SharedModule
   ],
-   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

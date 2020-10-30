@@ -5,6 +5,12 @@ export interface AuthResponseData {
   Registered?: boolean;
   ExpirationDate?: string;
   Role: string;
+  SecondFactor: TOTP;
+}
+
+export interface TOTP {
+  Enabled: boolean;
+  CheckResult: boolean;
 }
 
 export interface AuthRequest {

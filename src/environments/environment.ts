@@ -22,6 +22,10 @@ export const environment = {
   GetSetShoppingListUrl: '/api/ShoppingList',
   GetSetUsersUrl: '/api/Users',
   GetSetSessionsUrl: '/api/Sessions',
+  GetTOTPQRCodeUrl: '/api/TOTP/Qr.png',
+  TOTPSettingsUrl: '/api/TOTP/Settings',
+  TOTPCheckUrl: '/api/TOTP/Check',
+  GetAuthenticatorUrl: 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2',
 };
 
 /*

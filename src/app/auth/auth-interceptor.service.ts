@@ -10,7 +10,7 @@ export class AuthInterceptorService implements HttpInterceptor {
   constructor(private auth: AuthService) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (this.auth.CheckRegistered()) {
+    if (this.auth.CheckFirstFactorPassed()) {
 
       const modreq = req.clone({headers: req.headers.set('Auth', this.auth.GetUserToken())
       .set('ApiKey', environment.ApiKey)});

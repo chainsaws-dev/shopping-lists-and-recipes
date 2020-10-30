@@ -8,7 +8,9 @@ const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./auth/auth-feature.module').then(m => m.AuthFeatureModule) },
   { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
   { path: 'confirm-email', loadChildren: () => import('./confirm-email/confirm-email.module').then(m => m.ConfirmEmailModule) },
-  { path: 'reset-password', loadChildren: () => import('./confirm-email/confirm-email.module').then(m => m.ConfirmEmailModule) }
+  { path: 'reset-password', loadChildren: () => import('./confirm-email/confirm-email.module').then(m => m.ConfirmEmailModule) },
+  { path: 'profile', loadChildren: () => import('./user-profile/user-profile.module').then(m => m.UserProfileModule) },
+  { path: 'totp', loadChildren: () => import('./totp/totp.module').then(m => m.TotpModule) },
 ];
 
 @NgModule({

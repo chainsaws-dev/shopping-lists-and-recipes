@@ -13,10 +13,13 @@ import { Router } from '@angular/router';
 
 export class HeaderComponent implements OnInit, OnDestroy {
   LoggedIn = false;
+  SecondFactor = false;
+
   UserEmail: string;
   UserAdmin: boolean;
 
   private LoginSub: Subscription;
+  private SecondFactorSub: Subscription;
 
   constructor(
     private auth: AuthService,
@@ -24,31 +27,34 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.LoggedIn = true;
-    this.UserEmail = 'test@test.ru';
-    this.UserAdmin = false;
-
     this.LoggedIn = this.auth.CheckRegistered();
     this.UserEmail = this.auth.GetUserEmail();
     this.UserAdmin = this.auth.CheckIfUserIsAdmin();
 
     this.LoginSub = this.auth.AuthResultSub.subscribe((loggedin) => {
       this.LoggedIn = loggedin;
+      if (!this.auth.HaveToCheckSecondFactor()) {
+        this.SecondFactor = true;
+      }
       this.UserEmail = this.auth.GetUserEmail();
       this.UserAdmin = this.auth.CheckIfUserIsAdmin();
     });
 
+    this.SecondFactorSub = this.auth.SfResultSub.subscribe((result) => {
+      this.SecondFactor = result;
+    });
   }
 
   SearchRecipes(form: NgForm): void {
     if (form.valid) {
       const fvalue = form.value;
-      this.router.navigate(['recipes'], { queryParams: { search: encodeURI(fvalue.searchreq)}  });
+      this.router.navigate(['recipes'], { queryParams: { search: encodeURI(fvalue.searchreq) } });
     }
   }
 
   ngOnDestroy(): void {
     this.LoginSub.unsubscribe();
+    this.SecondFactorSub.unsubscribe();
   }
 
   OnLogout() {

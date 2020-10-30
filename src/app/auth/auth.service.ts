@@ -13,12 +13,19 @@ import { ErrorResponse } from '../shared/shared.model';
 export class AuthService {
   private authData: AuthResponseData = null;
   private autoRefreshToken: any;
+
   public AuthErrorSub = new Subject<ErrorResponse>();
   public AuthResultSub = new Subject<boolean>();
   private authObs: Observable<AuthResponseData>;
 
-  constructor(private http: HttpClient,
-              private router: Router) { }
+  public SfErrorSub = new Subject<ErrorResponse>();
+  public SfResultSub = new Subject<boolean>();
+  private SecFactorObs: Observable<ErrorResponse>;
+
+
+  constructor(
+    private http: HttpClient,
+    private router: Router) { }
 
   SignUp(Email: string, Name: string, Password: string) {
 
@@ -29,14 +36,8 @@ export class AuthService {
       ReturnSecureToken: true,
     };
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        ApiKey: environment.ApiKey
-      })
-    };
-
     this.authObs = this.http.post<AuthResponseData>(
-      environment.SignUpUrl, signup, httpOptions);
+      environment.SignUpUrl, signup);
 
     this.RequestSub();
   }
@@ -49,16 +50,41 @@ export class AuthService {
       ReturnSecureToken: true,
     };
 
+    this.authObs = this.http.post<AuthResponseData>(
+      environment.SignInUrl, signin);
+
+    this.RequestSub();
+  }
+
+  SecondFactorCheck(Passkey: string) {
     const httpOptions = {
       headers: new HttpHeaders({
-        ApiKey: environment.ApiKey
+        Passcode: Passkey
       })
     };
 
-    this.authObs = this.http.post<AuthResponseData>(
-      environment.SignInUrl, signin, httpOptions);
+    this.SecFactorObs = this.http.post<ErrorResponse>(
+      environment.TOTPCheckUrl, null, httpOptions);
 
-    this.RequestSub();
+    this.SecFactorObs.subscribe(
+      response => {
+
+        this.SfResultSub.next(true);
+
+        if (response.Error.Code === 200) {
+          this.authData.SecondFactor.CheckResult = true;
+        } else {
+          this.authData.SecondFactor.CheckResult = false;
+        }
+
+        this.SfErrorSub.next(response);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.SfResultSub.next(false);
+        this.authData.SecondFactor.CheckResult = false;
+        this.SfErrorSub.next(errresp);
+      }
+    );
   }
 
   SignOut() {
@@ -98,24 +124,42 @@ export class AuthService {
   private RequestSub() {
     this.authObs.subscribe(
       response => {
-          this.authData = response;
-          this.authData.ExpirationDate = String(new Date(new Date().getTime() + +this.authData.ExpiresIn * 1000));
-          localStorage.setItem('userData', JSON.stringify(this.authData));
-          this.AuthResultSub.next(response.Registered);
-          this.AutoSignOut(+this.authData.ExpiresIn * 1000);
+        this.authData = response;
+        this.authData.ExpirationDate = String(new Date(new Date().getTime() + +this.authData.ExpiresIn * 1000));
+        localStorage.setItem('userData', JSON.stringify(this.authData));
+        this.AuthResultSub.next(response.Registered);
+        this.AutoSignOut(+this.authData.ExpiresIn * 1000);
       }, error => {
         const errresp = error.error as ErrorResponse;
+        this.AuthResultSub.next(false);
         this.AuthErrorSub.next(errresp);
       }
     );
   }
 
-
-
-
   CheckRegistered() {
     if (this.authData !== null) {
+      if (this.authData.SecondFactor.Enabled === true) {
+        return this.authData.SecondFactor.CheckResult && this.authData.Registered;
+      } else {
+        return this.authData.Registered;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  CheckFirstFactorPassed() {
+    if (this.authData !== null) {
       return this.authData.Registered;
+    } else {
+      return false;
+    }
+  }
+
+  HaveToCheckSecondFactor() {
+    if (this.authData.SecondFactor.Enabled) {
+      return !this.authData.SecondFactor.CheckResult;
     } else {
       return false;
     }

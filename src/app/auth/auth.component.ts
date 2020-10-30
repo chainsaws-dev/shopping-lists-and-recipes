@@ -52,7 +52,11 @@ export class AuthComponent implements OnInit, OnDestroy {
       this.loggedIn = loggedin;
       this.IsLoading = false;
       if (loggedin) {
-        this.Redirect();
+        if (this.authservice.HaveToCheckSecondFactor()) {
+          this.GoToSecondFactor();
+        } else {
+          this.Redirect();
+        }
       }
     });
   }
@@ -81,6 +85,10 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   Redirect() {
     this.router.navigate(['/recipes']);
+  }
+
+  GoToSecondFactor() {
+    this.router.navigate(['/totp']);
   }
 
 }
