@@ -21,7 +21,6 @@ export class SessionsEditComponent implements OnInit, OnDestroy {
 
   IsLoading: boolean;
 
-  private DatabaseUpdated: Subscription;
   private DataLoading: Subscription;
   private RecivedErrorSub: Subscription;
 
@@ -32,17 +31,12 @@ export class SessionsEditComponent implements OnInit, OnDestroy {
   constructor(
     private SessServ: SessionsService,
     private activatedroute: ActivatedRoute,
-    private router: Router,
     private datastore: DataStorageService) { }
 
   ngOnDestroy(): void {
 
     this.DataLoading.unsubscribe();
     this.RecivedErrorSub.unsubscribe();
-
-    if (this.DatabaseUpdated) {
-      this.DatabaseUpdated.unsubscribe();
-    }
 
   }
 

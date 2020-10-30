@@ -29,6 +29,8 @@ export class DataStorageService {
   FileUploaded = new Subject<FiLe>();
   UserUpdateInsert = new Subject<User>();
 
+  CurrentUserFetch = new Subject<User>();
+
   LastPagination: Pagination;
 
   Searched: boolean;
@@ -366,6 +368,20 @@ export class DataStorageService {
         this.RecivedError.next(errresp);
         this.LoadingData.next(false);
       }));
+  }
+
+  FetchCurrentUser() {
+    this.LoadingData.next(true);
+
+    return this.http.get<User>(environment.GetSetCurrentUserUrl)
+      .subscribe(response => {
+        this.CurrentUserFetch.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
   }
 
   SaveUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {

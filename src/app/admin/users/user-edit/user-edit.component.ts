@@ -40,10 +40,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
     this.DataLoading.unsubscribe();
     this.RecivedErrorSub.unsubscribe();
-
-    if (this.DatabaseUpdated) {
-      this.DatabaseUpdated.unsubscribe();
-    }
+    this.DatabaseUpdated.unsubscribe();
 
   }
 
@@ -61,6 +58,20 @@ export class UserEditComponent implements OnInit, OnDestroy {
         this.AdminServ.CurrentSelectedItem = this.UserToEdit;
       }
     );
+
+    this.DatabaseUpdated = this.datastore.UserUpdateInsert.subscribe((user) => {
+
+      if (this.editmode) {
+        this.UserToEdit = user;
+        this.AdminServ.UpdateExistingUser(this.UserToEdit, this.index);
+      } else {
+        this.UserToEdit = user;
+        this.AdminServ.AddNewUser(this.UserToEdit);
+      }
+
+      setTimeout(() => this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' }), 1000);
+
+    });
 
     this.RecivedErrorSub = this.datastore.RecivedError.subscribe(
       (response) => {
@@ -100,20 +111,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
       this.UserToEdit.Role = SubmittedForm.value.roles;
 
       this.datastore.SaveUser(this.UserToEdit, SubmittedForm.value.changepassword, SubmittedForm.value.newpassword);
-
-      this.DatabaseUpdated = this.datastore.UserUpdateInsert.subscribe((user) => {
-
-        if (this.editmode) {
-          this.UserToEdit = user;
-          this.AdminServ.UpdateExistingUser(this.UserToEdit, this.index);
-        } else {
-          this.UserToEdit = user;
-          this.AdminServ.AddNewUser(this.UserToEdit);
-        }
-
-        setTimeout(() => this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' }), 1000);
-
-      });
 
     }
   }

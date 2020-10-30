@@ -21,6 +21,7 @@ export const environment = {
   SearchRecipesUrl: '/api/Recipes/Search',
   GetSetShoppingListUrl: '/api/ShoppingList',
   GetSetUsersUrl: '/api/Users',
+  GetSetCurrentUserUrl: '/api/Users/Current',
   GetSetSessionsUrl: '/api/Sessions',
   GetTOTPQRCodeUrl: '/api/TOTP/Qr.png',
   TOTPSettingsUrl: '/api/TOTP/Settings',

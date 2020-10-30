@@ -26,9 +26,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   AuthUrl: string;
   QrUrl: string;
 
+
   private DatabaseUpdated: Subscription;
   private DataLoading: Subscription;
   private RecivedErrorSub: Subscription;
+
+  private FetchUser: Subscription;
 
   ShowMessage: boolean;
   MessageType: string;
@@ -40,30 +43,50 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private datastore: DataStorageService) { }
 
   ngOnDestroy(): void {
-    /*
-    this.DataLoading.unsubscribe();
-    this.RecivedErrorSub.unsubscribe();
 
-    if (this.DatabaseUpdated) {
-      this.DatabaseUpdated.unsubscribe();
-    }
-    */
+
   }
 
   ngOnInit(): void {
+
     this.AuthUrl = environment.GetAuthenticatorUrl;
     this.QrUrl = environment.GetTOTPQRCodeUrl;
 
-    // TEST ONLY REMOVE ON PROD
-    this.UserToEdit = new User('Admin', 'chainsaws@rambler.ru', '+79650902819', 'chainsaws');
+    this.FetchUser = this.datastore.CurrentUserFetch.subscribe(
+      (ThisUser) => {
+        this.UserToEdit = ThisUser;
 
-    // TODO Get Current User here
+        if (this.UserToEdit) {
+          this.TwoFactorEnabled = this.UserToEdit.SecondFactor;
+        }
+      }
+    );
 
-    if (this.UserToEdit) {
+    this.RecivedErrorSub = this.datastore.RecivedError.subscribe(
+      (response) => {
 
-      this.TwoFactorEnabled = this.UserToEdit.SecondFactor;
+        this.ShowMessage = true;
+        this.ResponseFromBackend = response;
+        setTimeout(() => this.ShowMessage = false, 5000);
 
-    }
+        switch (response.Error.Code) {
+          case 200:
+            this.MessageType = 'success';
+            break;
+          default:
+            this.MessageType = 'danger';
+            break;
+        }
+      }
+    );
+
+    this.DataLoading = this.datastore.LoadingData.subscribe(
+      (State) => {
+        this.IsLoading = State;
+      }
+    );
+
+    this.datastore.FetchCurrentUser();
   }
 
   OnSaveClick(SubmittedForm: NgForm) {

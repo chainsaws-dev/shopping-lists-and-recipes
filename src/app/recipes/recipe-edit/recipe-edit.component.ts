@@ -53,14 +53,31 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.RecipeChangedSub.unsubscribe();
     this.IngredientSelectedSub.unsubscribe();
-    if (this.DatabaseUpdated) {
-      this.DatabaseUpdated.unsubscribe();
-    }
+    this.DatabaseUpdated.unsubscribe();
     this.FileProgress.unsubscribe();
     this.FileUploaded.unsubscribe();
   }
 
   ngOnInit(): void {
+
+    this.DatabaseUpdated = this.datastore.RecipesUpdateInsert.subscribe((recipe) => {
+
+      if (this.editmode) {
+        this.RecipeToEdit = recipe;
+        this.recipeservice.UpdateExistingRecipe(this.RecipeToEdit, this.index);
+      } else {
+        this.RecipeToEdit = recipe;
+        this.recipeservice.AddNewRecipe(this.RecipeToEdit);
+      }
+
+      if (this.FilesToCleanOnSave.length > 0) {
+        this.FilesToCleanOnSave.forEach((FileID: number) => {
+          this.datastore.DeleteFile(FileID, true);
+        });
+      }
+
+      this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
+    });
 
     this.activatedroute.params.subscribe(
       (params: Params) => {
@@ -187,25 +204,6 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       this.RecipeToEdit.Description = SubmittedForm.value.recipedescription;
 
       this.datastore.SaveRecipe(this.RecipeToEdit);
-
-      this.DatabaseUpdated = this.datastore.RecipesUpdateInsert.subscribe((recipe) => {
-
-        if (this.editmode) {
-          this.RecipeToEdit = recipe;
-          this.recipeservice.UpdateExistingRecipe(this.RecipeToEdit, this.index);
-        } else {
-          this.RecipeToEdit = recipe;
-          this.recipeservice.AddNewRecipe(this.RecipeToEdit);
-        }
-
-        if (this.FilesToCleanOnSave.length > 0) {
-          this.FilesToCleanOnSave.forEach((FileID: number) => {
-            this.datastore.DeleteFile(FileID, true);
-          });
-        }
-
-        this.router.navigate(['../'], { relativeTo: this.activatedroute, queryParamsHandling: 'merge' });
-      });
     }
   }
 

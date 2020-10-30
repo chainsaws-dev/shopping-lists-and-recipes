@@ -21,7 +21,6 @@ export class MediaEditComponent implements OnInit, OnDestroy {
   IsLoading: boolean;
   CurPercentStyle = 'width: 0%';
 
-  private DatabaseUpdated: Subscription;
   private DataLoading: Subscription;
   private RecivedErrorSub: Subscription;
 
@@ -35,7 +34,6 @@ export class MediaEditComponent implements OnInit, OnDestroy {
   constructor(
     private MediaServ: MediaService,
     private activatedroute: ActivatedRoute,
-    private router: Router,
     private datastore: DataStorageService
   ) { }
 
@@ -45,10 +43,6 @@ export class MediaEditComponent implements OnInit, OnDestroy {
     this.RecivedErrorSub.unsubscribe();
     this.FileProgress.unsubscribe();
     this.FileUploaded.unsubscribe();
-
-    if (this.DatabaseUpdated) {
-      this.DatabaseUpdated.unsubscribe();
-    }
 
   }
   ngOnInit(): void {
