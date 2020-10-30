@@ -40,14 +40,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private datastore: DataStorageService) { }
 
   ngOnDestroy(): void {
-
+    /*
     this.DataLoading.unsubscribe();
     this.RecivedErrorSub.unsubscribe();
 
     if (this.DatabaseUpdated) {
       this.DatabaseUpdated.unsubscribe();
     }
-
+    */
   }
 
   ngOnInit(): void {

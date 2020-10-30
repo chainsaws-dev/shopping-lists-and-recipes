@@ -62,9 +62,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   OnLogout() {
-    this.auth.SignOut();
     this.LoggedIn = false;
     this.UserEmail = '';
     this.UserAdmin = false;
+    this.auth.SignOut();
   }
 }

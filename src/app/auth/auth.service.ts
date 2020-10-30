@@ -101,6 +101,8 @@ export class AuthService {
     localStorage.removeItem('userData');
 
     this.AuthResultSub.next(false);
+    this.SfResultSub.next(false);
+
     this.router.navigate(['/auth']);
   }
 
