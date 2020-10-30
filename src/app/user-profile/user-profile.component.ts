@@ -27,11 +27,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   QrUrl: string;
 
 
-  private DatabaseUpdated: Subscription;
+
   private DataLoading: Subscription;
   private RecivedErrorSub: Subscription;
 
   private FetchUser: Subscription;
+  private SaveUser: Subscription;
+
+  private LinkUnlinkTFA: Subscription;
 
   ShowMessage: boolean;
   MessageType: string;
@@ -43,14 +46,29 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private datastore: DataStorageService) { }
 
   ngOnDestroy(): void {
-
-
+    this.FetchUser.unsubscribe();
+    this.RecivedErrorSub.unsubscribe();
+    this.DataLoading.unsubscribe();
+    this.SaveUser.unsubscribe();
+    this.LinkUnlinkTFA.unsubscribe();
   }
 
   ngOnInit(): void {
 
     this.AuthUrl = environment.GetAuthenticatorUrl;
     this.QrUrl = environment.GetTOTPQRCodeUrl;
+
+    this.LinkUnlinkTFA = this.datastore.TwoFactorSub.subscribe(
+      (ThisUser) => {
+        this.UserToEdit = ThisUser;
+      }
+    );
+
+    this.SaveUser = this.datastore.UserUpdateInsert.subscribe(
+      (ThisUser) => {
+        this.UserToEdit = ThisUser;
+      }
+    );
 
     this.FetchUser = this.datastore.CurrentUserFetch.subscribe(
       (ThisUser) => {
@@ -90,10 +108,30 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   OnSaveClick(SubmittedForm: NgForm) {
+    if (SubmittedForm.valid) {
 
+      if (SubmittedForm.value.changepassword && SubmittedForm.value.newpassword.length === 0) {
+        return;
+      }
+
+      this.UserToEdit.Email = SubmittedForm.value.useremail;
+      this.UserToEdit.Name = SubmittedForm.value.username;
+      this.UserToEdit.Phone = SubmittedForm.value.userphone;
+
+      this.datastore.SaveUser(this.UserToEdit, SubmittedForm.value.changepassword, SubmittedForm.value.newpassword);
+
+    }
   }
 
   OnLinkTwoFactor(SubmittedForm: NgForm) {
+    if (SubmittedForm.valid) {
 
+      this.datastore.LinkTwoFactor(SubmittedForm.value.passkey, this.UserToEdit);
+
+    }
+  }
+
+  OnUnlinkTwoFactor() {
+    this.datastore.UnlinkTwoFactor(this.UserToEdit);
   }
 }

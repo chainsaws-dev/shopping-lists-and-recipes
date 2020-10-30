@@ -31,6 +31,8 @@ export class DataStorageService {
 
   CurrentUserFetch = new Subject<User>();
 
+  TwoFactorSub = new Subject<User>();
+
   LastPagination: Pagination;
 
   Searched: boolean;
@@ -401,6 +403,40 @@ export class DataStorageService {
         this.RecivedError.next(errresp);
         this.LoadingData.next(false);
       });
+  }
+
+  LinkTwoFactor(Key: string, CurUser: User) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Passcode: Key
+      })
+    };
+
+    this.http.post<ErrorResponse>(environment.TOTPSettingsUrl, CurUser, httpOptions)
+      .subscribe(response => {
+        CurUser.SecondFactor = true;
+        this.TwoFactorSub.next(CurUser);
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
+  UnlinkTwoFactor(CurUser: User) {
+    this.http.delete<ErrorResponse>(environment.TOTPSettingsUrl)
+    .subscribe(response => {
+      CurUser.SecondFactor = false;
+      this.TwoFactorSub.next(CurUser);
+      this.RecivedError.next(response);
+      this.LoadingData.next(false);
+    }, error => {
+      const errresp = error.error as ErrorResponse;
+      this.RecivedError.next(errresp);
+      this.LoadingData.next(false);
+    });
   }
 
   GetObsForSaveUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {
