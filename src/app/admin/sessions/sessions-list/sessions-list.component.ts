@@ -55,13 +55,15 @@ export class SessionsListComponent implements OnInit, OnDestroy {
         this.ResponseFromBackend = response;
         setTimeout(() => this.ShowMessage = false, 5000);
 
-        switch (response.Error.Code) {
-          case 200:
-            this.MessageType = 'success';
-            break;
-          default:
-            this.MessageType = 'danger';
-            break;
+        if (response) {
+          switch (response.Error.Code) {
+            case 200:
+              this.MessageType = 'success';
+              break;
+            default:
+              this.MessageType = 'danger';
+              break;
+          }
         }
       }
     );

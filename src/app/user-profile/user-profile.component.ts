@@ -20,6 +20,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   TwoFactorEnabled: boolean;
 
+  SetTwoFactor: boolean;
+
   IsLoading: boolean;
   changepassword: boolean;
 
@@ -60,23 +62,19 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     this.LinkUnlinkTFA = this.datastore.TwoFactorSub.subscribe(
       (ThisUser) => {
-        this.UserToEdit = ThisUser;
+        this.SetUserAndTFA(ThisUser);
       }
     );
 
     this.SaveUser = this.datastore.UserUpdateInsert.subscribe(
       (ThisUser) => {
-        this.UserToEdit = ThisUser;
+        this.SetUserAndTFA(ThisUser);
       }
     );
 
     this.FetchUser = this.datastore.CurrentUserFetch.subscribe(
       (ThisUser) => {
-        this.UserToEdit = ThisUser;
-
-        if (this.UserToEdit) {
-          this.TwoFactorEnabled = this.UserToEdit.SecondFactor;
-        }
+        this.SetUserAndTFA(ThisUser);
       }
     );
 
@@ -87,13 +85,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.ResponseFromBackend = response;
         setTimeout(() => this.ShowMessage = false, 5000);
 
-        switch (response.Error.Code) {
-          case 200:
-            this.MessageType = 'success';
-            break;
-          default:
-            this.MessageType = 'danger';
-            break;
+        if (response) {
+          switch (response.Error.Code) {
+            case 200:
+              this.MessageType = 'success';
+              break;
+            default:
+              this.MessageType = 'danger';
+              break;
+          }
         }
       }
     );
@@ -105,6 +105,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     );
 
     this.datastore.FetchCurrentUser();
+  }
+
+  SetUserAndTFA(ThisUser: User) {
+    this.UserToEdit = ThisUser;
+
+    if (this.UserToEdit) {
+      this.TwoFactorEnabled = this.UserToEdit.SecondFactor;
+    }
   }
 
   OnSaveClick(SubmittedForm: NgForm) {
@@ -132,6 +140,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   OnUnlinkTwoFactor() {
-    this.datastore.UnlinkTwoFactor(this.UserToEdit);
+
+    if (this.UserToEdit.SecondFactor) {
+      this.datastore.UnlinkTwoFactor(this.UserToEdit);
+    }
+
   }
 }

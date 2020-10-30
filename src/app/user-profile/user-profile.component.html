@@ -49,7 +49,7 @@
 
 <div class="form-group" *ngIf="UserToEdit && TwoFactorEnabled">
   <h2>Second factor enabled</h2>
-  <button class="btn btn-outline-danger" type="button">Disable</button>
+  <button class="btn btn-outline-danger" type="button" (click)="OnUnlinkTwoFactor()">Disable</button>
 </div>
 
 <form #UserTwoFactorForm="ngForm" (ngSubmit)="OnLinkTwoFactor(UserTwoFactorForm)"
@@ -69,15 +69,26 @@
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" id="enabletwofactor" name="enabletwofactor" [(ngModel)]="TwoFactorEnabled">
+            <input type="checkbox" id="enabletwofactor" name="enabletwofactor" [(ngModel)]="SetTwoFactor">
           </div>
         </div>
-        <input type="password" class="form-control" id="newpasskey" name="passkey"
-          placeholder="Token from Authenticator" [disabled]="!TwoFactorEnabled" ngModel>
-
+        <input
+        type="text"
+        name="passkey"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        autocomplete="one-time-code"
+        class="form-control"
+        id="newpasskey"
+        placeholder="Token from Authenticator"
+        [disabled]="!SetTwoFactor"
+        ngModel
+        required
+        minlength='6'
+        ngbTooltip="Minimum 6 numbers">
       </div>
 
-      <button class="btn btn-outline-primary" type="button">Save</button>
+      <button class="btn btn-outline-primary" type="submit">Save</button>
     </div>
   </div>
 </form>
