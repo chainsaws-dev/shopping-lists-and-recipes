@@ -30,6 +30,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.LoggedIn = this.auth.CheckRegistered();
     this.UserEmail = this.auth.GetUserEmail();
     this.UserAdmin = this.auth.CheckIfUserIsAdmin();
+    if (!this.auth.HaveToCheckSecondFactor()) {
+      this.SecondFactor = true;
+    }
 
     this.LoginSub = this.auth.AuthResultSub.subscribe((loggedin) => {
       this.LoggedIn = loggedin;
@@ -43,6 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.SecondFactorSub = this.auth.SfResultSub.subscribe((result) => {
       this.SecondFactor = result;
     });
+
   }
 
   SearchRecipes(form: NgForm): void {

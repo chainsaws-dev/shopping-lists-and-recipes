@@ -69,20 +69,25 @@ export class AuthService {
     this.SecFactorObs.subscribe(
       response => {
 
-        this.SfResultSub.next(true);
-
         if (response.Error.Code === 200) {
           this.authData.SecondFactor.CheckResult = true;
         } else {
           this.authData.SecondFactor.CheckResult = false;
         }
 
+        localStorage.setItem('userData', JSON.stringify(this.authData));
+
+        this.SfResultSub.next(this.authData.SecondFactor.CheckResult);
         this.SfErrorSub.next(response);
+
       }, error => {
+
         const errresp = error.error as ErrorResponse;
-        this.SfResultSub.next(false);
         this.authData.SecondFactor.CheckResult = false;
+
+        this.SfResultSub.next(false);
         this.SfErrorSub.next(errresp);
+
       }
     );
   }
@@ -158,10 +163,14 @@ export class AuthService {
   }
 
   HaveToCheckSecondFactor() {
-    if (this.authData.SecondFactor.Enabled) {
-      return !this.authData.SecondFactor.CheckResult;
+    if (this.authData !== null) {
+      if (this.authData.SecondFactor.Enabled) {
+        return !this.authData.SecondFactor.CheckResult;
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      return true;
     }
   }
 
