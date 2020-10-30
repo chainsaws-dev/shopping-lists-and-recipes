@@ -407,7 +407,7 @@ export class DataStorageService {
     if (ChangePassword) {
       const httpOptions = {
         headers: new HttpHeaders({
-          NewPassword: btoa(encodeURI(NewPassword))
+          NewPassword: encodeURI(NewPassword)
         })
       };
 
@@ -422,7 +422,7 @@ export class DataStorageService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        UserID: btoa(encodeURI(UserToDelete.GUID))
+        UserID: encodeURI(UserToDelete.GUID)
       })
     };
 
@@ -504,7 +504,7 @@ export class DataStorageService {
     const httpOptions = {
       headers: new HttpHeaders({
         Token: UniqueToken,
-        NewPassword: btoa(encodeURI(NewPass))
+        NewPassword: encodeURI(NewPass)
       })
     };
 

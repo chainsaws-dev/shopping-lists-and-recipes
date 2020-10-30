@@ -27,12 +27,12 @@ export class AuthService {
     private http: HttpClient,
     private router: Router) { }
 
-  SignUp(Email: string, Name: string, Password: string) {
+  SignUp(UserEmail: string, Name: string, Password: string) {
 
     const signup: AuthRequest = {
-      Email: btoa(Email),
-      Name: btoa(encodeURI(Name)),
-      Password: btoa(encodeURI(Password)),
+      Email: UserEmail,
+      Name: encodeURI(Name),
+      Password: encodeURI(Password),
       ReturnSecureToken: true,
     };
 
@@ -42,11 +42,11 @@ export class AuthService {
     this.RequestSub();
   }
 
-  SignIn(Email: string, Password: string) {
+  SignIn(UserEmail: string, Password: string) {
 
     const signin: AuthRequest = {
-      Email: btoa(Email),
-      Password: btoa(encodeURI(Password)),
+      Email: UserEmail,
+      Password: encodeURI(Password),
       ReturnSecureToken: true,
     };
 
@@ -195,7 +195,7 @@ export class AuthService {
 
   GetUserEmail() {
     if (this.authData) {
-      return atob(this.authData.Email);
+      return this.authData.Email;
     } else {
       return null;
     }
@@ -203,7 +203,7 @@ export class AuthService {
 
   GetUserRole() {
     if (this.authData) {
-      return atob(this.authData.Role);
+      return this.authData.Role;
     } else {
       return null;
     }

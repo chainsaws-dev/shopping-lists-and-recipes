@@ -47,6 +47,11 @@
   </div>
 </form>
 
+<div class="form-group" *ngIf="UserToEdit && TwoFactorEnabled">
+  <h2>Second factor enabled</h2>
+  <button class="btn btn-outline-danger" type="button">Disable</button>
+</div>
+
 <form #UserTwoFactorForm="ngForm" (ngSubmit)="OnLinkTwoFactor(UserTwoFactorForm)"
   *ngIf="UserToEdit && !TwoFactorEnabled">
   <div class="form-group">
