@@ -386,6 +386,25 @@ export class DataStorageService {
       });
   }
 
+  SaveCurrentUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {
+    this.LoadingData.next(true);
+
+    if (ItemToSave.GUID.length === 0) {
+      ItemToSave.GUID = '00000000-0000-0000-0000-000000000000';
+    }
+
+    this.GetObsForSaveCurrentUser(ItemToSave, ChangePassword, NewPassword)
+      .subscribe(response => {
+        this.UserUpdateInsert.next(response);
+        this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
   SaveUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {
     this.LoadingData.next(true);
 
@@ -427,16 +446,30 @@ export class DataStorageService {
 
   UnlinkTwoFactor(CurUser: User) {
     this.http.delete<ErrorResponse>(environment.TOTPSettingsUrl)
-    .subscribe(response => {
-      CurUser.SecondFactor = false;
-      this.TwoFactorSub.next(CurUser);
-      this.RecivedError.next(response);
-      this.LoadingData.next(false);
-    }, error => {
-      const errresp = error.error as ErrorResponse;
-      this.RecivedError.next(errresp);
-      this.LoadingData.next(false);
-    });
+      .subscribe(response => {
+        CurUser.SecondFactor = false;
+        this.TwoFactorSub.next(CurUser);
+        this.RecivedError.next(response);
+        this.LoadingData.next(false);
+      }, error => {
+        const errresp = error.error as ErrorResponse;
+        this.RecivedError.next(errresp);
+        this.LoadingData.next(false);
+      });
+  }
+
+  GetObsForSaveCurrentUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {
+    if (ChangePassword) {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          NewPassword: encodeURI(NewPassword)
+        })
+      };
+
+      return this.http.post<User>(environment.GetSetCurrentUserUrl, ItemToSave, httpOptions);
+    } else {
+      return this.http.post<User>(environment.GetSetCurrentUserUrl, ItemToSave);
+    }
   }
 
   GetObsForSaveUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {
