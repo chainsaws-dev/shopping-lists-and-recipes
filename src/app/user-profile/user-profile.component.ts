@@ -126,7 +126,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.UserToEdit.Name = SubmittedForm.value.username;
       this.UserToEdit.Phone = SubmittedForm.value.userphone;
 
-      this.datastore.SaveUser(this.UserToEdit, SubmittedForm.value.changepassword, SubmittedForm.value.newpassword);
+      this.datastore.SaveCurrentUser(this.UserToEdit, SubmittedForm.value.changepassword, SubmittedForm.value.newpassword);
 
     }
   }
