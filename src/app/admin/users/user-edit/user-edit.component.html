@@ -44,7 +44,14 @@
             <input type="checkbox" id="changepassword" name="changepassword" [(ngModel)]="changepassword">
           </div>
         </div>
-        <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Enter new password" [disabled]="!changepassword" ngModel>
+        <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Enter new password"
+          [disabled]="!changepassword" ngModel>
+      </div>
+
+      <div class="form-group">
+        <mat-slide-toggle class="mat-margin" color="primary" name="disabled" [(ngModel)]="UserToEdit.Disabled">
+          Disabled
+        </mat-slide-toggle>
       </div>
 
       <button class="btn btn-outline-primary" type="submit" [disabled]="UserEditForm.invalid">Save</button>

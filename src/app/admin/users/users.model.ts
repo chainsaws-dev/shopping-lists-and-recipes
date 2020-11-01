@@ -7,6 +7,7 @@ export class User {
   public IsAdmin: boolean;
   public Confirmed: boolean;
   public SecondFactor: boolean;
+  public Disabled: boolean;
   constructor(Role: string, Email: string, Phone: string, Name: string) {
     this.GUID = '';
     this.Role = Role;
@@ -16,6 +17,7 @@ export class User {
     this.IsAdmin = false;
     this.Confirmed = false;
     this.SecondFactor = false;
+    this.Disabled = false;
   }
 }
 

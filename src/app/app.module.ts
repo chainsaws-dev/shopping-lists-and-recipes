@@ -12,7 +12,7 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 import { SharedModule } from './shared/shared.module';
 import { FormsModule } from '@angular/forms';
-import { TotpComponent } from './totp/totp.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,8 @@ import { TotpComponent } from './totp/totp.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    BrowserAnimationsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
   bootstrap: [AppComponent]

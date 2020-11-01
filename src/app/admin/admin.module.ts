@@ -16,7 +16,7 @@ import { SessionsEditComponent } from './sessions/sessions-edit/sessions-edit.co
 
 import { AdminRoutingModule } from './admin-routing.module';
 
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -34,7 +34,8 @@ import { AdminRoutingModule } from './admin-routing.module';
     FormsModule,
     NgbAlertModule,
     NgbPaginationModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    MatSlideToggleModule
   ]
 })
 export class AdminModule { }
