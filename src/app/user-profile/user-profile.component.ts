@@ -133,9 +133,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   OnLinkTwoFactor(SubmittedForm: NgForm) {
     if (SubmittedForm.valid) {
-
       this.datastore.LinkTwoFactor(SubmittedForm.value.passkey, this.UserToEdit);
-
     }
   }
 
