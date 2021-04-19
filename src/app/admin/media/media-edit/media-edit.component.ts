@@ -54,7 +54,7 @@ export class MediaEditComponent implements OnInit, OnDestroy {
           this.index = +params.id;
           this.FileToEdit = this.MediaServ.GetFileById(this.index);
         } else {
-          this.FileToEdit = new FiLe('', 0, '', '', 0);
+          this.FileToEdit = new FiLe('', 0, '', '', '', 0);
         }
         this.MediaServ.CurrentSelectedItem = this.FileToEdit;
       }
