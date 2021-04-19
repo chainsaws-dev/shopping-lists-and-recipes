@@ -1,7 +1,7 @@
 .parent-media-box {
   display: grid;
   grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   grid-auto-rows: minmax(200px, auto);
   padding: 0.3rem 1rem 0.3rem 1rem;
 }

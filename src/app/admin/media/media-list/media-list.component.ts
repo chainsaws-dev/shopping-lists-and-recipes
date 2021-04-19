@@ -71,7 +71,7 @@ export class MediaListComponent implements OnInit, OnDestroy {
       this.meCurrentPage = +params.pn;
 
       this.FetchOnInint = this.DataServ.FetchFilesList(this.meCurrentPage, environment.MediaListPageSize).subscribe(
-        (value) => {
+       (value) => {
           this.Files = this.MediaServ.GetFiles();
           this.meCollectionSize = this.MediaServ.Total;
         },
