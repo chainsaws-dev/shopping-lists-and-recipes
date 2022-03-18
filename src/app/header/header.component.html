@@ -19,11 +19,11 @@
           </a>
         </li>
       </ul>
-      <button class="btn btn-outline-secondary me-2" placement="bottom" ngbTooltip="View profile" type="button"
+      <button class="btn btn-outline-secondary me-1" placement="bottom" ngbTooltip="View profile" type="button"
         routerLinkActive="active" routerLink="/profile">{{UserEmail}}</button>
-      <button class="btn btn-outline-primary me-2" type="button" (click)="OnLogout()">Sign out</button>
+      <button class="btn btn-outline-primary me-1" type="button" (click)="OnLogout()">Sign out</button>
       <form (ngSubmit)="SearchRecipes(searchform)" class="d-flex" #searchform="ngForm">
-        <input class="form-control me-2" type="search" placeholder="Search" ngModel name="searchreq" required>
+        <input class="form-control me-1" type="search" placeholder="Search" ngModel name="searchreq" required>
         <button class="btn btn-outline-primary" type="submit" [disabled]="searchform.invalid">Search</button>
       </form>
     </div>

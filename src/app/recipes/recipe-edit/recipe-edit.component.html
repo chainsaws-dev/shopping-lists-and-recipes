@@ -32,8 +32,8 @@
             #ingrform="ngForm">
             <div class="row">
               <div class="input-group mt-2 mb-2">
-                <div class="col-sm-9 form-group">
-                  <input type="text" id="name" placeholder="Name" class="form-control me-2" ngModel name="ingredientname"
+                <div class="col-sm-9 form-group me-1">
+                  <input type="text" id="name" placeholder="Name" class="form-control" ngModel name="ingredientname"
                     required>
                 </div>
                 <div class="col form-group">
@@ -46,9 +46,9 @@
               <div class="col">
                 <div class="input-group mb-1">
 
-                  <button class="btn btn-outline-primary me-2" type="submit" [disabled]="ingrform.invalid">
+                  <button class="btn btn-outline-primary me-1" type="submit" [disabled]="ingrform.invalid">
                     {{ ingredientedit ? 'Update' : 'Add' }}</button>
-                  <button class="btn btn-outline-danger me-2" type="button" (click)="onDeleteSelectedIngredient()"
+                  <button class="btn btn-outline-danger me-1" type="button" (click)="onDeleteSelectedIngredient()"
                     *ngIf="CurrentSelectedItem">Delete</button>
                   <button class="btn btn-outline-secondary" type="button" (click)="onClearAllIngredients()"
                     *ngIf="GetIngredientsLength()!==0">Clear</button>
