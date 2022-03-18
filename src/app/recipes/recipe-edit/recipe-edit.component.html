@@ -64,7 +64,7 @@
           [ngClass]="this.CurrentSelectedItem === ingredient ? 'active' : ''" style="cursor: pointer;"
           *ngFor="let ingredient of RecipeToEdit.Ingredients" (click)="OnIngredientSelect(ingredient)">
           {{ingredient.Name}}
-          <span class="badge badge-success badge-pill">{{ingredient.Amount}}</span>
+          <span class="badge bg-primary rounded-pill">{{ingredient.Amount}}</span>
         </a>
       </ul>
     </div>
