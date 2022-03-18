@@ -18,9 +18,11 @@
         </a>
       </li>
     </ul>
-    <button class="btn btn-outline-secondary me-1" placement="bottom" ngbTooltip="View profile" type="button"
-      routerLinkActive="active" routerLink="/profile">{{UserEmail}}</button>
-    <button class="btn btn-outline-primary me-1" type="button" (click)="OnLogout()">Sign out</button>
+    <div class="nav">
+      <button class="btn btn-outline-secondary me-1" placement="bottom" ngbTooltip="View profile" type="button"
+        routerLinkActive="active" routerLink="/profile">{{UserEmail}}</button>
+      <button class="btn btn-outline-primary me-1" type="button" (click)="OnLogout()">Sign out</button>
+    </div>
 
     <form (ngSubmit)="SearchRecipes(searchform)" class="d-flex" #searchform="ngForm">
       <input class="form-control me-1" type="search" placeholder="Search" ngModel name="searchreq" required>

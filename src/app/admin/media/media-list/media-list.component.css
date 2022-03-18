@@ -3,7 +3,7 @@
   grid-gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   grid-auto-rows: minmax(180px, auto);
-  padding: 0.3rem 1rem 0.3rem 1rem;
+  padding: 0.3rem 0.3rem 0.3rem 0.3rem;
 }
 
 .media-box {
@@ -16,8 +16,7 @@
   color: #495057;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  text-align: center;
+  object-fit: cover;  
 }
 
 .media-box img {

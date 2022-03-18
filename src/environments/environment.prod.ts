@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   RecipePageSize: 5,
-  ShoppingListPageSize: 14,
+  ShoppingListPageSize: 18,
   AdminUserListPageSize: 11,
   SessionsListPageSize: 11,
   MediaListPageSize: 12,
