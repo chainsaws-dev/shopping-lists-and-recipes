@@ -1,8 +1,8 @@
 .parent-media-box {
   display: grid;
   grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  grid-auto-rows: minmax(180px, auto);
+  grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+  grid-auto-rows: minmax(200px, auto);
   padding: 0.3rem 0.3rem 0.3rem 0.3rem;
 }
 
