@@ -10,7 +10,7 @@
     "e2e": "ng e2e"
   },
   "private": true,
-  "dependencies": {    
+  "dependencies": {
     "@angular-devkit/build-webpack": "^0.1303.0",
     "@angular/animations": "^13.3.0",
     "@angular/cdk": "^13.3.0",
@@ -26,6 +26,8 @@
     "@babel/preset-env": "^7.14.4",
     "@ckeditor/ckeditor5-angular": "^3.0.0",
     "@ckeditor/ckeditor5-build-decoupled-document": "^33.0.0",
+    "@ckeditor/ckeditor5-image": "^33.0.0",
+    "@ckeditor/ckeditor5-list": "^33.0.0",
     "@ng-bootstrap/ng-bootstrap": "^12.0.0",
     "@ngtools/webpack": "^13.3.0",
     "@ngx-translate/core": "^14.0.0",

@@ -23,7 +23,7 @@
         [ngModel]="RecipeToEdit.Name" required>
       <ckeditor class="mb-1" name="recipedescription" [editor]="HtmlEditor" [ngModel]="RecipeToEdit.Description"
         (ready)="onReady($event)"
-        [config]="{'toolbar':{'items':['heading','|','fontSize','fontFamily','|','bold','italic','underline','strikethrough','highlight','|','alignment','|','numberedList','bulletedList','|','indent','outdent','|','todoList','link','blockQuote','insertTable','mediaEmbed','imageInsert','|','undo','redo']},'language':'ru','image':{toolbar:['imageTextAlternative','imageStyle:full','imageStyle:side']},'table':{contentToolbar:['tableColumn','tableRow','mergeTableCells','tableCellProperties','tableProperties']},'licenseKey':''}">
+        [config]="{'toolbar':{'items':['heading','|','fontSize','fontFamily','|','bold','italic','underline','strikethrough','|','alignment','|','numberedList','bulletedList','|','indent','outdent','|','link','blockQuote','insertTable','mediaEmbed','|','undo','redo']},'language':'ru','image':{toolbar:['imageTextAlternative','imageStyle:side']},'table':{contentToolbar:['tableColumn','tableRow','mergeTableCells']},'licenseKey':''}">
       </ckeditor>
       <h4>List of ingredients</h4>
       <div class="row">

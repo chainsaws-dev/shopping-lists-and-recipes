@@ -6,6 +6,7 @@ import { Ingredient } from '../../shared/shared.model';
 import { FiLe } from '../../admin/media/media.model';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import '@ckeditor/ckeditor5-build-decoupled-document/build/translations/ru';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 
