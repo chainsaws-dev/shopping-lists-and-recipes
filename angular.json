@@ -19,7 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",              
+              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
@@ -111,9 +111,21 @@
               "devServerTarget": "shopping-lists-and-recipes:serve:production"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "shopping-lists-and-recipes"
+  "defaultProject": "shopping-lists-and-recipes",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
