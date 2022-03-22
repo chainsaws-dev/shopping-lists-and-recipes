@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { DataStorageService } from '../shared/data-storage.service';
 import { ActivatedRoute, Router, Params, UrlSegment } from '@angular/router';
 import * as url from 'url';
+import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-confirm-email',
@@ -31,7 +33,11 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
   constructor(
     private DataServ: DataStorageService,
     private activeroute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    public translate: TranslateService) { 
+      translate.addLangs(environment.SupportedLangs);
+      translate.setDefaultLang(environment.DefaultLocale);
+    }
 
   ngOnDestroy(): void {
     this.RecivedErrorSub.unsubscribe();
@@ -40,6 +46,14 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }    
 
     this.DataServiceSub = this.DataServ.LoadingData.subscribe(
       (State) => {
@@ -82,6 +96,11 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
       }
     }
     );
+  }
+
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
   }
 
   getUrlWithoutParams() {

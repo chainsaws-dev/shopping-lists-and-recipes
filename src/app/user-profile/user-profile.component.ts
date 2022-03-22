@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../admin/users/users.model';
+import { AuthService } from '../auth/auth.service';
 import { DataStorageService } from '../shared/data-storage.service';
 import { ErrorResponse } from '../shared/shared.model';
 
@@ -43,9 +45,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   ResponseFromBackend: ErrorResponse;
 
   constructor(
-    private activatedroute: ActivatedRoute,
-    private router: Router,
-    private datastore: DataStorageService) { }
+    private auth: AuthService,
+    private datastore: DataStorageService,
+    public translate: TranslateService) {
+      translate.addLangs(environment.SupportedLangs);
+      translate.setDefaultLang(environment.DefaultLocale);
+     }
 
   ngOnDestroy(): void {
     this.FetchUser.unsubscribe();
@@ -56,6 +61,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }   
 
     this.AuthUrl = environment.GetAuthenticatorUrl;
     this.QrUrl = environment.GetTOTPQRCodeUrl;
@@ -125,6 +138,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.UserToEdit.Email = SubmittedForm.value.useremail;
       this.UserToEdit.Name = SubmittedForm.value.username;
       this.UserToEdit.Phone = SubmittedForm.value.userphone;
+      this.UserToEdit.Lang = SubmittedForm.value.userlanguage;
 
       this.datastore.SaveCurrentUser(this.UserToEdit, SubmittedForm.value.changepassword, SubmittedForm.value.newpassword);
 
@@ -143,5 +157,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.datastore.UnlinkTwoFactor(this.UserToEdit);
     }
 
+  }
+  
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)  
+    this.auth.ChangeLocale(lang)  
   }
 }

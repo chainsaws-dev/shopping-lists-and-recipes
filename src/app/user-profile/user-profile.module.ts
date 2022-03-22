@@ -6,6 +6,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbAlertModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SecureImagePipe } from '../shared/secure-image-pipe.pipe';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 const routes: Routes = [
   { path: '', component: UserProfileComponent, },
@@ -18,6 +21,13 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    }),
     FormsModule,
     NgbAlertModule,
     RouterModule.forChild(routes),
@@ -25,3 +35,7 @@ const routes: Routes = [
   ]
 })
 export class UserProfileModule { }
+
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http)
+}

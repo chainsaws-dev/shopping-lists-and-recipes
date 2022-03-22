@@ -6,6 +6,9 @@ import { NgForm } from '@angular/forms';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { Subscription } from 'rxjs';
 import { ErrorResponse } from '../../../shared/shared.model';
+import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -32,9 +35,14 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private AdminServ: UsersService,
+    private auth: AuthService,
     private activatedroute: ActivatedRoute,
     private router: Router,
-    private datastore: DataStorageService) { }
+    private datastore: DataStorageService,
+    public translate: TranslateService) {
+    translate.addLangs(environment.SupportedLangs);
+    translate.setDefaultLang(environment.DefaultLocale);
+  }
 
   ngOnDestroy(): void {
 
@@ -45,6 +53,14 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang !== null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }
+
     this.activatedroute.params.subscribe(
       (params: Params) => {
         this.editmode = params.id != null;
@@ -53,7 +69,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
           this.UserToEdit = this.AdminServ.GetUserById(this.index);
         } else {
           this.changepassword = true;
-          this.UserToEdit = new User('guest_role_read_only', '', '', '');
+          this.UserToEdit = new User('guest_role_read_only', '', '', '','ru');
         }
         this.AdminServ.CurrentSelectedItem = this.UserToEdit;
       }
@@ -99,6 +115,12 @@ export class UserEditComponent implements OnInit, OnDestroy {
       }
     );
   }
+  
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
+    this.auth.ChangeLocale(lang)  
+  }
 
   OnSaveClick(SubmittedForm: NgForm) {
     if (SubmittedForm.valid) {
@@ -111,6 +133,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
       this.UserToEdit.Name = SubmittedForm.value.username;
       this.UserToEdit.Phone = SubmittedForm.value.userphone;
       this.UserToEdit.Role = SubmittedForm.value.roles;
+      this.UserToEdit.Lang = SubmittedForm.value.userlanguage;
 
       this.datastore.SaveUser(this.UserToEdit, SubmittedForm.value.changepassword, SubmittedForm.value.newpassword);
 

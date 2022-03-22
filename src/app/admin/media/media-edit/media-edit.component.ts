@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { ErrorResponse } from 'src/app/shared/shared.model';
+import { environment } from 'src/environments/environment';
 import { FiLe } from '../media.model';
 import { MediaService } from '../media.service';
 
@@ -34,8 +36,12 @@ export class MediaEditComponent implements OnInit, OnDestroy {
   constructor(
     private MediaServ: MediaService,
     private activatedroute: ActivatedRoute,
-    private datastore: DataStorageService
-  ) { }
+    private datastore: DataStorageService,
+    public translate: TranslateService
+  ) {
+    translate.addLangs(environment.SupportedLangs);
+    translate.setDefaultLang(environment.DefaultLocale);
+   }
 
   ngOnDestroy(): void {
 
@@ -46,6 +52,14 @@ export class MediaEditComponent implements OnInit, OnDestroy {
 
   }
   ngOnInit(): void {
+
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }      
 
     this.activatedroute.params.subscribe(
       (params: Params) => {
@@ -104,6 +118,12 @@ export class MediaEditComponent implements OnInit, OnDestroy {
     this.CurPercentStyle = 'width: 0%';
     const FileToUpload = event.target.files[0] as File;
     this.datastore.FileUpload(FileToUpload);
+  }
+
+  
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
   }
 
 }

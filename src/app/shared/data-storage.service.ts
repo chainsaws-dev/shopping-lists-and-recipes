@@ -394,15 +394,20 @@ export class DataStorageService {
     }
 
     this.GetObsForSaveCurrentUser(ItemToSave, ChangePassword, NewPassword)
-      .subscribe(response => {
-        this.UserUpdateInsert.next(response);
-        this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.UserUpdateInsert.next(response);
+            this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   SaveUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {

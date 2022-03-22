@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { ErrorResponse } from 'src/app/shared/shared.model';
@@ -36,7 +37,11 @@ export class SessionsListComponent implements OnInit, OnDestroy {
     private DataServ: DataStorageService,
     public SessServ: SessionsService,
     private router: Router,
-  ) { }
+    public translate: TranslateService
+  ) { 
+    translate.addLangs(environment.SupportedLangs);
+    translate.setDefaultLang(environment.DefaultLocale);
+  }
 
   ngOnDestroy(): void {
     this.RecivedErrorSub.unsubscribe();
@@ -46,6 +51,14 @@ export class SessionsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }  
+
     this.sesPageSize = environment.SessionsListPageSize;
 
     this.RecivedErrorSub = this.DataServ.RecivedError.subscribe(
@@ -79,6 +92,11 @@ export class SessionsListComponent implements OnInit, OnDestroy {
       }
     );
 
+  }
+
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
   }
 
   GetRecentData() {

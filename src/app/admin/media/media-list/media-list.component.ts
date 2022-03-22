@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { ErrorResponse } from 'src/app/shared/shared.model';
@@ -35,7 +36,11 @@ export class MediaListComponent implements OnInit, OnDestroy {
     private DataServ: DataStorageService,
     public MediaServ: MediaService,
     private router: Router,
-  ) { }
+    public translate: TranslateService
+  ) {
+    translate.addLangs(environment.SupportedLangs);
+    translate.setDefaultLang(environment.DefaultLocale);
+   }
 
   ngOnDestroy(): void {
     this.RecivedErrorSub.unsubscribe();
@@ -45,6 +50,14 @@ export class MediaListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }  
+
     this.mePageSize = environment.MediaListPageSize;
 
     this.RecivedErrorSub = this.DataServ.RecivedError.subscribe(
@@ -102,6 +115,11 @@ export class MediaListComponent implements OnInit, OnDestroy {
 
     this.Files = this.MediaServ.GetFiles();
 
+  }
+
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
   }
 
 }

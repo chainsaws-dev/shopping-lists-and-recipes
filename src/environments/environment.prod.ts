@@ -1,5 +1,7 @@
 export const environment = {
   production: true,
+  DefaultLocale: 'ru',
+  SupportedLangs: ['ru', 'en'],
   RecipePageSize: 5,
   ShoppingListPageSize: 18,
   AdminUserListPageSize: 11,

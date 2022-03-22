@@ -6,6 +6,7 @@ import { User } from '../users.model';
 import { UsersService } from '../users.service';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -36,7 +37,11 @@ export class UserListComponent implements OnInit, OnDestroy {
     private DataServ: DataStorageService,
     public AdminServ: UsersService,
     private router: Router,
-  ) { }
+    public translate: TranslateService
+  ) {
+    translate.addLangs(environment.SupportedLangs);
+    translate.setDefaultLang(environment.DefaultLocale);
+   }
 
   ngOnDestroy(): void {
     this.RecivedErrorSub.unsubscribe();
@@ -46,6 +51,14 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }   
+
     this.usPageSize = environment.AdminUserListPageSize;
 
     this.RecivedErrorSub = this.DataServ.RecivedError.subscribe(
@@ -88,6 +101,11 @@ export class UserListComponent implements OnInit, OnDestroy {
       }
     );
 
+  }
+
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
   }
 
   OnPageChanged(page: number) {

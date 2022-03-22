@@ -1,9 +1,11 @@
 import { formatDate } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { ErrorResponse } from 'src/app/shared/shared.model';
+import { environment } from 'src/environments/environment';
 import { Session } from '../sessions.model';
 import { SessionsService } from '../sessions.service';
 
@@ -31,7 +33,11 @@ export class SessionsEditComponent implements OnInit, OnDestroy {
   constructor(
     private SessServ: SessionsService,
     private activatedroute: ActivatedRoute,
-    private datastore: DataStorageService) { }
+    private datastore: DataStorageService,
+    public translate: TranslateService) {
+      translate.addLangs(environment.SupportedLangs);
+      translate.setDefaultLang(environment.DefaultLocale);
+     }
 
   ngOnDestroy(): void {
 
@@ -41,6 +47,14 @@ export class SessionsEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }  
+
     this.activatedroute.params.subscribe(
       (params: Params) => {
         this.editmode = params.id != null;
@@ -79,5 +93,8 @@ export class SessionsEditComponent implements OnInit, OnDestroy {
     );
   }
 
-
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
+  }
 }

@@ -18,6 +18,7 @@ export class AuthService {
   public AuthResultSub = new Subject<boolean>();
   private authObs: Observable<AuthResponseData>;
 
+  public LocaleSub = new Subject<string>();
   public SfErrorSub = new Subject<ErrorResponse>();
   public SfResultSub = new Subject<boolean>();
   private SecFactorObs: Observable<ErrorResponse>;
@@ -130,18 +131,27 @@ export class AuthService {
 
   private RequestSub() {
     this.authObs.subscribe(
-      response => {
+      {next: (response) => {
         this.authData = response;
         this.authData.ExpirationDate = String(new Date(new Date().getTime() + +this.authData.ExpiresIn * 1000));
         localStorage.setItem('userData', JSON.stringify(this.authData));
         this.AuthResultSub.next(response.Registered);
         this.AutoSignOut(+this.authData.ExpiresIn * 1000);
-      }, error => {
+        this.ChangeLocale(this.authData.Locale)        
+      },
+      error: (error) => {
         const errresp = error.error as ErrorResponse;
         this.AuthResultSub.next(false);
         this.AuthErrorSub.next(errresp);
       }
+    }
     );
+  }
+
+  ChangeLocale(Lang:string) {
+    this.authData.Locale = Lang;
+    this.LocaleSub.next(Lang);
+    localStorage.setItem("userLang", Lang)  
   }
 
   CheckRegistered() {
