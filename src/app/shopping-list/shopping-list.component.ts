@@ -6,6 +6,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DataStorageService } from '../shared/data-storage.service';
 import { environment } from 'src/environments/environment';
 import { ErrorResponse } from '../shared/shared.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-shopping-list',
@@ -37,7 +38,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     public ShopListServ: ShoppingListService,
     private activeroute: ActivatedRoute,
     private DataServ: DataStorageService,
-    private router: Router) { }
+    private router: Router,
+    public translate: TranslateService) { 
+      translate.addLangs(environment.SupportedLangs);
+      translate.setDefaultLang(environment.DefaultLocale);
+    }
 
 
   ngOnDestroy(): void {
@@ -52,6 +57,14 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }      
 
     this.slPageSize = environment.ShoppingListPageSize;
 
@@ -144,6 +157,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         this.router.navigate(['../', page.toString()], { relativeTo: this.activeroute });
       }
     );
+  }
+
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
   }
 
 }

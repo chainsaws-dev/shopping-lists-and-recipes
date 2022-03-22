@@ -60,5 +60,9 @@
     "QrCode":"QR код",
     "SecondFactor":"Второй фактор",
     "Check":"Проверить",
-    "Passkey":"Ключ"
+    "Passkey":"Ключ",
+    "Clear":"Очистить",
+    "NameSL":"Название",
+    "Amount":"Количество",
+    "Update":"Обновить"
 }

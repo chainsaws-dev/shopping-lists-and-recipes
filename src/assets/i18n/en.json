@@ -60,5 +60,9 @@
     "QrCode":"QR code",
     "SecondFactor":"Second factor",
     "Check":"Check",
-    "Passkey":"Passkey"
+    "Passkey":"Passkey",
+    "Clear":"Clear",
+    "NameSL":"Name",
+    "Amount":"Amount",
+    "Update":"Update"
 }
