@@ -116,10 +116,16 @@ export class UserEditComponent implements OnInit, OnDestroy {
     );
   }
   
-  SwitchLanguage(lang: string) {
-    this.translate.use(lang);
-    localStorage.setItem("userLang", lang)
-    this.auth.ChangeLocale(lang)  
+  ChangeLanguageIfCurrentUser(lang: string) {
+    if (this.UserToEdit.Email === this.auth.GetUserEmail()) {
+      this.SwitchLanguage(lang);
+    }
+  }
+
+  SwitchLanguage(lang: string) {    
+      this.translate.use(lang);
+      localStorage.setItem("userLang", lang)    
+      this.auth.ChangeLocale(lang)      
   }
 
   OnSaveClick(SubmittedForm: NgForm) {

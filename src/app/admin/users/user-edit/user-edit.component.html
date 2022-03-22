@@ -31,7 +31,7 @@
 
       <div class="form-group">
         <label for="lang">{{ 'Language'|translate }}</label>
-        <select id="lang" class="form-select mb-1" name="userlanguage" #selectedLang (change)="SwitchLanguage(selectedLang.value)" 
+        <select id="lang" class="form-select mb-1" name="userlanguage" #selectedLang (change)="ChangeLanguageIfCurrentUser(selectedLang.value)" 
         [ngbTooltip]="'LangSelector'|translate" [ngModel]="UserToEdit.Lang" required>        
           <option *ngFor="let language of translate.getLangs()" [value]="language"
             [selected]="language === translate.currentLang">

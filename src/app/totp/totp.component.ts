@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { ErrorResponse } from '../shared/shared.model';
 
@@ -24,7 +26,10 @@ export class TotpComponent implements OnInit, OnDestroy {
 
   constructor(
     private authservice: AuthService,
-    private router: Router) { }
+    private router: Router,
+    public translate: TranslateService) { 
+      translate.addLangs(environment.SupportedLangs);
+      translate.setDefaultLang(environment.DefaultLocale); }
 
   ngOnDestroy(): void {
     this.SfResultSub.unsubscribe();
@@ -32,9 +37,20 @@ export class TotpComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     if (this.authservice.CheckRegistered()) {
       this.Redirect();
-    }
+    }    
+
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }    
+
+
 
     this.SfErrSub = this.authservice.SfErrorSub.subscribe((response: ErrorResponse) => {
       this.ShowMessage = true;
@@ -78,5 +94,8 @@ export class TotpComponent implements OnInit, OnDestroy {
     this.router.navigate(['/recipes']);
   }
 
-
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
+  }
 }

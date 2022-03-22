@@ -57,5 +57,8 @@
     "ScanWith":"Scan with",
     "EnterToken":"Enter the token:",
     "TokenFromApp":"Token from application",
-    "QrCode":"QR code"
+    "QrCode":"QR code",
+    "SecondFactor":"Second factor",
+    "Check":"Check",
+    "Passkey":"Passkey"
 }
