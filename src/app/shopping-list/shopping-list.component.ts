@@ -7,6 +7,7 @@ import { DataStorageService } from '../shared/data-storage.service';
 import { environment } from 'src/environments/environment';
 import { ErrorResponse } from '../shared/shared.model';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -39,6 +40,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     private activeroute: ActivatedRoute,
     private DataServ: DataStorageService,
     private router: Router,
+    private auth: AuthService,
     public translate: TranslateService) { 
       translate.addLangs(environment.SupportedLangs);
       translate.setDefaultLang(environment.DefaultLocale);
@@ -73,7 +75,12 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
         this.ShowMessage = true;
         this.ResponseFromBackend = response;
-        setTimeout(() => this.ShowMessage = false, 5000);
+        setTimeout(() => {
+          this.ShowMessage = false;
+          if(response.Error.Code!==200) {
+            this.auth.SignOut();
+          }
+        }, environment.MessageTimeout);
 
         if (response) {
           switch (response.Error.Code) {

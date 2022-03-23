@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   DefaultLocale: 'ru',
   SupportedLangs: ['ru', 'en'],
+  MessageTimeout: 2000,
   RecipePageSize: 5,
   ShoppingListPageSize: 18,
   AdminUserListPageSize: 11,

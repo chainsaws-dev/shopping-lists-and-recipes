@@ -7,6 +7,7 @@ import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -42,6 +43,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     private DataServ: DataStorageService,
     private activeroute: ActivatedRoute,
     private router: Router,
+    private auth: AuthService,
     public translate: TranslateService
   ) {
     translate.addLangs(environment.SupportedLangs);
@@ -88,7 +90,12 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
         this.ShowMessage = true;
         this.ResponseFromBackend = response;
-        setTimeout(() => this.ShowMessage = false, 5000);
+        setTimeout(() => {
+          this.ShowMessage = false;
+          if(response.Error.Code!==200) {
+            this.auth.SignOut();
+          }
+        }, environment.MessageTimeout);
 
         if (response) {
           switch (response.Error.Code) {

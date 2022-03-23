@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -47,6 +47,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthService,
     private datastore: DataStorageService,
+    private router: Router,
     public translate: TranslateService) {
       translate.addLangs(environment.SupportedLangs);
       translate.setDefaultLang(environment.DefaultLocale);
@@ -96,7 +97,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
         this.ShowMessage = true;
         this.ResponseFromBackend = response;
-        setTimeout(() => this.ShowMessage = false, 5000);
+        setTimeout(() => {
+          this.ShowMessage = false;
+          if(response.Error.Code!==200) {
+            this.auth.SignOut();
+          }
+        }, environment.MessageTimeout);
 
         if (response) {
           switch (response.Error.Code) {

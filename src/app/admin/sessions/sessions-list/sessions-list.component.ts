@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { ErrorResponse } from 'src/app/shared/shared.model';
 import { environment } from 'src/environments/environment';
@@ -37,6 +38,7 @@ export class SessionsListComponent implements OnInit, OnDestroy {
     private DataServ: DataStorageService,
     public SessServ: SessionsService,
     private router: Router,
+    private auth: AuthService,
     public translate: TranslateService
   ) { 
     translate.addLangs(environment.SupportedLangs);
@@ -66,7 +68,12 @@ export class SessionsListComponent implements OnInit, OnDestroy {
 
         this.ShowMessage = true;
         this.ResponseFromBackend = response;
-        setTimeout(() => this.ShowMessage = false, 5000);
+        setTimeout(() => {
+          this.ShowMessage = false;
+          if(response.Error.Code!==200) {
+            this.auth.SignOut();
+          }
+        }, environment.MessageTimeout);
 
         if (response) {
           switch (response.Error.Code) {
