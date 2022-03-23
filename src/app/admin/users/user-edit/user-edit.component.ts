@@ -96,7 +96,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
         this.ResponseFromBackend = response;
         setTimeout(() => {
           this.ShowMessage = false;
-          if(response.Error.Code===401) {
+          if(response.Error.Code===401 || response.Error.Code===403 || response.Error.Code===407) {
             this.auth.SignOut();
           }
         }, environment.MessageTimeout);
