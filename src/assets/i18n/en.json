@@ -65,5 +65,11 @@
     "NameSL":"Name",
     "Amount":"Amount",
     "Update":"Update",
-    "ListOfIngredients":"List of ingredients"
+    "ListOfIngredients":"List of ingredients",
+    "ManageRecipe":"Manage recipe",
+    "ToShoppingList":"To shopping list",
+    "EditRecipe":"Edit recipe",
+    "DeleteRecipe":"Delete recipe",
+    "PleaseSelectRecipe":"Please select recipe!",
+    "SearchResults":"Search results:"
 }

@@ -65,5 +65,11 @@
     "NameSL":"Название",
     "Amount":"Количество",
     "Update":"Обновить",
-    "ListOfIngredients":"Список ингредиентов"
+    "ListOfIngredients":"Список ингредиентов",
+    "ManageRecipe":"Управление рецептом",
+    "ToShoppingList":"В список покупок",
+    "EditRecipe":"Изменить рецепт",
+    "DeleteRecipe":"Удалить рецепт",
+    "PleaseSelectRecipe":"Пожалуйста, выберите рецепт!",
+    "SearchResults":"Результаты поиска:"
 }

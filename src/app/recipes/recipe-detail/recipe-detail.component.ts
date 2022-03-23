@@ -6,6 +6,8 @@ import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -27,7 +29,11 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     private activeroute: ActivatedRoute,
     private router: Router,
     private datastore: DataStorageService,
-    private auth: AuthService) { }
+    private auth: AuthService,
+    public translate: TranslateService) {
+      translate.addLangs(environment.SupportedLangs);
+      translate.setDefaultLang(environment.DefaultLocale);
+     }
 
   ngOnDestroy(): void {
     this.LoginSub.unsubscribe();
@@ -38,6 +44,14 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    } 
+
     this.UserAdmin = false;
 
     this.UserAdmin = this.auth.CheckIfUserIsAdmin();
@@ -65,5 +79,10 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     this.datastore.DeleteRecipe(this.CurrentRecipe);
 
     this.router.navigate(['../'], { relativeTo: this.activeroute, queryParamsHandling: 'preserve' });
+  }
+
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
   }
 }

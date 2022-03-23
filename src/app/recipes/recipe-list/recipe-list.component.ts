@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-recipe-list',
@@ -40,8 +41,11 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     private RecServ: RecipeService,
     private DataServ: DataStorageService,
     private activeroute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public translate: TranslateService
   ) {
+    translate.addLangs(environment.SupportedLangs);
+    translate.setDefaultLang(environment.DefaultLocale);
   }
   ngOnDestroy(): void {
     this.RecipeInsertedSub.unsubscribe();
@@ -56,6 +60,14 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    } 
+
     this.PageSize = environment.RecipePageSize;
     this.collectionSize = this.DataServ.LastPagination.Total;
 
@@ -172,4 +184,9 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       this.DataServ.Searched = false;
     }
   }
+
+SwitchLanguage(lang: string) {
+  this.translate.use(lang);
+  localStorage.setItem("userLang", lang)
+}
 }

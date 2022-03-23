@@ -18,14 +18,12 @@
   <div class="row">
     <div class="col mb-3">
       <div ngbDropdown class="btn-group">
-        <button class="btn btn-outline-primary dropdown-toggle" ngbDropdownToggle *ngIf="UserAdmin">Manage recipe</button>
+        <button class="btn btn-outline-primary dropdown-toggle" ngbDropdownToggle *ngIf="UserAdmin">{{'ManageRecipe'|translate}}</button>
         <ul ngbDropdownMenu class="dropdown-menu">
-          <li ngbDropdownItem class="dropdown-item" (click)="OnSendToShoppingList()"><a style="cursor: pointer;">To
-              shopping list</a></li>
+          <li ngbDropdownItem class="dropdown-item" (click)="OnSendToShoppingList()"><a style="cursor: pointer;">{{'ToShoppingList'|translate}}</a></li>
           <li ngbDropdownItem class="dropdown-item" routerLink="edit" queryParamsHandling="merge"><a
-              style="cursor: pointer;">Edit recipe</a></li>
-          <li ngbDropdownItem class="dropdown-item"><a style="cursor: pointer;" (click)="OnDeleteRecipe()">Delete
-              recipe</a></li>
+              style="cursor: pointer;">{{'EditRecipe'|translate}}</a></li>
+          <li ngbDropdownItem class="dropdown-item"><a style="cursor: pointer;" (click)="OnDeleteRecipe()">{{'DeleteRecipe'|translate}}</a></li>
         </ul>
       </div>
     </div>
