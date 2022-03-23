@@ -75,7 +75,7 @@ export class SessionsEditComponent implements OnInit, OnDestroy {
         this.ResponseFromBackend = response;
         setTimeout(() => {
           this.ShowMessage = false;
-          if(response.Error.Code!==200) {
+          if(response.Error.Code===401) {
             this.auth.SignOut();
           }
         }, environment.MessageTimeout);
