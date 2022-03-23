@@ -11,6 +11,9 @@ import { NgbAlertModule, NgbPaginationModule, NgbDropdownModule } from '@ng-boot
 import { CommonModule } from '@angular/common';
 import { RecipesRoutingModule } from './recipes-routing.module';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -30,7 +33,18 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     NgbPaginationModule,
     NgbAlertModule,
     RecipesRoutingModule,
-    CKEditorModule
+    CKEditorModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    }),
   ]
 })
 export class RecipesModule { }
+
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http)
+}

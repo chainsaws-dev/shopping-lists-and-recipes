@@ -9,6 +9,8 @@ import { Subscription } from 'rxjs';
 import '@ckeditor/ckeditor5-build-decoupled-document/build/translations/ru';
 import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -42,7 +44,11 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     private recipeservice: RecipeService,
     private router: Router,
     private datastore: DataStorageService,
-  ) { }
+    public translate: TranslateService
+  ) {
+    translate.addLangs(environment.SupportedLangs);
+    translate.setDefaultLang(environment.DefaultLocale);
+   }
 
   public onReady(editor) {
     editor.ui.getEditableElement().parentElement.insertBefore(
@@ -60,6 +66,14 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang!==null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }     
 
     this.DatabaseUpdated = this.datastore.RecipesUpdateInsert.subscribe((recipe) => {
 
@@ -206,6 +220,11 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
       this.datastore.SaveRecipe(this.RecipeToEdit);
     }
+  }
+
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
   }
 
 }

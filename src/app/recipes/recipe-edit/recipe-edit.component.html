@@ -1,8 +1,8 @@
 <form style="margin-top: 40px;" #RecipeForm="ngForm" (ngSubmit)="OnSaveClick(RecipeForm)" *ngIf="RecipeToEdit">
   <div class="form-group">
     <div style="margin: 3px;">
-      <h1 *ngIf="editmode">Edit</h1>
-      <h1 *ngIf="!editmode">Create</h1>
+      <h1 *ngIf="editmode">{{'Edit'|translate}}</h1>
+      <h1 *ngIf="!editmode">{{'Create'|translate}}</h1>
       <div *ngIf="!RecipeToEdit.ImagePath" class="image-placeholder mx-auto">
         <h4>592x333</h4>
       </div>
@@ -10,7 +10,7 @@
           [alt]="RecipeToEdit.Name" class="rounded d-block mx-auto"
           style="margin: 3px; max-width: 500px; max-height: 333px; max-width: 100%;"></a>
       <button type="button" class="btn btn-outline-primary" style="margin: 3px;" (click)="fileInput.click()">
-        <span>Upload image</span>
+        <span>{{'UploadImage'|translate}}</span>
         <input #fileInput type="file" class="form-control-file" accept="image/*" (change)="onFileInput($event)"
           style="display:none;" />
       </button>
@@ -19,13 +19,13 @@
           [style]="CurPercentStyle">
         </div>
       </div>
-      <input type="text" id="name" placeholder="Name" class="form-control mb-1" name="recipename"
+      <input type="text" id="name" [placeholder]="'NameSL'|translate" class="form-control mb-1" name="recipename"
         [ngModel]="RecipeToEdit.Name" required>
       <ckeditor class="mb-1" name="recipedescription" [editor]="HtmlEditor" [ngModel]="RecipeToEdit.Description"
         (ready)="onReady($event)"
         [config]="{'toolbar':{'items':['heading','|','fontSize','fontFamily','|','bold','italic','underline','strikethrough','|','alignment','|','numberedList','bulletedList','|','indent','outdent','|','link','blockQuote','insertTable','mediaEmbed','|','undo','redo']},'language':'ru','image':{toolbar:['imageTextAlternative','imageStyle:side']},'table':{contentToolbar:['tableColumn','tableRow','mergeTableCells']},'licenseKey':''}">
       </ckeditor>
-      <h4>List of ingredients</h4>
+      <h4>{{'ListOfIngredients'|translate}}</h4>
       <div class="row">
         <div class="col">
           <form (ngSubmit)="ingredientedit ? onEditIngredient(ingrform) : onAddNewIngredient(ingrform)"
@@ -33,11 +33,11 @@
             <div class="row">
               <div class="input-group mt-2 mb-2">
                 <div class="col-sm-9 form-group me-1">
-                  <input type="text" id="name" placeholder="Name" class="form-control" ngModel name="ingredientname"
+                  <input type="text" id="name" [placeholder]="'NameSL'|translate" class="form-control" ngModel name="ingredientname"
                     required>
                 </div>
                 <div class="col form-group">
-                  <input type="number" id="amount" placeholder="Amount" class="form-control" ngModel
+                  <input type="number" id="amount" [placeholder]="'Amount'|translate" class="form-control" ngModel
                     name="ingredientamount" required pattern="^[1-9]+[0-9]*$">
                 </div>
               </div>
@@ -47,11 +47,11 @@
                 <div class="input-group mb-1">
 
                   <button class="btn btn-outline-primary me-1" type="submit" [disabled]="ingrform.invalid">
-                    {{ ingredientedit ? 'Update' : 'Add' }}</button>
+                    {{ (ingredientedit ? 'Update' : 'Add')|translate }}</button>
                   <button class="btn btn-outline-danger me-1" type="button" (click)="onDeleteSelectedIngredient()"
-                    *ngIf="CurrentSelectedItem">Delete</button>
+                    *ngIf="CurrentSelectedItem">{{'Delete'|translate}}</button>
                   <button class="btn btn-outline-secondary" type="button" (click)="onClearAllIngredients()"
-                    *ngIf="GetIngredientsLength()!==0">Clear</button>
+                    *ngIf="GetIngredientsLength()!==0">{{'Clear'|translate}}</button>
 
                 </div>
               </div>
@@ -68,8 +68,8 @@
         </a>
       </ul>
     </div>
-    <button class="btn btn-outline-primary" type="submit" [disabled]="RecipeForm.invalid">Save</button>
+    <button class="btn btn-outline-primary" type="submit" [disabled]="RecipeForm.invalid">{{'Save'|translate}}</button>
     <button class="btn btn-outline-danger" type="button" (click)="onDiscardChanges()"
-      style="margin-left: 3px;">Cancel</button>
+      style="margin-left: 3px;">{{'Cancel'|translate}}</button>
   </div>
 </form>
