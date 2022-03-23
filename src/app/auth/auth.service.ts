@@ -211,6 +211,14 @@ export class AuthService {
     }
   }
 
+  GetUserLocale() {
+    if (this.authData) {
+      return this.authData.Locale;
+    } else {      
+      return localStorage.getItem("userLang");
+    }
+  }
+
   GetUserRole() {
     if (this.authData) {
       return this.authData.Role;
