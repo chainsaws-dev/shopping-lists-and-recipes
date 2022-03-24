@@ -14,6 +14,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { FirstLetterUpperPipe } from '../shared/first-letter-upper.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -23,10 +25,11 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
     RecipeDetailComponent,
     RecipeItemComponent,
     RecipeStartComponent,
-    RecipeEditComponent,
+    RecipeEditComponent,    
   ],
   imports: [
     CommonModule,
+    SharedModule,
     FormsModule,
     RouterModule,
     NgbDropdownModule,

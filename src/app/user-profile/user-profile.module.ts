@@ -9,6 +9,8 @@ import { SecureImagePipe } from '../shared/secure-image-pipe.pipe';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { FirstLetterUpperPipe } from '../shared/first-letter-upper.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   { path: '', component: UserProfileComponent, },
@@ -17,9 +19,10 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     UserProfileComponent,
-    SecureImagePipe,
+    SecureImagePipe,    
   ],
   imports: [
+     SharedModule,
     CommonModule,
     TranslateModule.forRoot({
       loader: {

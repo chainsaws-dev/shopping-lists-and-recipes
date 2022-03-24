@@ -10,13 +10,16 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
+
 const routes: Routes = [
   { path: '', component: AuthComponent }
 ];
 
 @NgModule({
-  declarations: [AuthComponent],
-  imports: [
+  declarations: [
+    AuthComponent,    
+  ],
+  imports: [     
     CommonModule,
     FormsModule,
     RouterModule.forChild(routes),

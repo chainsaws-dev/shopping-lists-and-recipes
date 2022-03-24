@@ -21,6 +21,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -31,9 +32,11 @@ import { HttpClient } from '@angular/common/http';
     MediaListComponent,
     SessionsListComponent,
     SessionsEditComponent,
-    MediaEditComponent
+    MediaEditComponent,
+    
   ],
   imports: [
+    SharedModule,
     CommonModule,
     TranslateModule.forRoot({
       loader: {

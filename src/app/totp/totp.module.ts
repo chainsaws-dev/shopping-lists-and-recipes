@@ -8,14 +8,17 @@ import { TotpComponent } from './totp.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { FirstLetterUpperPipe } from '../shared/first-letter-upper.pipe';
 
 const routes: Routes = [
   { path: '', component: TotpComponent }
 ];
 
 @NgModule({
-  declarations: [TotpComponent],
-  imports: [
+  declarations: [
+    TotpComponent,    
+  ],
+  imports: [     
     CommonModule,
     FormsModule,
     RouterModule.forChild(routes),

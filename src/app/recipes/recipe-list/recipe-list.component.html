@@ -1,4 +1,4 @@
-<ngb-alert *ngIf="ShowMessage" [type]="MessageType" (close)="ShowMessage = false">{{ ResponseFromBackend.Error.Message }}</ngb-alert>
+<ngb-alert *ngIf="ShowMessage" [type]="MessageType" (close)="ShowMessage = false">{{  ResponseFromBackend.Error.Message | FirstLetterUpperPipe }}</ngb-alert>
 <div class="row" *ngIf="!IsLoading">
   <div class="col">
     <div class="input-group mb-1">

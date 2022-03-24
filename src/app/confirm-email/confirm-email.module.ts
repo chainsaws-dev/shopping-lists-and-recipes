@@ -7,6 +7,8 @@ import { NgbAlertModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { FirstLetterUpperPipe } from '../shared/first-letter-upper.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   { path: '', component: ConfirmEmailComponent, },
@@ -15,8 +17,10 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ConfirmEmailComponent,
+    
   ],
   imports: [
+    SharedModule,
     CommonModule,
     FormsModule,
     NgbAlertModule,

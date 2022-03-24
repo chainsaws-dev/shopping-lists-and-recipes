@@ -9,6 +9,8 @@ import { RoleGuard } from '../auth/role.guard';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { FirstLetterUpperPipe } from '../shared/first-letter-upper.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   { path: '', redirectTo: '1', pathMatch: 'full' },
@@ -18,9 +20,11 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ShoppingListComponent,
-    ShoppingEditComponent
+    ShoppingEditComponent,
+    
   ],
   imports: [
+    SharedModule,
     CommonModule,
     FormsModule,
     NgbAlertModule,
