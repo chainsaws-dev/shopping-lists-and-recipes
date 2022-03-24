@@ -11,6 +11,7 @@ import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -44,7 +45,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     private recipeservice: RecipeService,
     private router: Router,
     private datastore: DataStorageService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private sitetitle: Title
   ) {
     translate.addLangs(environment.SupportedLangs);
     translate.setDefaultLang(environment.DefaultLocale);
@@ -225,6 +227,17 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   SwitchLanguage(lang: string) {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
+
+    this.translate.get("WebsiteTitleText", lang).subscribe(
+      {
+        next: (titletext: string) => {
+          this.sitetitle.setTitle(titletext);
+        },
+        error: error => {
+          console.log(error);
+        }
+      }
+    );
   }
 
 }

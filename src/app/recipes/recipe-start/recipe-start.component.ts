@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 
@@ -9,7 +10,7 @@ import { environment } from 'src/environments/environment';
 })
 export class RecipeStartComponent implements OnInit {
 
-  constructor(public translate: TranslateService) {
+  constructor(public translate: TranslateService, private sitetitle: Title) {
     translate.addLangs(environment.SupportedLangs);
     translate.setDefaultLang(environment.DefaultLocale);
    }
@@ -27,6 +28,17 @@ export class RecipeStartComponent implements OnInit {
   SwitchLanguage(lang: string) {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
+
+    this.translate.get("WebsiteTitleText", lang).subscribe(
+      {
+        next: (titletext: string) => {
+          this.sitetitle.setTitle(titletext);
+        },
+        error: error => {
+          console.log(error);
+        }
+      }
+    );
   }
 
 }

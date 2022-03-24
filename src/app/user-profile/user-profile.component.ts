@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -47,7 +48,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthService,
     private datastore: DataStorageService,
-    private router: Router,
+    private sitetitle: Title,
     public translate: TranslateService) {
     translate.addLangs(environment.SupportedLangs);
     translate.setDefaultLang(environment.DefaultLocale);
@@ -170,5 +171,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
     this.auth.ChangeLocale(lang)
+
+    this.translate.get("WebsiteTitleText", lang).subscribe(
+      {
+        next: (titletext: string) => {
+          this.sitetitle.setTitle(titletext);
+        },
+        error: error => {
+          console.log(error);
+        }
+      }
+    );
   }
 }

@@ -6,6 +6,7 @@ import { DataStorageService } from '../shared/data-storage.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-confirm-email',
@@ -33,7 +34,8 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
     private DataServ: DataStorageService,
     private activeroute: ActivatedRoute,
     private router: Router,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    private sitetitle: Title) {
     translate.addLangs(environment.SupportedLangs);
     translate.setDefaultLang(environment.DefaultLocale);
   }
@@ -101,6 +103,17 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
   SwitchLanguage(lang: string) {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
+
+    this.translate.get("WebsiteTitleText", lang).subscribe(
+      {
+        next: (titletext: string) => {
+          this.sitetitle.setTitle(titletext);
+        },
+        error: error => {
+          console.log(error);
+        }
+      }
+    );
   }
 
   getUrlWithoutParams() {

@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -30,7 +31,8 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private datastore: DataStorageService,
     private auth: AuthService,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    private sitetitle: Title) {
       translate.addLangs(environment.SupportedLangs);
       translate.setDefaultLang(environment.DefaultLocale);
      }
@@ -84,5 +86,16 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   SwitchLanguage(lang: string) {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
+
+    this.translate.get("WebsiteTitleText", lang).subscribe(
+      {
+        next: (titletext: string) => {
+          this.sitetitle.setTitle(titletext);
+        },
+        error: error => {
+          console.log(error);
+        }
+      }
+    );
   }
 }

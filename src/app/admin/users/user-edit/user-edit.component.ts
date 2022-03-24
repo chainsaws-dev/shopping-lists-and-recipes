@@ -9,6 +9,7 @@ import { ErrorResponse } from '../../../shared/shared.model';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user-edit',
@@ -39,7 +40,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
     private activatedroute: ActivatedRoute,
     private router: Router,
     private datastore: DataStorageService,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    public sitetitle: Title) {
     translate.addLangs(environment.SupportedLangs);
     translate.setDefaultLang(environment.DefaultLocale);
   }
@@ -132,6 +134,17 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
     this.auth.ChangeLocale(lang)
+
+    this.translate.get("WebsiteTitleText", lang).subscribe(
+      {
+        next: (titletext: string) => {
+          this.sitetitle.setTitle(titletext);
+        },
+        error: error => {
+          console.log(error);
+        }
+      }
+    );
   }
 
   OnSaveClick(SubmittedForm: NgForm) {

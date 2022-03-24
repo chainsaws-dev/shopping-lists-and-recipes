@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { ErrorResponse } from '../shared/shared.model';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../auth/auth.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-shopping-list',
@@ -41,7 +42,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     private DataServ: DataStorageService,
     private router: Router,
     private auth: AuthService,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    private sitetitle: Title) {
     translate.addLangs(environment.SupportedLangs);
     translate.setDefaultLang(environment.DefaultLocale);
   }
@@ -170,6 +172,17 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   SwitchLanguage(lang: string) {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
+
+    this.translate.get("WebsiteTitleText", lang).subscribe(
+      {
+        next: (titletext: string) => {
+          this.sitetitle.setTitle(titletext);
+        },
+        error: error => {
+          console.log(error);
+        }
+      }
+    );
   }
 
 }

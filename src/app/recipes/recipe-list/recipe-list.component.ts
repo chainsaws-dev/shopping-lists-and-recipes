@@ -8,6 +8,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-recipe-list',
@@ -44,7 +45,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     private activeroute: ActivatedRoute,
     private router: Router,
     private auth: AuthService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private sitetitle: Title
   ) {
     translate.addLangs(environment.SupportedLangs);
     translate.setDefaultLang(environment.DefaultLocale);
@@ -196,5 +198,16 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   SwitchLanguage(lang: string) {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
+
+    this.translate.get("WebsiteTitleText", lang).subscribe(
+      {
+        next: (titletext: string) => {
+          this.sitetitle.setTitle(titletext);
+        },
+        error: error => {
+          console.log(error);
+        }
+      }
+    );
   }
 }

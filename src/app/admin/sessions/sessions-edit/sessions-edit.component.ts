@@ -1,5 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -36,7 +37,8 @@ export class SessionsEditComponent implements OnInit, OnDestroy {
     private activatedroute: ActivatedRoute,
     private datastore: DataStorageService,
     private auth: AuthService,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    private sitetitle: Title) {
     translate.addLangs(environment.SupportedLangs);
     translate.setDefaultLang(environment.DefaultLocale);
   }
@@ -104,5 +106,16 @@ export class SessionsEditComponent implements OnInit, OnDestroy {
   SwitchLanguage(lang: string) {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
+
+    this.translate.get("WebsiteTitleText", lang).subscribe(
+      {
+        next: (titletext: string) => {
+          this.sitetitle.setTitle(titletext);
+        },
+        error: error => {
+          console.log(error);
+        }
+      }
+    );
   }
 }
