@@ -69,7 +69,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
           this.UserToEdit = this.AdminServ.GetUserById(this.index);
         } else {
           this.changepassword = true;
-          this.UserToEdit = new User('guest_role_read_only', '', '', '','ru');
+          this.UserToEdit = new User('guest_role_read_only', '', '', '', 'ru');
         }
         this.AdminServ.CurrentSelectedItem = this.UserToEdit;
       }
@@ -96,12 +96,13 @@ export class UserEditComponent implements OnInit, OnDestroy {
         this.ResponseFromBackend = response;
         setTimeout(() => {
           this.ShowMessage = false;
-          if(response.Error.Code===401 || response.Error.Code===403 || response.Error.Code===407) {
+          if (response.Error.Code === 401 || response.Error.Code === 403 || response.Error.Code === 407) {
             this.auth.SignOut();
           }
         }, environment.MessageTimeout);
 
         if (response) {
+          
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';
@@ -120,17 +121,17 @@ export class UserEditComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
+
   ChangeLanguageIfCurrentUser(lang: string) {
     if (this.UserToEdit.Email === this.auth.GetUserEmail()) {
       this.SwitchLanguage(lang);
     }
   }
 
-  SwitchLanguage(lang: string) {    
-      this.translate.use(lang);
-      localStorage.setItem("userLang", lang)    
-      this.auth.ChangeLocale(lang)      
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
+    this.auth.ChangeLocale(lang)
   }
 
   OnSaveClick(SubmittedForm: NgForm) {

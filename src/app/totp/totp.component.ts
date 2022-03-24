@@ -27,9 +27,10 @@ export class TotpComponent implements OnInit, OnDestroy {
   constructor(
     private authservice: AuthService,
     private router: Router,
-    public translate: TranslateService) { 
-      translate.addLangs(environment.SupportedLangs);
-      translate.setDefaultLang(environment.DefaultLocale); }
+    public translate: TranslateService) {
+    translate.addLangs(environment.SupportedLangs);
+    translate.setDefaultLang(environment.DefaultLocale);
+  }
 
   ngOnDestroy(): void {
     this.SfResultSub.unsubscribe();
@@ -40,15 +41,15 @@ export class TotpComponent implements OnInit, OnDestroy {
 
     if (this.authservice.CheckRegistered()) {
       this.Redirect();
-    }    
+    }
 
     const ulang = localStorage.getItem("userLang")
 
-    if (ulang!==null) {
+    if (ulang !== null) {
       this.SwitchLanguage(ulang)
     } else {
       this.SwitchLanguage(environment.DefaultLocale)
-    }    
+    }
 
 
 
@@ -58,6 +59,7 @@ export class TotpComponent implements OnInit, OnDestroy {
       setTimeout(() => this.ShowMessage = false, 5000);
 
       if (response) {
+
         switch (response.Error.Code) {
           case 200:
             this.MessageType = 'success';

@@ -37,7 +37,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     const ulang = localStorage.getItem("userLang")
 
-    if (ulang!==null) {
+    if (ulang !== null) {
       this.SwitchLanguage(ulang)
     } else {
       this.SwitchLanguage(environment.DefaultLocale)
@@ -51,8 +51,8 @@ export class AuthComponent implements OnInit, OnDestroy {
       this.ShowMessage = true;
       this.ResponseFromBackend = response;
       setTimeout(() => this.ShowMessage = false, 5000);
-
       if (response) {
+
         switch (response.Error.Code) {
           case 200:
             this.MessageType = 'success';
@@ -95,7 +95,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   OnSubmitForm(SignupForm: NgForm) {
-    
+
     if (SignupForm.invalid) {
       this.ShowMessage = true;
       this.ResponseFromBackend = new ErrorResponse(400, this.translate.instant("IncorrectDataInput"));

@@ -14,7 +14,8 @@ import { UsersService } from '../admin/users/users.service';
 import { MediaService } from '../admin/media/media.service';
 import { SessionsResponse } from '../admin/sessions/sessions.model';
 import { SessionsService } from '../admin/sessions/sessions.service';
-import { Session } from 'protractor';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,27 @@ export class DataStorageService {
     private shoppinglist: ShoppingListService,
     private users: UsersService,
     private media: MediaService,
-    private sessions: SessionsService) { }
+    private sessions: SessionsService,
+    private translate: TranslateService) {
+    translate.addLangs(environment.SupportedLangs);
+    translate.setDefaultLang(environment.DefaultLocale);
+  }
+
+  GetLanguageSelected() {
+    const ulang = localStorage.getItem("userLang")
+
+    if (ulang !== null) {
+      this.SwitchLanguage(ulang)
+    } else {
+      this.SwitchLanguage(environment.DefaultLocale)
+    }
+  }
+
+  SwitchLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem("userLang", lang)
+  }
+
 
   FetchRecipes(page: number, limit: number) {
     this.LoadingData.next(true);
@@ -64,15 +85,21 @@ export class DataStorageService {
 
         return recresp;
       }),
-        tap(recresp => {
-          this.recipes.SetRecipes(recresp.Recipes);
-          this.PaginationSet.next(new Pagination(recresp.Total, recresp.Limit, recresp.Offset));
-          this.LoadingData.next(false);
-        }, (error) => {
-          const errresp = error.error as ErrorResponse;
-          this.RecivedError.next(errresp);
-          this.LoadingData.next(false);
-        }));
+        tap(
+          {
+            next: recresp => {
+              this.recipes.SetRecipes(recresp.Recipes);
+              this.PaginationSet.next(new Pagination(recresp.Total, recresp.Limit, recresp.Offset));
+              this.LoadingData.next(false);
+            },
+            error: (error) => {
+              const errresp = error.error as ErrorResponse;
+              this.RecivedError.next(errresp);
+              this.LoadingData.next(false);
+            }
+          }
+        )
+      );
   }
 
   SearchRecipes(page: number, limit: number, search: string) {
@@ -95,30 +122,42 @@ export class DataStorageService {
 
         return recresp;
       }),
-        tap(recresp => {
-          this.recipes.SetRecipes(recresp.Recipes);
-          this.PaginationSet.next(new Pagination(recresp.Total, recresp.Limit, recresp.Offset));
-          this.LoadingData.next(false);
-        }, (error) => {
-          const errresp = error.error as ErrorResponse;
-          this.RecivedError.next(errresp);
-          this.LoadingData.next(false);
-        }));
+        tap(
+          {
+            next: recresp => {
+              this.recipes.SetRecipes(recresp.Recipes);
+              this.PaginationSet.next(new Pagination(recresp.Total, recresp.Limit, recresp.Offset));
+              this.LoadingData.next(false);
+            },
+            error: (error) => {
+              const errresp = error.error as ErrorResponse;
+              this.RecivedError.next(errresp);
+              this.LoadingData.next(false);
+            }
+          }
+        )
+      );
   }
 
   SaveRecipe(RecipeToSave: Recipe) {
     this.LoadingData.next(true);
 
     this.http.post<Recipe>(environment.GetSetRecipesUrl, RecipeToSave)
-      .subscribe(response => {
-        this.RecipesUpdateInsert.next(response);
-        this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecipesUpdateInsert.next(response);
+            this.GetLanguageSelected();
+            this.RecivedError.next(new ErrorResponse(200, this.translate.instant('DataSaved')));
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   FetchFilesList(page: number, limit: number) {
@@ -133,15 +172,22 @@ export class DataStorageService {
 
     return this.http
       .get<FilesResponse>(environment.GetSetFileUrl, httpOptions)
-      .pipe(tap(recresp => {
-        this.media.SetFiles(recresp.Files);
-        this.media.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
-        this.LoadingData.next(false);
-      }, (error) => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      }));
+      .pipe(
+        tap(
+          {
+            next: recresp => {
+              this.media.SetFiles(recresp.Files);
+              this.media.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+              this.LoadingData.next(false);
+            },
+            error: (error) => {
+              const errresp = error.error as ErrorResponse;
+              this.RecivedError.next(errresp);
+              this.LoadingData.next(false);
+            }
+          }
+        )
+      );
   }
 
   FileUpload(FileToUpload: File) {
@@ -153,19 +199,23 @@ export class DataStorageService {
       }),
       reportProgress: true,
       observe: 'events'
-    }).subscribe((curevent: any) => {
-      if (curevent.type === HttpEventType.UploadProgress) {
-        this.FileUploadProgress.next(String(curevent.loaded / curevent.total * 100));
-      } else if (curevent.type === HttpEventType.Response) {
-        if (curevent.ok) {
-          this.FileUploaded.next(curevent.body as FiLe);
+    }).subscribe(
+      {
+        next: (curevent: any) => {
+          if (curevent.type === HttpEventType.UploadProgress) {
+            this.FileUploadProgress.next(String(curevent.loaded / curevent.total * 100));
+          } else if (curevent.type === HttpEventType.Response) {
+            if (curevent.ok) {
+              this.FileUploaded.next(curevent.body as FiLe);
+            }
+          }
+        },
+        error: error => {
+          const errresp = error.error as ErrorResponse;
+          this.RecivedError.next(errresp);
+          this.LoadingData.next(false);
         }
       }
-    }, error => {
-      const errresp = error.error as ErrorResponse;
-      this.RecivedError.next(errresp);
-      this.LoadingData.next(false);
-    }
     );
   }
 
@@ -179,17 +229,22 @@ export class DataStorageService {
     };
 
     this.http.delete<ErrorResponse>(environment.GetSetFileUrl, httpOptions)
-      .subscribe(response => {
-        if (!NoMessage) {
-          this.RecivedError.next(response);
-        }
+      .subscribe(
+        {
+          next: response => {
+            if (!NoMessage) {
+              this.RecivedError.next(response);
+            }
 
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   DeleteRecipe(RecipeToDelete: Recipe) {
@@ -202,15 +257,20 @@ export class DataStorageService {
     };
 
     this.http.delete<ErrorResponse>(environment.GetSetRecipesUrl, httpOptions)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-        this.DeleteFile(RecipeToDelete.ImageDbID, true);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+            this.DeleteFile(RecipeToDelete.ImageDbID, true);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
 
@@ -226,30 +286,43 @@ export class DataStorageService {
 
     return this.http
       .get<ShoppingListResponse>(environment.GetSetShoppingListUrl, httpOptions)
-      .pipe(tap(recresp => {
-        this.shoppinglist.SetIngredients(recresp.Items);
-        this.shoppinglist.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
-        this.LoadingData.next(false);
-      }, (error) => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      }));
+      .pipe(
+        tap(
+          {
+            next: recresp => {
+              this.shoppinglist.SetIngredients(recresp.Items);
+              this.shoppinglist.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+              this.LoadingData.next(false);
+            },
+            error: (error) => {
+              const errresp = error.error as ErrorResponse;
+              this.RecivedError.next(errresp);
+              this.LoadingData.next(false);
+            }
+          }
+        )
+      );
   }
 
   SaveShoppingList(ItemToSave: Ingredient) {
     this.LoadingData.next(true);
 
     this.http.post<Recipe>(environment.GetSetShoppingListUrl, ItemToSave)
-      .subscribe(response => {
-        this.RecipesUpdateInsert.next(response);
-        this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecipesUpdateInsert.next(response);
+            this.GetLanguageSelected();
+            this.RecivedError.next(new ErrorResponse(200, this.translate.instant('DataSaved')));
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   DeleteShoppingList(IngredientToDelete: Ingredient) {
@@ -262,27 +335,37 @@ export class DataStorageService {
     };
 
     this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl, httpOptions)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   DeleteAllShoppingList() {
 
     this.http.delete<ErrorResponse>(environment.GetSetShoppingListUrl)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   FetchSessionsList(page: number, limit: number) {
@@ -298,15 +381,22 @@ export class DataStorageService {
 
     return this.http
       .get<SessionsResponse>(environment.GetSetSessionsUrl, httpOptions)
-      .pipe(tap(recresp => {
-        this.sessions.SetSessions(recresp.Sessions);
-        this.sessions.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
-        this.LoadingData.next(false);
-      }, (error) => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      }));
+      .pipe(
+        tap(
+          {
+            next: recresp => {
+              this.sessions.SetSessions(recresp.Sessions);
+              this.sessions.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+              this.LoadingData.next(false);
+            },
+            error: (error) => {
+              const errresp = error.error as ErrorResponse;
+              this.RecivedError.next(errresp);
+              this.LoadingData.next(false);
+            }
+          }
+        )
+      );
   }
 
   DeleteSessionByToken(token: string) {
@@ -319,14 +409,19 @@ export class DataStorageService {
     };
 
     this.http.delete<ErrorResponse>(environment.GetSetSessionsUrl, httpOptions)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   DeleteSessionByEmail(email: string) {
@@ -339,14 +434,19 @@ export class DataStorageService {
     };
 
     this.http.delete<ErrorResponse>(environment.GetSetSessionsUrl, httpOptions)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   FetchUsersList(page: number, limit: number) {
@@ -361,29 +461,41 @@ export class DataStorageService {
 
     return this.http
       .get<UsersResponse>(environment.GetSetUsersUrl, httpOptions)
-      .pipe(tap(recresp => {
-        this.users.SetUsers(recresp.Users);
-        this.users.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
-        this.LoadingData.next(false);
-      }, (error) => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      }));
+      .pipe(
+        tap(
+          {
+            next: recresp => {
+              this.users.SetUsers(recresp.Users);
+              this.users.SetPagination(recresp.Total, recresp.Limit, recresp.Offset);
+              this.LoadingData.next(false);
+            },
+            error: (error) => {
+              const errresp = error.error as ErrorResponse;
+              this.RecivedError.next(errresp);
+              this.LoadingData.next(false);
+            }
+          }
+        )
+      );
   }
 
   FetchCurrentUser() {
     this.LoadingData.next(true);
 
     return this.http.get<User>(environment.GetSetCurrentUserUrl)
-      .subscribe(response => {
-        this.CurrentUserFetch.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.CurrentUserFetch.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   SaveCurrentUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {
@@ -398,7 +510,8 @@ export class DataStorageService {
         {
           next: response => {
             this.UserUpdateInsert.next(response);
-            this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
+            this.GetLanguageSelected();
+            this.RecivedError.next(new ErrorResponse(200, this.translate.instant('DataSaved')));
             this.LoadingData.next(false);
           },
           error: error => {
@@ -418,15 +531,21 @@ export class DataStorageService {
     }
 
     this.GetObsForSaveUser(ItemToSave, ChangePassword, NewPassword)
-      .subscribe(response => {
-        this.UserUpdateInsert.next(response);
-        this.RecivedError.next(new ErrorResponse(200, 'Данные сохранены'));
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.UserUpdateInsert.next(response);
+            this.GetLanguageSelected();
+            this.RecivedError.next(new ErrorResponse(200, this.translate.instant('DataSaved')));
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   LinkTwoFactor(Key: string, CurUser: User) {
@@ -437,30 +556,40 @@ export class DataStorageService {
     };
 
     this.http.post<ErrorResponse>(environment.TOTPSettingsUrl, CurUser, httpOptions)
-      .subscribe(response => {
-        CurUser.SecondFactor = true;
-        this.TwoFactorSub.next(CurUser);
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            CurUser.SecondFactor = true;
+            this.TwoFactorSub.next(CurUser);
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   UnlinkTwoFactor(CurUser: User) {
     this.http.delete<ErrorResponse>(environment.TOTPSettingsUrl)
-      .subscribe(response => {
-        CurUser.SecondFactor = false;
-        this.TwoFactorSub.next(CurUser);
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            CurUser.SecondFactor = false;
+            this.TwoFactorSub.next(CurUser);
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   GetObsForSaveCurrentUser(ItemToSave: User, ChangePassword: boolean, NewPassword: string) {
@@ -501,14 +630,19 @@ export class DataStorageService {
     };
 
     this.http.delete<ErrorResponse>(environment.GetSetUsersUrl, httpOptions)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
 
@@ -522,14 +656,19 @@ export class DataStorageService {
     };
 
     this.http.post<ErrorResponse>(environment.ConfirmEmailUrl, null, httpOptions)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   SendEmailConfirmEmail(EmailToSend: string) {
@@ -542,14 +681,19 @@ export class DataStorageService {
     };
 
     this.http.post<ErrorResponse>(environment.ResendEmailUrl, null, httpOptions)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   SendEmailResetPassword(EmailToSend: string) {
@@ -562,14 +706,19 @@ export class DataStorageService {
     };
 
     this.http.post<ErrorResponse>(environment.SendEmailResetPassUrl, null, httpOptions)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 
   SubmitNewPassword(UniqueToken: string, NewPass: string) {
@@ -583,14 +732,19 @@ export class DataStorageService {
     };
 
     this.http.post<ErrorResponse>(environment.ResetPasswordUrl, null, httpOptions)
-      .subscribe(response => {
-        this.RecivedError.next(response);
-        this.LoadingData.next(false);
-      }, error => {
-        const errresp = error.error as ErrorResponse;
-        this.RecivedError.next(errresp);
-        this.LoadingData.next(false);
-      });
+      .subscribe(
+        {
+          next: response => {
+            this.RecivedError.next(response);
+            this.LoadingData.next(false);
+          },
+          error: error => {
+            const errresp = error.error as ErrorResponse;
+            this.RecivedError.next(errresp);
+            this.LoadingData.next(false);
+          }
+        }
+      );
   }
 }
 

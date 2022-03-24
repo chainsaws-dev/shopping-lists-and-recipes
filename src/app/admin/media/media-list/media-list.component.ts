@@ -42,7 +42,7 @@ export class MediaListComponent implements OnInit, OnDestroy {
   ) {
     translate.addLangs(environment.SupportedLangs);
     translate.setDefaultLang(environment.DefaultLocale);
-   }
+  }
 
   ngOnDestroy(): void {
     this.RecivedErrorSub.unsubscribe();
@@ -54,11 +54,11 @@ export class MediaListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const ulang = localStorage.getItem("userLang")
 
-    if (ulang!==null) {
+    if (ulang !== null) {
       this.SwitchLanguage(ulang)
     } else {
       this.SwitchLanguage(environment.DefaultLocale)
-    }  
+    }
 
     this.mePageSize = environment.MediaListPageSize;
 
@@ -69,12 +69,13 @@ export class MediaListComponent implements OnInit, OnDestroy {
         this.ResponseFromBackend = response;
         setTimeout(() => {
           this.ShowMessage = false;
-          if(response.Error.Code===401 || response.Error.Code===403 || response.Error.Code===407) {
+          if (response.Error.Code === 401 || response.Error.Code === 403 || response.Error.Code === 407) {
             this.auth.SignOut();
           }
         }, environment.MessageTimeout);
 
         if (response) {
+          
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';
@@ -91,7 +92,7 @@ export class MediaListComponent implements OnInit, OnDestroy {
       this.meCurrentPage = +params.pn;
 
       this.FetchOnInint = this.DataServ.FetchFilesList(this.meCurrentPage, environment.MediaListPageSize).subscribe(
-       (value) => {
+        (value) => {
           this.Files = this.MediaServ.GetFiles();
           this.meCollectionSize = this.MediaServ.Total;
         },

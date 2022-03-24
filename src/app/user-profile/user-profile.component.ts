@@ -49,9 +49,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private datastore: DataStorageService,
     private router: Router,
     public translate: TranslateService) {
-      translate.addLangs(environment.SupportedLangs);
-      translate.setDefaultLang(environment.DefaultLocale);
-     }
+    translate.addLangs(environment.SupportedLangs);
+    translate.setDefaultLang(environment.DefaultLocale);
+  }
 
   ngOnDestroy(): void {
     this.FetchUser.unsubscribe();
@@ -65,11 +65,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     const ulang = localStorage.getItem("userLang")
 
-    if (ulang!==null) {
+    if (ulang !== null) {
       this.SwitchLanguage(ulang)
     } else {
       this.SwitchLanguage(environment.DefaultLocale)
-    }   
+    }
 
     this.AuthUrl = environment.GetAuthenticatorUrl;
     this.QrUrl = environment.GetTOTPQRCodeUrl;
@@ -99,12 +99,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.ResponseFromBackend = response;
         setTimeout(() => {
           this.ShowMessage = false;
-          if(response.Error.Code===401 || response.Error.Code===403 || response.Error.Code===407) {
+          if (response.Error.Code === 401 || response.Error.Code === 403 || response.Error.Code === 407) {
             this.auth.SignOut();
           }
         }, environment.MessageTimeout);
 
         if (response) {
+          
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';
@@ -164,10 +165,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     }
 
   }
-  
+
   SwitchLanguage(lang: string) {
     this.translate.use(lang);
-    localStorage.setItem("userLang", lang)  
-    this.auth.ChangeLocale(lang)  
+    localStorage.setItem("userLang", lang)
+    this.auth.ChangeLocale(lang)
   }
 }
