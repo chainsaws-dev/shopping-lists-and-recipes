@@ -72,5 +72,6 @@
     "DeleteRecipe":"Удалить рецепт",
     "PleaseSelectRecipe":"Пожалуйста, выберите рецепт!",
     "SearchResults":"Результаты поиска:",
-    "DataSaved":"Данные сохранены"
+    "DataSaved":"Данные сохранены",
+    "WebsiteTitleText":"Книга рецептов"
 }

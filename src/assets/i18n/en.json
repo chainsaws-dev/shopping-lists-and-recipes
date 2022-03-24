@@ -72,5 +72,6 @@
     "DeleteRecipe":"Delete recipe",
     "PleaseSelectRecipe":"Please select recipe!",
     "SearchResults":"Search results:",
-    "DataSaved":"Data saved"
+    "DataSaved":"Data saved",
+    "WebsiteTitleText":"Recipes book"
 }
