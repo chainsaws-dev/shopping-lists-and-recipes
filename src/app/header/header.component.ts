@@ -18,54 +18,54 @@ export class HeaderComponent implements OnInit, OnDestroy {
   LoggedIn = false;
   SecondFactor = false;
 
-  UserEmail: string;
-  UserAdmin: boolean;
+  UserEmail!: string;
+  UserAdmin!: boolean;
 
-  private LoginSub: Subscription;
-  private SecondFactorSub: Subscription;
-  private TranslateSub: Subscription;
+  private LoginSub!: Subscription;
+  private SecondFactorSub!: Subscription;
+  private TranslateSub!: Subscription;
 
   constructor(
     private auth: AuthService,
     private router: Router,
     public translate: TranslateService,
     private sitetitle: Title
-  ) { 
+  ) {
     translate.addLangs(environment.SupportedLangs);
     translate.setDefaultLang(environment.DefaultLocale);
   }
 
   ngOnInit(): void {
-    
+
     const ulang = localStorage.getItem("userLang")
 
     if (ulang!==null) {
       this.SwitchLanguage(ulang)
     } else {
       this.SwitchLanguage(environment.DefaultLocale)
-    } 
+    }
 
-    this.LoggedIn = this.auth.CheckRegistered();
-    this.UserEmail = this.auth.GetUserEmail();
+    this.LoggedIn = this.auth.CheckRegistered()??false;
+    this.UserEmail = this.auth.GetUserEmail()??"";
     this.UserAdmin = this.auth.CheckIfUserIsAdmin();
     if (!this.auth.HaveToCheckSecondFactor()) {
       this.SecondFactor = true;
-    } 
+    }
 
     this.TranslateSub = this.auth.LocaleSub.subscribe(
       (Lang) => {
         this.SwitchLanguage(Lang)
       }
-    )  
+    )
 
     this.LoginSub = this.auth.AuthResultSub.subscribe((loggedin) => {
       this.LoggedIn = loggedin;
       if (!this.auth.HaveToCheckSecondFactor()) {
         this.SecondFactor = true;
       }
-      this.UserEmail = this.auth.GetUserEmail();
-      this.UserAdmin = this.auth.CheckIfUserIsAdmin();        
-    
+      this.UserEmail = this.auth.GetUserEmail()??"";
+      this.UserAdmin = this.auth.CheckIfUserIsAdmin();
+
     });
 
     this.SecondFactorSub = this.auth.SfResultSub.subscribe((result) => {
@@ -96,7 +96,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   SwitchLanguage(lang: string) {
     this.translate.use(lang);
-    localStorage.setItem("userLang", lang)    
+    localStorage.setItem("userLang", lang)
 
     this.translate.get("WebsiteTitleText", lang).subscribe(
       {

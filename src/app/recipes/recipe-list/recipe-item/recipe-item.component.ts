@@ -9,8 +9,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./recipe-item.component.css']
 })
 export class RecipeItemComponent implements OnInit {
-  @Input() recipe: Recipe;
-  @Input() index: number;
+  @Input()
+  recipe!: Recipe;
+  @Input()
+  index!: number;
 
   constructor(private RecServ: RecipeService, private router: Router) { }
 

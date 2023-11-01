@@ -16,25 +16,25 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
-  ingredients: Ingredient[];
-  private IngChanged: Subscription;
-  private PageChanged: Subscription;
-  private FetchOnInint: Subscription;
-  private DataLoading: Subscription;
+  ingredients: Ingredient[] = [];
+  private IngChanged: Subscription = new Subscription;
+  private PageChanged: Subscription = new Subscription;
+  private FetchOnInint: Subscription = new Subscription;
+  private DataLoading: Subscription = new Subscription;
 
-  slCurrentPage: number;
-  slPageSize: number;
-  slcollectionSize: number;
-  IsLoading: boolean;
+  slCurrentPage!: number;
+  slPageSize!: number;
+  slcollectionSize!: number;
+  IsLoading: boolean = false;
 
-  ShowMessage: boolean;
-  MessageType: string;
-  ResponseFromBackend: ErrorResponse;
-  RecivedErrorSub: Subscription;
+  ShowMessage: boolean = false;
+  MessageType!: string;
+  ResponseFromBackend!: ErrorResponse;
+  RecivedErrorSub: Subscription = new Subscription;
 
-  private WatchIngAdd: Subscription;
-  private WatchIngDel: Subscription;
-  private WatchIngCle: Subscription;
+  private WatchIngAdd: Subscription = new Subscription;
+  private WatchIngDel: Subscription = new Subscription;
+  private WatchIngCle: Subscription = new Subscription;
 
   constructor(
     public ShopListServ: ShoppingListService,
@@ -85,7 +85,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         }, environment.MessageTimeout);
 
         if (response) {
-          
+
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';
@@ -104,7 +104,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       });
 
     this.PageChanged = this.activeroute.params.subscribe((params: Params) => {
-      this.slCurrentPage = +params.pn;
+      this.slCurrentPage = +params['pn'];
     });
 
     this.DataLoading = this.DataServ.LoadingData.subscribe(

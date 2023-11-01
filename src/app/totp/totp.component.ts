@@ -18,12 +18,12 @@ export class TotpComponent implements OnInit, OnDestroy {
   LoginMode = true;
   IsLoading = false;
 
-  private SfErrSub: Subscription;
-  private SfResultSub: Subscription;
+  private SfErrSub: Subscription = new Subscription;
+  private SfResultSub: Subscription = new Subscription;
 
-  ResponseFromBackend: ErrorResponse;
-  ShowMessage: boolean;
-  MessageType: string;
+  ResponseFromBackend!: ErrorResponse;
+  ShowMessage: boolean = false;
+  MessageType!: string;
 
   constructor(
     private authservice: AuthService,

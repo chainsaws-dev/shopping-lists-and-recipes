@@ -19,10 +19,10 @@ export class Recipe {
 }
 
 export class RecipeResponse {
-  public Recipes: Recipe[];
-  public Total: number;
-  public Offset: number;
-  public Limit: number;
+  public Recipes: Recipe[] = [];
+  public Total!: number;
+  public Offset!: number;
+  public Limit!: number;
 }
 
 

@@ -15,7 +15,7 @@ export class RoleGuard implements CanActivate {
 
     // this will be passed from the route config
     // on the data property
-    const expectedRole = next.data.expectedRole;
+    const expectedRole = next.data['expectedRole'];
 
     if (expectedRole === this.auth.GetUserRole()) {
       return true;

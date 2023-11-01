@@ -18,21 +18,21 @@ import { Title } from '@angular/platform-browser';
 })
 export class UserListComponent implements OnInit, OnDestroy {
 
-  private PageChanged: Subscription;
-  private FetchOnInint: Subscription;
-  private DataLoading: Subscription;
+  private PageChanged: Subscription = new Subscription;
+  private FetchOnInint: Subscription = new Subscription;
+  private DataLoading: Subscription = new Subscription;
 
-  usCurrentPage: number;
-  usPageSize: number;
-  usCollectionSize: number;
-  IsLoading: boolean;
+  usCurrentPage!: number;
+  usPageSize!: number;
+  usCollectionSize!: number;
+  IsLoading: boolean = false;
 
-  ShowMessage: boolean;
-  MessageType: string;
-  ResponseFromBackend: ErrorResponse;
-  RecivedErrorSub: Subscription;
+  ShowMessage: boolean = false;
+  MessageType!: string;
+  ResponseFromBackend!: ErrorResponse;
+  RecivedErrorSub: Subscription = new Subscription;
 
-  Users: User[];
+  Users: User[] = [];
 
   constructor(
     private ActiveRoute: ActivatedRoute,
@@ -78,7 +78,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         }, environment.MessageTimeout);
 
         if (response) {
-          
+
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';
@@ -92,7 +92,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     );
 
     this.PageChanged = this.ActiveRoute.params.subscribe((params: Params) => {
-      this.usCurrentPage = +params.pn;
+      this.usCurrentPage = +params['pn'];
 
       this.FetchOnInint = this.DataServ.FetchUsersList(this.usCurrentPage, environment.AdminUserListPageSize).subscribe(
         (value) => {

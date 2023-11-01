@@ -21,9 +21,9 @@
       </div>
       <input type="text" id="name" [placeholder]="'NameSL'|translate" class="form-control mb-1" name="recipename"
         [ngModel]="RecipeToEdit.Name" required>
-      <ckeditor class="mb-1" name="recipedescription" [editor]="HtmlEditor" [ngModel]="RecipeToEdit.Description"
+      <ckeditor class="mb-1" name="recipedescription" [ngModel]="RecipeToEdit.Description"
         (ready)="onReady($event)"
-        [config]="{'toolbar':{'items':['heading','|','fontSize','fontFamily','|','bold','italic','underline','strikethrough','|','alignment','|','numberedList','bulletedList','|','indent','outdent','|','link','blockQuote','insertTable','mediaEmbed','|','undo','redo']},'language':'ru','image':{toolbar:['imageTextAlternative','imageStyle:side']},'table':{contentToolbar:['tableColumn','tableRow','mergeTableCells']},'licenseKey':''}">
+        [config]="{'toolbar':{'items':['heading','|','fontSize','fontFamily','|','bold','italic','underline','strikethrough','|','alignment','|','numberedList','bulletedList','|','indent','outdent','|','link','blockQuote','insertTable','mediaEmbed','|','undo','redo']},'language':'ru','licenseKey':''}">
       </ckeditor>
       <h4>{{'ListOfIngredients'|translate}}</h4>
       <div class="row">

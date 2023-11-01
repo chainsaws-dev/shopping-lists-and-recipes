@@ -19,23 +19,25 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./recipe-edit.component.css']
 })
 export class RecipeEditComponent implements OnInit, OnDestroy {
-  @ViewChild('ingrform', { static: false }) IngredientsForm: NgForm;
-  @ViewChild('RecipeForm', { static: false }) RecipeForm: NgForm;
+  @ViewChild('ingrform', { static: false })
+  IngredientsForm!: NgForm;
+  @ViewChild('RecipeForm', { static: false })
+  RecipeForm!: NgForm;
 
   HtmlEditor = DecoupledEditor;
 
-  RecipeToEdit: Recipe;
-  index: number;
+  RecipeToEdit!: Recipe;
+  index!: number;
   editmode = false;
-  CurrentSelectedItem: Ingredient;
+  CurrentSelectedItem!: Ingredient;
   ingredientedit = false;
   CurPercentStyle = 'width: 0%';
 
-  RecipeChangedSub: Subscription;
-  IngredientSelectedSub: Subscription;
-  DatabaseUpdated: Subscription;
-  FileProgress: Subscription;
-  FileUploaded: Subscription;
+  RecipeChangedSub!: Subscription;
+  IngredientSelectedSub!: Subscription;
+  DatabaseUpdated!: Subscription;
+  FileProgress!: Subscription;
+  FileUploaded!: Subscription;
 
   FilesToCleanOnCancel: number[] = [];
   FilesToCleanOnSave: number[] = [];
@@ -52,7 +54,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     translate.setDefaultLang(environment.DefaultLocale);
    }
 
-  public onReady(editor) {
+  public onReady(editor: any) {
     editor.ui.getEditableElement().parentElement.insertBefore(
       editor.ui.view.toolbar.element,
       editor.ui.getEditableElement()
@@ -75,7 +77,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       this.SwitchLanguage(ulang)
     } else {
       this.SwitchLanguage(environment.DefaultLocale)
-    }     
+    }
 
     this.DatabaseUpdated = this.datastore.RecipesUpdateInsert.subscribe((recipe) => {
 
@@ -98,9 +100,9 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
     this.activatedroute.params.subscribe(
       (params: Params) => {
-        this.editmode = params.id != null;
+        this.editmode = params['id'] != null;
         if (this.editmode) {
-          this.index = +params.id;
+          this.index = +params['id'];
           this.RecipeToEdit = this.recipeservice.GetRecipeById(this.index);
         } else {
           const NewIngList: Ingredient[] = [];
@@ -209,7 +211,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     this.recipeservice.ClearAllIngredients();
   }
 
-  onFileInput(event) {
+  onFileInput(event: any) {
     this.CurPercentStyle = 'width: 0%';
     const FileToUpload = event.target.files[0] as File;
     this.datastore.FileUpload(FileToUpload);

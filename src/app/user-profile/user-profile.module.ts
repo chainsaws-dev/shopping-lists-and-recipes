@@ -19,7 +19,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     UserProfileComponent,
-    SecureImagePipe,    
+    SecureImagePipe,
   ],
   imports: [
      SharedModule,

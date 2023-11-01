@@ -22,7 +22,7 @@ export class AuthInterceptorService implements HttpInterceptor {
       const modreq = req.clone(
         {
           headers:
-            req.headers.set('Auth', this.auth.GetUserToken())
+            req.headers.set('Auth', this.auth.GetUserToken() ?? "")
               .set('ApiKey', environment.ApiKey)
               .set('Lang', ulang)
         }

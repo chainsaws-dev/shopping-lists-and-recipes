@@ -17,27 +17,27 @@ import { Title } from '@angular/platform-browser';
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
 
-  recipes: Recipe[];
-  RecipeInsertedSub: Subscription;
-  RecipeUpdatedSub: Subscription;
-  RecipeDeletedSub: Subscription;
-  DataServiceSub: Subscription;
-  FetchOnInint: Subscription;
-  PaginationUpd: Subscription;
+  recipes: Recipe[] = [];
+  RecipeInsertedSub: Subscription = new Subscription;
+  RecipeUpdatedSub: Subscription = new Subscription;
+  RecipeDeletedSub: Subscription = new Subscription;
+  DataServiceSub: Subscription = new Subscription;
+  FetchOnInint: Subscription = new Subscription;
+  PaginationUpd: Subscription = new Subscription;
 
-  RecivedErrorSub: Subscription;
-  RecivedResponseSub: Subscription;
-  ResponseFromBackend: ErrorResponse;
-  ShowMessage: boolean;
-  MessageType: string;
+  RecivedErrorSub: Subscription = new Subscription;
+  RecivedResponseSub: Subscription = new Subscription;
+  ResponseFromBackend!: ErrorResponse;
+  ShowMessage: boolean = false;
+  MessageType!: string;
 
-  SearchRequest: string;
+  SearchRequest!: string;
 
   IsLoading = false;
 
-  PageSize: number;
-  collectionSize: number;
-  currentPage: number;
+  PageSize!: number;
+  collectionSize!: number;
+  currentPage!: number;
 
   constructor(
     private RecServ: RecipeService,
@@ -100,7 +100,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
         }, environment.MessageTimeout);
 
         if (response) {
-          
+
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';
@@ -141,11 +141,11 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     );
 
     this.activeroute.params.subscribe((params: Params) => {
-      this.currentPage = +params.pn;
+      this.currentPage = +params['pn'];
       this.RecServ.CurrentPage = this.currentPage;
 
       this.activeroute.queryParams.subscribe((Qparams: Params) => {
-        this.SearchRequest = Qparams.search;
+        this.SearchRequest = Qparams['search'];
 
         this.StartFetch(this.currentPage);
 

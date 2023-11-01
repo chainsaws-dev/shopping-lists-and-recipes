@@ -17,21 +17,21 @@ import { MediaService } from '../media.service';
 })
 export class MediaListComponent implements OnInit, OnDestroy {
 
-  private PageChanged: Subscription;
-  private FetchOnInint: Subscription;
-  private DataLoading: Subscription;
+  private PageChanged: Subscription = new Subscription;
+  private FetchOnInint: Subscription = new Subscription;
+  private DataLoading: Subscription = new Subscription;
 
-  mePageSize: number;
-  meCollectionSize: number;
-  meCurrentPage: number;
-  IsLoading: boolean;
+  mePageSize!: number;
+  meCollectionSize!: number;
+  meCurrentPage!: number;
+  IsLoading: boolean = false;
 
-  ShowMessage: boolean;
-  MessageType: string;
-  ResponseFromBackend: ErrorResponse;
-  RecivedErrorSub: Subscription;
+  ShowMessage: boolean = false;
+  MessageType!: string;
+  ResponseFromBackend!: ErrorResponse;
+  RecivedErrorSub: Subscription = new Subscription;
 
-  Files: FiLe[];
+  Files: FiLe[] = [];
 
   constructor(
     private ActiveRoute: ActivatedRoute,
@@ -77,7 +77,7 @@ export class MediaListComponent implements OnInit, OnDestroy {
         }, environment.MessageTimeout);
 
         if (response) {
-          
+
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';
@@ -91,7 +91,7 @@ export class MediaListComponent implements OnInit, OnDestroy {
     );
 
     this.PageChanged = this.ActiveRoute.params.subscribe((params: Params) => {
-      this.meCurrentPage = +params.pn;
+      this.meCurrentPage = +params['pn'];
 
       this.FetchOnInint = this.DataServ.FetchFilesList(this.meCurrentPage, environment.MediaListPageSize).subscribe(
         (value) => {

@@ -13,8 +13,8 @@ export class MediaResolverService implements Resolve<FiLe> {
 
   constructor(private datastorageservice: DataStorageService) { }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): FiLe | Observable<FiLe> | Promise<FiLe> {
-    const page = route.params.pn;
-    const id = route.params.id;
+    const page = route.params['pn'];
+    const id = route.params['id'];
 
     return this.datastorageservice.FetchFilesList(page, environment.MediaListPageSize).pipe(
       map(resp => {

@@ -24,9 +24,9 @@ export class User {
 }
 
 export class UsersResponse {
-  public Users: User[];
-  public Total: number;
-  public Offset: number;
-  public Limit: number;
+  public Users: User[] = [];
+  public Total!: number;
+  public Offset!: number;
+  public Limit!: number;
 }
 

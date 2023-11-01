@@ -13,8 +13,8 @@ export class UsersResolverService implements Resolve<User> {
 
   constructor(private datastorageservice: DataStorageService) { }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): User | Observable<User> | Promise<User> {
-    const page = route.params.pn;
-    const id = route.params.id;
+    const page = route.params['pn'];
+    const id = route.params['id'];
 
     return this.datastorageservice.FetchUsersList(page, environment.AdminUserListPageSize).pipe(
       map(resp => {

@@ -17,8 +17,8 @@ export class RecipesResolverService implements Resolve<Recipe[]> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Recipe[] | Observable<Recipe[]> | Promise<Recipe[]> {
 
-    const searchreq = route.queryParams.search;
-    const page = route.params.pn;
+    const searchreq = route.queryParams['search'];
+    const page = route.params['pn'];
 
     if (!searchreq) {
       return this.datastorageservice.FetchRecipes(page, environment.RecipePageSize).pipe(

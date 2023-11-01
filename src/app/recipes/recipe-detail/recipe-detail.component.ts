@@ -19,11 +19,11 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   public CurEditor = DecoupledEditor;
 
-  CurrentRecipe: Recipe;
-  id: number;
+  CurrentRecipe!: Recipe;
+  id!: number;
 
-  LoginSub: Subscription;
-  UserAdmin: boolean;
+  LoginSub!: Subscription;
+  UserAdmin!: boolean;
 
   constructor(
     private RecipeServ: RecipeService,
@@ -41,7 +41,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     this.LoginSub.unsubscribe();
   }
 
-  public onReady(editor) {
+  public onReady(editor:any) {
     editor.isReadOnly = true;
   }
 
@@ -52,7 +52,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
       this.SwitchLanguage(ulang)
     } else {
       this.SwitchLanguage(environment.DefaultLocale)
-    } 
+    }
 
     this.UserAdmin = false;
 
@@ -63,7 +63,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     });
 
     this.activeroute.params.subscribe((params: Params) => {
-      this.id = +params.id;
+      this.id = +params['id'];
       this.CurrentRecipe = this.RecipeServ.GetRecipeById(this.id);
     });
   }

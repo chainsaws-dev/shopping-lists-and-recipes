@@ -19,18 +19,18 @@ import { SessionsService } from '../sessions.service';
 export class SessionsEditComponent implements OnInit, OnDestroy {
 
 
-  editmode: boolean;
-  index: number;
-  SessionToEdit: Session;
+  editmode: boolean = false;
+  index!: number;
+  SessionToEdit: Session = new Session;
 
-  IsLoading: boolean;
+  IsLoading: boolean = false;
 
-  private DataLoading: Subscription;
-  private RecivedErrorSub: Subscription;
+  private DataLoading: Subscription = new Subscription;
+  private RecivedErrorSub: Subscription = new Subscription;
 
-  ShowMessage: boolean;
-  MessageType: string;
-  ResponseFromBackend: ErrorResponse;
+  ShowMessage: boolean = false;
+  MessageType!: string;
+  ResponseFromBackend!: ErrorResponse;
 
   constructor(
     private SessServ: SessionsService,
@@ -61,9 +61,9 @@ export class SessionsEditComponent implements OnInit, OnDestroy {
 
     this.activatedroute.params.subscribe(
       (params: Params) => {
-        this.editmode = params.id != null;
+        this.editmode = params['id'] != null;
         if (this.editmode) {
-          this.index = +params.id;
+          this.index = +params['id'];
           this.SessionToEdit = this.SessServ.GetSessionById(this.index);
         }
         this.SessServ.CurrentSelectedItem = this.SessionToEdit;
@@ -83,7 +83,7 @@ export class SessionsEditComponent implements OnInit, OnDestroy {
         }, environment.MessageTimeout);
 
         if (response) {
-          
+
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';

@@ -17,33 +17,33 @@ import { ErrorResponse } from '../shared/shared.model';
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
 
-  index: number;
+  index!: number;
 
-  UserToEdit: User;
+  UserToEdit!: User;
 
-  TwoFactorEnabled: boolean;
+  TwoFactorEnabled!: boolean;
 
-  SetTwoFactor: boolean;
+  SetTwoFactor!: boolean;
 
-  IsLoading: boolean;
-  changepassword: boolean;
+  IsLoading!: boolean;
+  changepassword!: boolean;
 
-  AuthUrl: string;
-  QrUrl: string;
+  AuthUrl!: string;
+  QrUrl!: string;
 
 
 
-  private DataLoading: Subscription;
-  private RecivedErrorSub: Subscription;
+  private DataLoading!: Subscription;
+  private RecivedErrorSub!: Subscription;
 
-  private FetchUser: Subscription;
-  private SaveUser: Subscription;
+  private FetchUser!: Subscription;
+  private SaveUser!: Subscription;
 
-  private LinkUnlinkTFA: Subscription;
+  private LinkUnlinkTFA!: Subscription;
 
-  ShowMessage: boolean;
-  MessageType: string;
-  ResponseFromBackend: ErrorResponse;
+  ShowMessage!: boolean;
+  MessageType!: string;
+  ResponseFromBackend!: ErrorResponse;
 
   constructor(
     private auth: AuthService,
@@ -106,7 +106,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         }, environment.MessageTimeout);
 
         if (response) {
-          
+
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';

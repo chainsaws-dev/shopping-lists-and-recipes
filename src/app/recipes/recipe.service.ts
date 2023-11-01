@@ -9,14 +9,14 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class RecipeService {
-  RecipeToEdit: Recipe;
-  CurrentSelectedItem: Ingredient;
+  RecipeToEdit!: Recipe;
+  CurrentSelectedItem: Ingredient | null = null;
   IngredientSelected = new Subject<Ingredient>();
   RecipeChanged = new Subject<Recipe>();
   RecipesUpdated = new Subject<void>();
   RecipesInserted = new Subject<void>();
   RecipesDeleted = new Subject<void>();
-  CurrentPage: number;
+  CurrentPage!: number;
 
   // new Recipe('Test', 'Desc', '', [new Ingredient('Bread', 1)])
   private recipes: Recipe[] = [];
@@ -108,13 +108,16 @@ export class RecipeService {
     }
 
     this.CurrentSelectedItem = null;
+    if(this.CurrentSelectedItem)
     this.IngredientSelected.next(this.CurrentSelectedItem);
   }
 
   DeleteSelectedIngredient() {
-    const index: number = this.RecipeToEdit.Ingredients.indexOf(this.CurrentSelectedItem);
-    if (index !== -1) {
-      this.RecipeToEdit.Ingredients.splice(index, 1);
+    if(this.CurrentSelectedItem) {
+      const index: number = this.RecipeToEdit.Ingredients.indexOf(this.CurrentSelectedItem);
+      if (index !== -1) {
+        this.RecipeToEdit.Ingredients.splice(index, 1);
+      }
     }
 
     this.CurrentSelectedItem = null;

@@ -13,8 +13,8 @@ export class SessionsResolverService implements Resolve<Session> {
 
   constructor(private datastorageservice: DataStorageService) { }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Session | Observable<Session> | Promise<Session> {
-    const page = route.params.pn;
-    const id = route.params.id;
+    const page = route.params['pn'];
+    const id = route.params['id'];
 
     return this.datastorageservice.FetchSessionsList(page, environment.SessionsListPageSize).pipe(
       map(resp => {

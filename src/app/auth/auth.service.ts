@@ -8,28 +8,24 @@ import { environment } from '../../environments/environment';
 import { ErrorResponse } from '../shared/shared.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private authData: AuthResponseData = null;
+  private authData: AuthResponseData | null = null;
   private autoRefreshToken: any;
 
   public AuthErrorSub = new Subject<ErrorResponse>();
   public AuthResultSub = new Subject<boolean>();
-  private authObs: Observable<AuthResponseData>;
+  private authObs!: Observable<AuthResponseData>;
 
   public LocaleSub = new Subject<string>();
   public SfErrorSub = new Subject<ErrorResponse>();
   public SfResultSub = new Subject<boolean>();
-  private SecFactorObs: Observable<ErrorResponse>;
+  private SecFactorObs!: Observable<ErrorResponse>;
 
-
-  constructor(
-    private http: HttpClient,
-    private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {}
 
   SignUp(UserEmail: string, Name: string, Password: string) {
-
     const signup: AuthRequest = {
       Email: UserEmail,
       Name: encodeURI(Name),
@@ -38,13 +34,14 @@ export class AuthService {
     };
 
     this.authObs = this.http.post<AuthResponseData>(
-      environment.SignUpUrl, signup);
+      environment.SignUpUrl,
+      signup
+    );
 
     this.RequestSub();
   }
 
   SignIn(UserEmail: string, Password: string) {
-
     const signin: AuthRequest = {
       Email: UserEmail,
       Password: encodeURI(Password),
@@ -52,7 +49,9 @@ export class AuthService {
     };
 
     this.authObs = this.http.post<AuthResponseData>(
-      environment.SignInUrl, signin);
+      environment.SignInUrl,
+      signin
+    );
 
     this.RequestSub();
   }
@@ -60,40 +59,39 @@ export class AuthService {
   SecondFactorCheck(Passkey: string) {
     const httpOptions = {
       headers: new HttpHeaders({
-        Passcode: Passkey
-      })
+        Passcode: Passkey,
+      }),
     };
 
     this.SecFactorObs = this.http.post<ErrorResponse>(
-      environment.TOTPCheckUrl, null, httpOptions);
-
-    this.SecFactorObs.subscribe(
-      {
-        next: response => {
-
-          if (response.Error.Code === 200) {
-            this.authData.SecondFactor.CheckResult = true;
-          } else {
-            this.authData.SecondFactor.CheckResult = false;
-          }
-
-          localStorage.setItem('userData', JSON.stringify(this.authData));
-
-          this.SfResultSub.next(this.authData.SecondFactor.CheckResult);
-          this.SfErrorSub.next(response);
-
-        },
-        error: error => {
-
-          const errresp = error.error as ErrorResponse;
-          this.authData.SecondFactor.CheckResult = false;
-
-          this.SfResultSub.next(false);
-          this.SfErrorSub.next(errresp);
-
-        }
-      }
+      environment.TOTPCheckUrl,
+      null,
+      httpOptions
     );
+
+    this.SecFactorObs.subscribe({
+      next: (response) => {
+        if (response.Error.Code === 200) {
+          if (this.authData) this.authData.SecondFactor.CheckResult = true;
+        } else {
+          if (this.authData) this.authData.SecondFactor.CheckResult = false;
+        }
+
+        localStorage.setItem('userData', JSON.stringify(this.authData));
+
+        if (this.authData)
+          this.SfResultSub.next(this.authData.SecondFactor.CheckResult);
+        this.SfErrorSub.next(response);
+      },
+      error: (error) => {
+        const errresp = error.error as ErrorResponse;
+
+        if (this.authData) this.authData.SecondFactor.CheckResult = false;
+
+        this.SfResultSub.next(false);
+        this.SfErrorSub.next(errresp);
+      },
+    });
   }
 
   SignOut() {
@@ -118,11 +116,14 @@ export class AuthService {
     } else {
       this.authData = JSON.parse(userData);
 
-      const ExpDur = new Date(this.authData.ExpirationDate).getTime() -
-        new Date().getTime();
+      if (this.authData && this.authData.ExpirationDate) {
+        const ExpDur =
+          new Date(this.authData.ExpirationDate).getTime() -
+          new Date().getTime();
 
-      this.AuthResultSub.next(true);
-      this.AutoSignOut(ExpDur);
+        this.AuthResultSub.next(true);
+        this.AutoSignOut(ExpDur);
+      }
     }
   }
 
@@ -133,35 +134,37 @@ export class AuthService {
   }
 
   private RequestSub() {
-    this.authObs.subscribe(
-      {
-        next: (response) => {
-          this.authData = response;
-          this.authData.ExpirationDate = String(new Date(new Date().getTime() + +this.authData.ExpiresIn * 1000));
-          localStorage.setItem('userData', JSON.stringify(this.authData));
-          this.AuthResultSub.next(response.Registered);
-          this.AutoSignOut(+this.authData.ExpiresIn * 1000);
-          this.ChangeLocale(this.authData.Locale)
-        },
-        error: (error) => {
-          const errresp = error.error as ErrorResponse;
-          this.AuthResultSub.next(false);
-          this.AuthErrorSub.next(errresp);
-        }
-      }
-    );
+    this.authObs.subscribe({
+      next: (response) => {
+        this.authData = response;
+        this.authData.ExpirationDate = String(
+          new Date(new Date().getTime() + +this.authData.ExpiresIn * 1000)
+        );
+        localStorage.setItem('userData', JSON.stringify(this.authData));
+        this.AuthResultSub.next(response.Registered ?? false);
+        this.AutoSignOut(+this.authData.ExpiresIn * 1000);
+        this.ChangeLocale(this.authData.Locale);
+      },
+      error: (error) => {
+        const errresp = error.error as ErrorResponse;
+        this.AuthResultSub.next(false);
+        this.AuthErrorSub.next(errresp);
+      },
+    });
   }
 
   ChangeLocale(Lang: string) {
-    this.authData.Locale = Lang;
+    if (this.authData) this.authData.Locale = Lang;
     this.LocaleSub.next(Lang);
-    localStorage.setItem("userLang", Lang)
+    localStorage.setItem('userLang', Lang);
   }
 
   CheckRegistered() {
     if (this.authData !== null) {
       if (this.authData.SecondFactor.Enabled === true) {
-        return this.authData.SecondFactor.CheckResult && this.authData.Registered;
+        return (
+          this.authData.SecondFactor.CheckResult && this.authData.Registered
+        );
       } else {
         return this.authData.Registered;
       }
@@ -191,20 +194,26 @@ export class AuthService {
   }
 
   CheckTokenExpired() {
-    if (this.authData.ExpirationDate !== '' && this.authData.ExpirationDate !== null) {
+    if (
+      this.authData &&
+      this.authData.ExpirationDate &&
+      this.authData.ExpirationDate !== '' &&
+      this.authData.ExpirationDate !== null
+    ) {
       return !(new Date() > new Date(this.authData.ExpirationDate));
-    }
-    else {
+    } else {
       return false;
     }
   }
 
   GetUserToken() {
-    if (this.CheckTokenExpired()) {
-      return this.authData.Token;
-    } else {
-      return null;
+    if (this.authData) {
+      if (this.CheckTokenExpired()) {
+        return this.authData.Token;
+      }
     }
+
+    return null;
   }
 
   GetUserEmail() {
@@ -219,7 +228,7 @@ export class AuthService {
     if (this.authData) {
       return this.authData.Locale;
     } else {
-      return localStorage.getItem("userLang");
+      return localStorage.getItem('userLang');
     }
   }
 
@@ -239,5 +248,3 @@ export class AuthService {
     return false;
   }
 }
-
-

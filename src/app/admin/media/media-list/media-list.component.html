@@ -13,7 +13,7 @@
         <img [src]="f.PreviewID" [alt]="f.Filename">
       </a>
       <div class="media-box-overlay">
-        <button class="btn btn-outline-success me-1" type="button" [routerLink]="i">{{'Edit'|translate}}</button>
+        <button class="btn btn-outline-success me-1" type="button" [routerLink]="i.toString()">{{'Edit'|translate}}</button>
         <button class="btn btn-outline-danger" type="button" (click)="OnDeleteFile(f, i)">{{'Delete'|translate}}</button>
       </div>
     </div>

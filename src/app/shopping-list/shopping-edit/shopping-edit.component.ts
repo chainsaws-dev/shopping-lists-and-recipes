@@ -14,15 +14,15 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
-  @ViewChild('f', { static: false }) slEditForm: NgForm;
-  private ingselected: Subscription;
-  selectedingredient: Ingredient;
+  @ViewChild('f', { static: false }) slEditForm: NgForm | undefined;
+  private ingselected: Subscription = new Subscription;
+  selectedingredient: Ingredient | undefined;
   editmode = false;
 
-  private IngUpd: Subscription;
-  private IngAdd: Subscription;
-  private IngDel: Subscription;
-  private IngCle: Subscription;
+  private IngUpd: Subscription = new Subscription;
+  private IngAdd: Subscription = new Subscription;
+  private IngDel: Subscription = new Subscription;
+  private IngCle: Subscription = new Subscription;
 
   constructor(
     public ShopListServ: ShoppingListService,
@@ -35,20 +35,21 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
-    
+
     const ulang = localStorage.getItem("userLang")
 
     if (ulang!==null) {
       this.SwitchLanguage(ulang)
     } else {
       this.SwitchLanguage(environment.DefaultLocale)
-    }  
+    }
 
     this.ingselected = this.ShopListServ.IngredientSelected.subscribe(
       (ing: Ingredient) => {
         this.selectedingredient = ing;
         this.editmode = true;
-        this.slEditForm.setValue({
+
+        this.slEditForm?.setValue({
           name: this.selectedingredient.Name,
           amount: this.selectedingredient.Amount
         });
@@ -97,7 +98,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       this.ShopListServ.UpdateSelectedItem(new Ingredient(fvalue.name, parseInt(fvalue.amount, 10)));
 
       this.editmode = false;
-      this.slEditForm.reset();
+      this.slEditForm?.reset();
     }
   }
 

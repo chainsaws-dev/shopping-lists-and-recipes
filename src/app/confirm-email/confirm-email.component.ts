@@ -17,18 +17,18 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
 
   IsLoading = false;
 
-  ResponseFromBackend: ErrorResponse;
+  ResponseFromBackend!: ErrorResponse;
 
-  ShowMessage: boolean;
-  MessageType: string;
+  ShowMessage!: boolean;
+  MessageType!: string;
 
-  RecivedErrorSub: Subscription;
-  RecivedResponseSub: Subscription;
-  DataServiceSub: Subscription;
+  RecivedErrorSub!: Subscription;
+  RecivedResponseSub!: Subscription;
+  DataServiceSub!: Subscription;
 
-  Token: string;
+  Token!: string;
 
-  ResetPasswordMode: boolean;
+  ResetPasswordMode!: boolean;
 
   constructor(
     private DataServ: DataStorageService,
@@ -70,7 +70,7 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
         setTimeout(() => this.ShowMessage = false, 5000);
 
         if (response) {
-          
+
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';
@@ -85,7 +85,7 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
 
     this.activeroute.queryParams.subscribe((Qparams: Params) => {
 
-      this.Token = Qparams.Token;
+      this.Token = Qparams['Token'];
 
       const cururl = this.getUrlWithoutParams();
 

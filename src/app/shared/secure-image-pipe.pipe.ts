@@ -16,6 +16,11 @@ export class SecureImagePipe implements PipeTransform {
 
   async transform(src: string): Promise<string> {
     const token = this.auth.GetUserToken();
+
+    if (token===null) {
+      return '/favicon.ico';
+    }
+
     const headers = new HttpHeaders({
       Auth: token,
       ApiKey: environment.ApiKey

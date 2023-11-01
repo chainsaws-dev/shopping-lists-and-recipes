@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShoppingListService {
   IngredientSelected = new Subject<Ingredient>();
@@ -15,12 +15,12 @@ export class ShoppingListService {
   IngredientDeleted = new Subject<Ingredient>();
   IngredientClear = new Subject<void>();
 
-  CurrentSelectedItem: Ingredient;
-  Total: number;
+  CurrentSelectedItem: Ingredient | undefined;
+  Total!: number;
 
   private ingredients: Ingredient[] = [];
 
-  constructor() { }
+  constructor() {}
 
   GetIngredients() {
     return this.ingredients.slice();
@@ -40,14 +40,18 @@ export class ShoppingListService {
   }
 
   AddNewItem(NewIngredient: Ingredient, Force: boolean) {
-    let FoundIngredient = this.ingredients.find((x) => x.Name === NewIngredient.Name);
+    let FoundIngredient = this.ingredients.find(
+      (x) => x.Name === NewIngredient.Name
+    );
 
     if (FoundIngredient) {
       FoundIngredient.Amount = FoundIngredient.Amount + NewIngredient.Amount;
     } else {
       FoundIngredient = NewIngredient;
       if (this.ingredients.length < environment.ShoppingListPageSize || Force) {
-        this.ingredients.push(new Ingredient(NewIngredient.Name, NewIngredient.Amount));
+        this.ingredients.push(
+          new Ingredient(NewIngredient.Name, NewIngredient.Amount)
+        );
       }
     }
 
@@ -56,41 +60,52 @@ export class ShoppingListService {
   }
 
   UpdateSelectedItem(UpdatedIngredient: Ingredient) {
-    let FoundIngredient = this.ingredients.find((x) => x.Name === UpdatedIngredient.Name);
+    let FoundIngredient = this.ingredients.find(
+      (x) => x.Name === UpdatedIngredient.Name
+    );
 
     if (FoundIngredient && FoundIngredient !== this.CurrentSelectedItem) {
       FoundIngredient.Name = UpdatedIngredient.Name;
-      FoundIngredient.Amount = FoundIngredient.Amount + UpdatedIngredient.Amount;
+      FoundIngredient.Amount =
+        FoundIngredient.Amount + UpdatedIngredient.Amount;
       this.DeleteSelectedItem();
     } else {
-      const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
-      if (index !== -1) {
-        this.ingredients[index] = UpdatedIngredient;
-        this.IngredientChanged.next(this.ingredients.slice());
+      if (this.CurrentSelectedItem) {
+        const index: number = this.ingredients.indexOf(
+          this.CurrentSelectedItem
+        );
+        if (index !== -1) {
+          this.ingredients[index] = UpdatedIngredient;
+          this.IngredientChanged.next(this.ingredients.slice());
+        }
+        FoundIngredient = this.CurrentSelectedItem;
       }
-      FoundIngredient = this.CurrentSelectedItem;
     }
 
-    this.IngredientUpdated.next(FoundIngredient);
-    this.CurrentSelectedItem = null;
+    if(FoundIngredient) {
+      this.IngredientUpdated.next(FoundIngredient);
+      this.CurrentSelectedItem = undefined;
+    }
+
   }
 
   DeleteSelectedItem() {
+    if(this.CurrentSelectedItem) {
+      const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
+      if (index !== -1) {
+        this.ingredients.splice(index, 1);
+      }
 
-    const index: number = this.ingredients.indexOf(this.CurrentSelectedItem);
-    if (index !== -1) {
-      this.ingredients.splice(index, 1);
+      this.IngredientDeleted.next(this.CurrentSelectedItem);
+      this.IngredientChanged.next(this.ingredients.slice());
+      this.CurrentSelectedItem = undefined;
     }
-
-    this.IngredientDeleted.next(this.CurrentSelectedItem);
-    this.IngredientChanged.next(this.ingredients.slice());
-    this.CurrentSelectedItem = null;
 
   }
 
   ClearAll() {
     this.ingredients = [];
-    this.CurrentSelectedItem = null;
+    this.CurrentSelectedItem = undefined;
     this.IngredientChanged.next(this.ingredients.slice());
     this.SetPagination(0, 0, 0);
     this.IngredientClear.next();
@@ -104,5 +119,4 @@ export class ShoppingListService {
   IsCurrentSelected(ingredient: Ingredient) {
     return this.CurrentSelectedItem === ingredient;
   }
-
 }

@@ -18,21 +18,21 @@ import { SessionsService } from '../sessions.service';
 })
 export class SessionsListComponent implements OnInit, OnDestroy {
 
-  private PageChanged: Subscription;
-  private FetchOnInint: Subscription;
-  private DataLoading: Subscription;
+  private PageChanged: Subscription = new Subscription;
+  private FetchOnInint: Subscription = new Subscription;
+  private DataLoading: Subscription = new Subscription;
 
-  sesCurrentPage: number;
-  sesPageSize: number;
-  sesCollectionSize: number;
-  IsLoading: boolean;
+  sesCurrentPage!: number;
+  sesPageSize!: number;
+  sesCollectionSize!: number;
+  IsLoading: boolean = false;
 
-  ShowMessage: boolean;
-  MessageType: string;
-  ResponseFromBackend: ErrorResponse;
-  RecivedErrorSub: Subscription;
+  ShowMessage: boolean = false;
+  MessageType!: string;
+  ResponseFromBackend!: ErrorResponse;
+  RecivedErrorSub: Subscription = new Subscription;
 
-  Sessions: Session[];
+  Sessions: Session[] = [];
 
   constructor(
     private ActiveRoute: ActivatedRoute,
@@ -78,7 +78,7 @@ export class SessionsListComponent implements OnInit, OnDestroy {
         }, environment.MessageTimeout);
 
         if (response) {
-          
+
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';
@@ -92,7 +92,7 @@ export class SessionsListComponent implements OnInit, OnDestroy {
     );
 
     this.PageChanged = this.ActiveRoute.params.subscribe((params: Params) => {
-      this.sesCurrentPage = +params.pn;
+      this.sesCurrentPage = +params['pn'];
       this.GetRecentData();
     });
 

@@ -18,21 +18,21 @@ import { Title } from '@angular/platform-browser';
 })
 export class UserEditComponent implements OnInit, OnDestroy {
 
-  editmode: boolean;
-  index: number;
-  UserToEdit: User;
+  editmode: boolean = false;
+  index!: number;
+  UserToEdit!: User;
 
-  IsLoading: boolean;
+  IsLoading: boolean = false;
 
-  changepassword: boolean;
+  changepassword: boolean = false;
 
-  private DatabaseUpdated: Subscription;
-  private DataLoading: Subscription;
-  private RecivedErrorSub: Subscription;
+  private DatabaseUpdated: Subscription = new Subscription;
+  private DataLoading: Subscription = new Subscription;
+  private RecivedErrorSub: Subscription = new Subscription;
 
-  ShowMessage: boolean;
-  MessageType: string;
-  ResponseFromBackend: ErrorResponse;
+  ShowMessage: boolean = false;
+  MessageType!: string;
+  ResponseFromBackend!: ErrorResponse;
 
   constructor(
     private AdminServ: UsersService,
@@ -65,9 +65,9 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
     this.activatedroute.params.subscribe(
       (params: Params) => {
-        this.editmode = params.id != null;
+        this.editmode = params['id'] != null;
         if (this.editmode) {
-          this.index = +params.id;
+          this.index = +params['id'];
           this.UserToEdit = this.AdminServ.GetUserById(this.index);
         } else {
           this.changepassword = true;
@@ -104,7 +104,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
         }, environment.MessageTimeout);
 
         if (response) {
-          
+
           switch (response.Error.Code) {
             case 200:
               this.MessageType = 'success';

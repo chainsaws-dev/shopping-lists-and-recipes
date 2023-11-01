@@ -34,9 +34,9 @@ export class DataStorageService {
 
   TwoFactorSub = new Subject<User>();
 
-  LastPagination: Pagination;
+  LastPagination!: Pagination;
 
-  Searched: boolean;
+  Searched!: boolean;
 
   constructor(
     private http: HttpClient,
