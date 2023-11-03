@@ -30,7 +30,7 @@
   </div>
   <div class="row">
     <div class="col">
-      <ckeditor class="mb-1" name="recipedescription" [ngModel]="CurrentRecipe.Description"
+      <ckeditor class="mb-1" name="recipedescription" [ngModel]="CurrentRecipe.Description" [editor]="CurEditor"
         (ready)="onReady($event)" [config]="{'toolbar':{'items':['heading','|','fontSize','fontFamily','|','bold','italic','underline','strikethrough','|','alignment','|','numberedList','bulletedList','|','indent','outdent','|','link','blockQuote','insertTable','mediaEmbed','|','undo','redo']},'language':'ru','image':{toolbar:['imageTextAlternative','imageStyle:side']},'table':{contentToolbar:['tableColumn','tableRow','mergeTableCells']},'licenseKey':''}">
       </ckeditor>
     </div>

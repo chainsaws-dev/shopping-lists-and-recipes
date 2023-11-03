@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Recipe } from '../recipe-model';
 import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
@@ -42,7 +42,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   public onReady(editor:any) {
-    editor.isReadOnly = true;
+    editor.enableReadOnlyMode("editorReadOnlyFeatureId");
   }
 
   ngOnInit(): void {
