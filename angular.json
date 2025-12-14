@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "shopping-list-and-recipes:build:production"
+              "buildTarget": "shopping-list-and-recipes:build:production"
             },
             "development": {
-              "browserTarget": "shopping-list-and-recipes:build:development"
+              "buildTarget": "shopping-list-and-recipes:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,7 +72,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "shopping-list-and-recipes:build"
+            "buildTarget": "shopping-list-and-recipes:build"
           }
         },
         "test": {
