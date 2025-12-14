@@ -1,49 +1,59 @@
-<div *ngIf="CurrentRecipe">
-  <div class="row mt-5">
-    <div class="col">
-      <div *ngIf="!CurrentRecipe.ImagePath" class="image-placeholder mx-auto">
-        <h4>592x333</h4>
+@if (CurrentRecipe) {
+  <div>
+    <div class="row mt-5">
+      <div class="col">
+        @if (!CurrentRecipe.ImagePath) {
+          <div class="image-placeholder mx-auto">
+            <h4>592x333</h4>
+          </div>
+        }
+        <a [href]="CurrentRecipe.ImagePath">@if (CurrentRecipe.ImagePath) {
+          <img [src]="CurrentRecipe.ImagePath"
+            [alt]="CurrentRecipe.Name" class="rounded d-block mx-auto" style="max-height: 333px; max-width: 100%;">
+        }</a>
       </div>
-      <a [href]="CurrentRecipe.ImagePath"><img *ngIf="CurrentRecipe.ImagePath" [src]="CurrentRecipe.ImagePath"
-          [alt]="CurrentRecipe.Name" class="rounded d-block mx-auto" style="max-height: 333px; max-width: 100%;"></a>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <h1>
-        {{CurrentRecipe.Name}}
-      </h1>
+    <div class="row">
+      <div class="col">
+        <h1>
+          {{CurrentRecipe.Name}}
+        </h1>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col mb-3">
-      <div ngbDropdown class="btn-group">
-        <button class="btn btn-outline-primary dropdown-toggle" ngbDropdownToggle *ngIf="UserAdmin">{{'ManageRecipe'|translate}}</button>
-        <ul ngbDropdownMenu class="dropdown-menu">
-          <li ngbDropdownItem class="dropdown-item" (click)="OnSendToShoppingList()"><a style="cursor: pointer;">{{'ToShoppingList'|translate}}</a></li>
-          <li ngbDropdownItem class="dropdown-item" routerLink="edit" queryParamsHandling="merge"><a
-              style="cursor: pointer;">{{'EditRecipe'|translate}}</a></li>
-          <li ngbDropdownItem class="dropdown-item"><a style="cursor: pointer;" (click)="OnDeleteRecipe()">{{'DeleteRecipe'|translate}}</a></li>
+    <div class="row">
+      <div class="col mb-3">
+        <div ngbDropdown class="btn-group">
+          @if (UserAdmin) {
+            <button class="btn btn-outline-primary dropdown-toggle" ngbDropdownToggle>{{'ManageRecipe'|translate}}</button>
+          }
+          <ul ngbDropdownMenu class="dropdown-menu">
+            <li ngbDropdownItem class="dropdown-item" (click)="OnSendToShoppingList()"><a style="cursor: pointer;">{{'ToShoppingList'|translate}}</a></li>
+            <li ngbDropdownItem class="dropdown-item" routerLink="edit" queryParamsHandling="merge"><a
+            style="cursor: pointer;">{{'EditRecipe'|translate}}</a></li>
+            <li ngbDropdownItem class="dropdown-item"><a style="cursor: pointer;" (click)="OnDeleteRecipe()">{{'DeleteRecipe'|translate}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <ckeditor class="mb-1" name="recipedescription" [ngModel]="CurrentRecipe.Description" [editor]="CurEditor"
+          (ready)="onReady($event)" [config]="{'toolbar':{'items':['heading','|','fontSize','fontFamily','|','bold','italic','underline','strikethrough','|','alignment','|','numberedList','bulletedList','|','indent','outdent','|','link','blockQuote','insertTable','mediaEmbed','|','undo','redo']},'language':'ru','image':{toolbar:['imageTextAlternative','imageStyle:side']},'table':{contentToolbar:['tableColumn','tableRow','mergeTableCells']},'licenseKey':''}">
+        </ckeditor>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <ul class="list-group">
+          @for (ingredient of CurrentRecipe.Ingredients; track ingredient) {
+            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+              style="cursor: pointer;">
+              {{ingredient.Name}}
+              <span class="badge bg-primary rounded-pill">{{ingredient.Amount}}</span>
+            </a>
+          }
         </ul>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <ckeditor class="mb-1" name="recipedescription" [ngModel]="CurrentRecipe.Description" [editor]="CurEditor"
-        (ready)="onReady($event)" [config]="{'toolbar':{'items':['heading','|','fontSize','fontFamily','|','bold','italic','underline','strikethrough','|','alignment','|','numberedList','bulletedList','|','indent','outdent','|','link','blockQuote','insertTable','mediaEmbed','|','undo','redo']},'language':'ru','image':{toolbar:['imageTextAlternative','imageStyle:side']},'table':{contentToolbar:['tableColumn','tableRow','mergeTableCells']},'licenseKey':''}">
-      </ckeditor>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <ul class="list-group">
-        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-          style="cursor: pointer;" *ngFor="let ingredient of CurrentRecipe.Ingredients">
-          {{ingredient.Name}}
-          <span class="badge bg-primary rounded-pill">{{ingredient.Amount}}</span>
-        </a>
-      </ul>
-    </div>
-  </div>
-</div>
+}
