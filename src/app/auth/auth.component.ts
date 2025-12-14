@@ -9,9 +9,10 @@ import { environment } from 'src/environments/environment';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+    selector: 'app-auth',
+    templateUrl: './auth.component.html',
+    styleUrls: ['./auth.component.css'],
+    standalone: false
 })
 export class AuthComponent implements OnInit, OnDestroy {
 

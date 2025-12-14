@@ -11,9 +11,10 @@ import { environment } from 'src/environments/environment';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-recipe-detail',
-  templateUrl: './recipe-detail.component.html',
-  styleUrls: ['./recipe-detail.component.css']
+    selector: 'app-recipe-detail',
+    templateUrl: './recipe-detail.component.html',
+    styleUrls: ['./recipe-detail.component.css'],
+    standalone: false
 })
 export class RecipeDetailComponent implements OnInit, OnDestroy {
 

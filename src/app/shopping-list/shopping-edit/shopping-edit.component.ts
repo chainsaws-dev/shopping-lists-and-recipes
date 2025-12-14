@@ -9,9 +9,10 @@ import { environment } from 'src/environments/environment';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-shopping-edit',
-  templateUrl: './shopping-edit.component.html',
-  styleUrls: ['./shopping-edit.component.css']
+    selector: 'app-shopping-edit',
+    templateUrl: './shopping-edit.component.html',
+    styleUrls: ['./shopping-edit.component.css'],
+    standalone: false
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
   @ViewChild('f', { static: false }) slEditForm: NgForm | undefined;

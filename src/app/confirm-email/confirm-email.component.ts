@@ -9,9 +9,10 @@ import { environment } from 'src/environments/environment';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-confirm-email',
-  templateUrl: './confirm-email.component.html',
-  styleUrls: ['./confirm-email.component.css']
+    selector: 'app-confirm-email',
+    templateUrl: './confirm-email.component.html',
+    styleUrls: ['./confirm-email.component.css'],
+    standalone: false
 })
 export class ConfirmEmailComponent implements OnInit, OnDestroy {
 

@@ -12,9 +12,10 @@ import { Session } from '../sessions.model';
 import { SessionsService } from '../sessions.service';
 
 @Component({
-  selector: 'app-sessions-list',
-  templateUrl: './sessions-list.component.html',
-  styleUrls: ['./sessions-list.component.css']
+    selector: 'app-sessions-list',
+    templateUrl: './sessions-list.component.html',
+    styleUrls: ['./sessions-list.component.css'],
+    standalone: false
 })
 export class SessionsListComponent implements OnInit, OnDestroy {
 

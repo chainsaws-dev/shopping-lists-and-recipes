@@ -11,9 +11,10 @@ import { FiLe } from '../media.model';
 import { MediaService } from '../media.service';
 
 @Component({
-  selector: 'app-media-list',
-  templateUrl: './media-list.component.html',
-  styleUrls: ['./media-list.component.css']
+    selector: 'app-media-list',
+    templateUrl: './media-list.component.html',
+    styleUrls: ['./media-list.component.css'],
+    standalone: false
 })
 export class MediaListComponent implements OnInit, OnDestroy {
 

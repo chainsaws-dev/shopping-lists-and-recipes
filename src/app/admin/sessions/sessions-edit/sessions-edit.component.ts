@@ -12,9 +12,10 @@ import { Session } from '../sessions.model';
 import { SessionsService } from '../sessions.service';
 
 @Component({
-  selector: 'app-sessions-edit',
-  templateUrl: './sessions-edit.component.html',
-  styleUrls: ['./sessions-edit.component.css']
+    selector: 'app-sessions-edit',
+    templateUrl: './sessions-edit.component.html',
+    styleUrls: ['./sessions-edit.component.css'],
+    standalone: false
 })
 export class SessionsEditComponent implements OnInit, OnDestroy {
 

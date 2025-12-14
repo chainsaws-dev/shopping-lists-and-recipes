@@ -12,9 +12,10 @@ import { FiLe } from '../media.model';
 import { MediaService } from '../media.service';
 
 @Component({
-  selector: 'app-media-edit',
-  templateUrl: './media-edit.component.html',
-  styleUrls: ['./media-edit.component.css']
+    selector: 'app-media-edit',
+    templateUrl: './media-edit.component.html',
+    styleUrls: ['./media-edit.component.css'],
+    standalone: false
 })
 export class MediaEditComponent implements OnInit, OnDestroy {
 

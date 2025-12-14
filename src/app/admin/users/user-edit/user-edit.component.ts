@@ -12,9 +12,10 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-user-edit',
-  templateUrl: './user-edit.component.html',
-  styleUrls: ['./user-edit.component.css']
+    selector: 'app-user-edit',
+    templateUrl: './user-edit.component.html',
+    styleUrls: ['./user-edit.component.css'],
+    standalone: false
 })
 export class UserEditComponent implements OnInit, OnDestroy {
 

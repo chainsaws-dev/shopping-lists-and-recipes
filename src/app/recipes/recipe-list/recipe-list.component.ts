@@ -11,9 +11,10 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-recipe-list',
-  templateUrl: './recipe-list.component.html',
-  styleUrls: ['./recipe-list.component.css']
+    selector: 'app-recipe-list',
+    templateUrl: './recipe-list.component.html',
+    styleUrls: ['./recipe-list.component.css'],
+    standalone: false
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
 

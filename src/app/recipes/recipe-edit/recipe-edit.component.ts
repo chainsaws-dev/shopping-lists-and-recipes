@@ -14,9 +14,10 @@ import { environment } from 'src/environments/environment';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-recipe-edit',
-  templateUrl: './recipe-edit.component.html',
-  styleUrls: ['./recipe-edit.component.css']
+    selector: 'app-recipe-edit',
+    templateUrl: './recipe-edit.component.html',
+    styleUrls: ['./recipe-edit.component.css'],
+    standalone: false
 })
 export class RecipeEditComponent implements OnInit, OnDestroy {
   @ViewChild('ingrform', { static: false })

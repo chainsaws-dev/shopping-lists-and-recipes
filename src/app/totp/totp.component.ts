@@ -9,9 +9,10 @@ import { AuthService } from '../auth/auth.service';
 import { ErrorResponse } from '../shared/shared.model';
 
 @Component({
-  selector: 'app-totp',
-  templateUrl: './totp.component.html',
-  styleUrls: ['./totp.component.css']
+    selector: 'app-totp',
+    templateUrl: './totp.component.html',
+    styleUrls: ['./totp.component.css'],
+    standalone: false
 })
 export class TotpComponent implements OnInit, OnDestroy {
 
