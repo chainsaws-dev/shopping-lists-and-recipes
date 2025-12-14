@@ -16,9 +16,9 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    TotpComponent,    
+    TotpComponent,
   ],
-  imports: [     
+  imports: [
     CommonModule,
     FormsModule,
     RouterModule.forChild(routes),
@@ -36,6 +36,6 @@ const routes: Routes = [
 })
 export class TotpModule { }
 
-export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http)
+export function httpTranslateLoader() {
+  return new TranslateHttpLoader()
 }

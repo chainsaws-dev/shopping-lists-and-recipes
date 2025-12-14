@@ -45,7 +45,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     private sitetitle: Title
   ) {
     translate.addLangs(environment.SupportedLangs);
-    translate.setDefaultLang(environment.DefaultLocale);
+    translate.setFallbackLang(environment.DefaultLocale);
   }
 
   ngOnDestroy(): void {
@@ -118,7 +118,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
 
-    this.translate.get("WebsiteTitleText", lang).subscribe(
+    this.translate.get("WebsiteTitleText", ).subscribe(
       {
         next: (titletext: string) => {
           this.sitetitle.setTitle(titletext);

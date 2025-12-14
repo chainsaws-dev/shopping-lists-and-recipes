@@ -17,12 +17,12 @@ export class MultilanguageService {
     private sitetitle: Title
   ) {
     translate.addLangs(environment.SupportedLangs);
-    translate.setDefaultLang(environment.DefaultLocale);
+    translate.setFallbackLang(environment.DefaultLocale);
   }
 
   // Получение языка из хранилища
   GetLocalStorageLocale() {
-    
+
     const ulang = localStorage.getItem("userLang")
 
     if (ulang !== null) {
@@ -39,7 +39,7 @@ export class MultilanguageService {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang);
 
-    this.translate.get("WebsiteTitleText", lang).subscribe(
+    this.translate.get("WebsiteTitleText", ).subscribe(
       {
         next: (titletext: string) => {
           this.sitetitle.setTitle(titletext);
@@ -49,15 +49,15 @@ export class MultilanguageService {
         }
       }
     );
-  }    
+  }
 
-  // Выполнение разового перевода 
+  // Выполнение разового перевода
   GetInstantTranslation(Text:string) {
     return this.translate.instant(Text);
   }
 
   // Получение языка профиля
-  ChangeUserProfileLocale(Lang: string) {    
+  ChangeUserProfileLocale(Lang: string) {
     this.Locale = Lang;
     this.LocaleSub.next(Lang);
     localStorage.setItem("userLang", Lang);

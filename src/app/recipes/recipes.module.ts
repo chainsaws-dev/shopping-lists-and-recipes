@@ -25,7 +25,7 @@ import { SharedModule } from '../shared/shared.module';
     RecipeDetailComponent,
     RecipeItemComponent,
     RecipeStartComponent,
-    RecipeEditComponent,    
+    RecipeEditComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +48,6 @@ import { SharedModule } from '../shared/shared.module';
 })
 export class RecipesModule { }
 
-export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http)
+export function httpTranslateLoader() {
+  return new TranslateHttpLoader()
 }

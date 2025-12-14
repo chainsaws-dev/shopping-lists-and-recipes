@@ -25,7 +25,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   @ViewChild('RecipeForm', { static: false })
   RecipeForm!: NgForm;
 
-  HtmlEditor = DecoupledEditor;
+  public HtmlEditor: any = DecoupledEditor;
 
   RecipeToEdit!: Recipe;
   index!: number;
@@ -52,7 +52,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     private sitetitle: Title
   ) {
     translate.addLangs(environment.SupportedLangs);
-    translate.setDefaultLang(environment.DefaultLocale);
+    translate.setFallbackLang(environment.DefaultLocale);
    }
 
   public onReady(editor: any) {
@@ -231,7 +231,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
 
-    this.translate.get("WebsiteTitleText", lang).subscribe(
+    this.translate.get("WebsiteTitleText", ).subscribe(
       {
         next: (titletext: string) => {
           this.sitetitle.setTitle(titletext);

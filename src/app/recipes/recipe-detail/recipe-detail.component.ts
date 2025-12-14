@@ -18,7 +18,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class RecipeDetailComponent implements OnInit, OnDestroy {
 
-  public CurEditor = DecoupledEditor;
+  public CurEditor: any = DecoupledEditor;
 
   CurrentRecipe!: Recipe;
   id!: number;
@@ -35,7 +35,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private sitetitle: Title) {
       translate.addLangs(environment.SupportedLangs);
-      translate.setDefaultLang(environment.DefaultLocale);
+      translate.setFallbackLang(environment.DefaultLocale);
      }
 
   ngOnDestroy(): void {
@@ -88,7 +88,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
 
-    this.translate.get("WebsiteTitleText", lang).subscribe(
+    this.translate.get("WebsiteTitleText", ).subscribe(
       {
         next: (titletext: string) => {
           this.sitetitle.setTitle(titletext);

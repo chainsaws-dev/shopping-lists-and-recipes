@@ -21,7 +21,7 @@ const routes: Routes = [
   declarations: [
     ShoppingListComponent,
     ShoppingEditComponent,
-    
+
   ],
   imports: [
     SharedModule,
@@ -41,6 +41,6 @@ const routes: Routes = [
 })
 export class ShoppingListModule { }
 
-export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http)
+export function httpTranslateLoader() {
+  return new TranslateHttpLoader()
 }

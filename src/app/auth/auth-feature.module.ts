@@ -17,9 +17,9 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    AuthComponent,    
+    AuthComponent,
   ],
-  imports: [     
+  imports: [
     CommonModule,
     FormsModule,
     RouterModule.forChild(routes),
@@ -37,6 +37,6 @@ const routes: Routes = [
 })
 export class AuthFeatureModule { }
 
-export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http)
+export function httpTranslateLoader() {
+  return new TranslateHttpLoader()
 }

@@ -17,7 +17,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ConfirmEmailComponent,
-    
+
   ],
   imports: [
     SharedModule,
@@ -38,6 +38,6 @@ const routes: Routes = [
 export class ConfirmEmailModule { }
 
 
-export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http)
+export function httpTranslateLoader() {
+  return new TranslateHttpLoader()
 }

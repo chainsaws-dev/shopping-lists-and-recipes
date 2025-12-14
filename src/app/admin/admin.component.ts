@@ -16,7 +16,7 @@ export class AdminComponent implements OnInit {
     private sitetitle: Title
   ) {
     translate.addLangs(environment.SupportedLangs);
-    translate.setDefaultLang(environment.DefaultLocale);
+    translate.setFallbackLang(environment.DefaultLocale);
   }
 
   ngOnInit(): void {
@@ -33,7 +33,7 @@ export class AdminComponent implements OnInit {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
 
-    this.translate.get("WebsiteTitleText", lang).subscribe(
+    this.translate.get("WebsiteTitleText", ).subscribe(
       {
         next: (titletext: string) => {
           this.sitetitle.setTitle(titletext);

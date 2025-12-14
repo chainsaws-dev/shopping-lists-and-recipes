@@ -13,7 +13,7 @@ export class RecipeStartComponent implements OnInit {
 
   constructor(public translate: TranslateService, private sitetitle: Title) {
     translate.addLangs(environment.SupportedLangs);
-    translate.setDefaultLang(environment.DefaultLocale);
+    translate.setFallbackLang(environment.DefaultLocale);
    }
 
   ngOnInit(): void {
@@ -23,14 +23,14 @@ export class RecipeStartComponent implements OnInit {
       this.SwitchLanguage(ulang)
     } else {
       this.SwitchLanguage(environment.DefaultLocale)
-    } 
+    }
   }
 
   SwitchLanguage(lang: string) {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
 
-    this.translate.get("WebsiteTitleText", lang).subscribe(
+    this.translate.get("WebsiteTitleText", ).subscribe(
       {
         next: (titletext: string) => {
           this.sitetitle.setTitle(titletext);

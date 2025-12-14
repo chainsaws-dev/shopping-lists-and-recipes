@@ -46,7 +46,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private sitetitle: Title) {
     translate.addLangs(environment.SupportedLangs);
-    translate.setDefaultLang(environment.DefaultLocale);
+    translate.setFallbackLang(environment.DefaultLocale);
   }
 
 
@@ -174,7 +174,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
     localStorage.setItem("userLang", lang)
 
-    this.translate.get("WebsiteTitleText", lang).subscribe(
+    this.translate.get("WebsiteTitleText", ).subscribe(
       {
         next: (titletext: string) => {
           this.sitetitle.setTitle(titletext);

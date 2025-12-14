@@ -47,7 +47,7 @@ export class DataStorageService {
     private sessions: SessionsService,
     private translate: TranslateService) {
     translate.addLangs(environment.SupportedLangs);
-    translate.setDefaultLang(environment.DefaultLocale);
+    translate.setFallbackLang(environment.DefaultLocale);
   }
 
   GetLanguageSelected() {

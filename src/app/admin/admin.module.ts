@@ -55,6 +55,6 @@ import { SharedModule } from '../shared/shared.module';
 })
 export class AdminModule { }
 
-export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http)
+export function httpTranslateLoader() {
+  return new TranslateHttpLoader()
 }

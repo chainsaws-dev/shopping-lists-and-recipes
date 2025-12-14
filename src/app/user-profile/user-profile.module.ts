@@ -39,6 +39,6 @@ const routes: Routes = [
 })
 export class UserProfileModule { }
 
-export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http)
+export function httpTranslateLoader() {
+  return new TranslateHttpLoader()
 }
